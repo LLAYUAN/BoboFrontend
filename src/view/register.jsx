@@ -1,13 +1,10 @@
-import LoginForm from "../components/LoginForm";
 import {Flex, notification} from 'antd';
-import bgImage from '../img/bg.jpg';
 import {useNavigate} from "react-router-dom";
 import {useEffect} from "react";
-// import {register} from "../service/login";
-// import {setCookie} from "../service/cookie";
 import RigisterForm from "../components/RegisterForm";
+import "../css/login.css";
 
-export default function RegisterPage({setIsLogin}) {
+export default function Register({setIsLogin}) {
     const navigate = useNavigate();
     const handleRegister = (values) => {
         // if (values.password !== values.confirm) {
@@ -38,16 +35,16 @@ export default function RegisterPage({setIsLogin}) {
     }
 
     const backgroundStyle = {
-        backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.1)), url(${bgImage})`,
-        backgroundSize: 'cover',
+        // backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.1)), url(${bgImage})`,
+        backgroundColor: '#f0f0f0',
         backgroundPosition: 'center',
         width: '100%',
         height: '100vh', // 让背景充满整个视窗
     };
     return (
         <Flex style={backgroundStyle} justify='center' align='center'>
-            <Flex justify='space-evenly' align='center' className="w-96 h-96 bg-white rounded-lg" vertical>
-                <p className="text-2xl">直播平台</p>
+            <Flex justify='space-evenly' align='center' className="loginFormbg" vertical>
+                <h2>直播平台</h2>
                 <RigisterForm handleLogin={handleRegister}/>
             </Flex>
         </Flex>

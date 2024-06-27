@@ -1,8 +1,8 @@
-import React, {useMemo} from 'react';
+import React from 'react';
 import {LockOutlined, UserOutlined,MailOutlined} from '@ant-design/icons';
 import {Button, Checkbox, Form, Input, ConfigProvider, notification} from 'antd';
-// import '../css/style.css'
 import {useNavigate} from "react-router-dom";
+import "../css/login.css";
 
 const Context = React.createContext({
     name: 'Default',

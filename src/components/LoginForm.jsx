@@ -2,6 +2,7 @@ import React, {useMemo} from 'react';
 import {LockOutlined, UserOutlined} from '@ant-design/icons';
 import {Button, Checkbox, Form, Input, ConfigProvider, notification} from 'antd';
 import {useNavigate} from "react-router-dom";
+import "../css/login.css";
 
 const Context = React.createContext({
     name: 'Default',
@@ -38,6 +39,7 @@ export default function LoginForm({handleLogin}) {
             <Form
                 name="normal_login"
                 style={{width: '300px', margin: '0 auto',display:'flex',flexDirection:'column',justifyContent:'space-between'}}
+                className="login-form"
                 initialValues={{
                     remember: true,
                 }}
