@@ -1,6 +1,5 @@
 {
   "name": "fronted",
-<<<<<<< HEAD
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -43,21 +42,5 @@
   },
   "devDependencies": {
     "tailwindcss": "^3.4.4"
-=======
-  "version": "0.0.0",
-  "private": true,
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
-  },
-  "dependencies": {
-    "vue": "^3.4.29"
-  },
-  "devDependencies": {
-    "@vitejs/plugin-vue": "^5.0.5",
-    "vite": "^5.3.1"
->>>>>>> d4170d111a786850913d6f7a519b6aa148960182
   }
 }
