@@ -7,6 +7,8 @@ import LiveUser from "../view/liveUser";
 import Profile from "../view/profile";
 import LiveAnchor from "../view/liveAnchor";
 import Login from "../view/login";
+import Search from "../view/search";
+import VisitProfile from "../view/visitProfile";
 import Nav from "../components/nav";
 import Register from "../view/register";
 
@@ -26,7 +28,8 @@ function Layout() {
                     <Route path="/liveanchor" element={<LiveAnchor />} />
                     <Route path="/profile" element={<Profile />} />
                     <Route path="/login" element={<Login />} />
-                    <Route path="/register" element={<Register />} />
+                    <Route path="/search" element={<Search />} />
+                    <Route path="/visitprofile" element={<VisitProfile />} />
                 </Routes>
             </div>
         </>
