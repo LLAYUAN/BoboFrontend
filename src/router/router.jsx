@@ -2,7 +2,7 @@ import { Route, BrowserRouter as Router, Routes, useLocation } from "react-route
 import Home from "../view/home";
 import Popular from "../view/popular";
 import Category from "../view/category";
-import Vedio from "../view/video";
+import Video from "../view/video";
 import LiveUser from "../view/liveUser";
 import Profile from "../view/profile";
 import LiveAnchor from "../view/liveAnchor";
@@ -23,7 +23,7 @@ function Layout() {
                     <Route path="/home" element={<Home />} />
                     <Route path="/popular" element={<Popular />} />
                     <Route path="/category" element={<Category />} />
-                    <Route path="/vedio" element={<Vedio />} />
+                    <Route path="/video" element={<Video />} />
                     <Route path="/liveuser" element={<LiveUser />} />
                     <Route path="/liveanchor" element={<LiveAnchor />} />
                     <Route path="/profile" element={<Profile />} />
