@@ -10,13 +10,14 @@ import Login from "../view/login";
 import Search from "../view/search";
 import VisitProfile from "../view/visitProfile";
 import Nav from "../components/nav";
+import Register from "../view/register";
 
 function Layout() {
     const location = useLocation();
     return (
         <>
-            {location.pathname !== '/login' && <Nav />}
-            <div style={{ paddingTop: location.pathname !== '/login' ? '80px' : '0' }}>
+            {location.pathname !== '/login' && location.pathname !== "/register" && <Nav />}
+            <div style={{ paddingTop: location.pathname !== '/login' && location.pathname !== '/register' ? '80px' : '0' }}>
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/home" element={<Home />} />

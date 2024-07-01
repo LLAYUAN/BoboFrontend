@@ -1,5 +1,5 @@
-import React, {useMemo} from 'react';
-import {LockOutlined, UserOutlined} from '@ant-design/icons';
+import React from 'react';
+import {LockOutlined, UserOutlined,MailOutlined} from '@ant-design/icons';
 import {Button, Checkbox, Form, Input, ConfigProvider, notification} from 'antd';
 import {useNavigate} from "react-router-dom";
 import "../css/login.css";
@@ -8,7 +8,7 @@ const Context = React.createContext({
     name: 'Default',
 });
 
-export default function LoginForm({handleLogin}) {
+export default function RegisterForm({handleLogin}) {
     const navigate = useNavigate();
     const onFinish = (values) => {
         handleLogin(values);
@@ -38,7 +38,6 @@ export default function LoginForm({handleLogin}) {
             }}>
             <Form
                 name="normal_login"
-                style={{width: '300px', margin: '0 auto',display:'flex',flexDirection:'column',justifyContent:'space-between'}}
                 className="login-form"
                 initialValues={{
                     remember: true,
@@ -71,21 +70,44 @@ export default function LoginForm({handleLogin}) {
                         placeholder="Password"
                     />
                 </Form.Item>
-                <Form.Item >
-                    <Form.Item name="remember" valuePropName="checked" noStyle>
-                        <Checkbox>Remember me</Checkbox>
-                    </Form.Item>
-
-                    <a className="login-form-forgot" href="">
-                        Forgot password
-                    </a>
+                <Form.Item
+                    name="confirm"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Please confirm your Password!',
+                        },
+                    ]}
+                >
+                    <Input
+                        prefix={<LockOutlined className="site-form-item-icon"/>}
+                        type="password"
+                        placeholder="Confirm Password"
+                    />
                 </Form.Item>
+
+                <Form.Item
+                    name="email"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Please input your Email!',
+                        },
+                    ]}
+                >
+                    <Input
+                        prefix={<MailOutlined className="site-form-item-icon" />}
+                        type="email"
+                        placeholder="Email"
+                    />
+                </Form.Item>
+
 
                 <Form.Item>
                     <Button type="default" htmlType="Login" className="login-form-button">
-                        登 入
+                        注 册
                     </Button>
-                    Or <a href="" onClick={() => navigate('/register')} >register now!</a>
+                    Or <a href="" onClick={() => navigate('/login')}>log in now!</a>
                 </Form.Item>
             </Form>
         </ConfigProvider>
