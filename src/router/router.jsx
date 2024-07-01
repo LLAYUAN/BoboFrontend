@@ -24,8 +24,8 @@ function Layout() {
                     <Route path="/popular" element={<Popular />} />
                     <Route path="/category" element={<Category />} />
                     <Route path="/video" element={<Video />} />
-                    <Route path="/liveuser" element={<LiveUser />} />
-                    <Route path="/liveanchor" element={<LiveAnchor />} />
+                    <Route path="/liveuser/:roomID" element={<LiveUser />} />
+                    <Route path="/liveanchor/:roomID" element={<LiveAnchor />} />
                     <Route path="/profile" element={<Profile />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/search" element={<Search />} />
