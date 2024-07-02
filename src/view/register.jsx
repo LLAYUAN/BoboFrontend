@@ -3,35 +3,40 @@ import {useNavigate} from "react-router-dom";
 import {useEffect} from "react";
 import RigisterForm from "../components/RegisterForm";
 import "../css/login.css";
+import {register} from "../service/login";
 
 export default function Register({setIsLogin}) {
     const navigate = useNavigate();
-    const handleRegister = (values) => {
-        // if (values.password !== values.confirm) {
-        //     notification.error({
-        //         message: '注册失败',
-        //         description: '两次输入密码不一致'
-        //     });
-        //     return;
-        // }
-        //
-        // register(values.username, values.password, values.email).then(data => {
-        //     if (data === "exist") {
-        //         notification.error({
-        //             message: '注册失败',
-        //             description: '用户名已存在'
-        //         });
-        //         return;
-        //     }
-        //     if (data === "success") {
-        //         notification.success({
-        //             message: '注册成功',
-        //             description: '请登录'
-        //         });
-        //         navigate("/login");
-        //         return;
-        //     }
-        // });
+
+    const handleRegister = async(values) => {
+        console.log(values.email, values.password);
+        if (values.password !== values.confirm) {
+            notification.error({
+                message: '注册失败',
+                description: '两次输入密码不一致'
+            });
+            return;
+        }
+
+        else {
+            const response = await register(values.email, values.password);
+            console.log(response);
+            if (response.code === 200) {
+                notification.success({
+                    message: '成功',
+                    description: '注册成功',
+                    placement: 'topRight'
+                });
+                navigate("/login");
+            }
+            else{
+                notification.error({
+                    message: '该用户已存在',
+                    description: response.message,
+                    placement: 'topRight'
+                });
+            }
+        }
     }
 
     const backgroundStyle = {
