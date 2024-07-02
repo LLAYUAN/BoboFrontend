@@ -40,7 +40,7 @@ export default function LiveUser() {
                     </div>
                     <Button icon={<UserAddOutlined />} size="large" style={{marginRight:'5%'}}>关注</Button>
                 </div>
-                <ChatBox />
+                <ChatBox roomID={roomID}/>
             </div>
         </div>
     );

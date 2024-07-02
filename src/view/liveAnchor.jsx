@@ -19,7 +19,7 @@ export default function LiveAnchor() {
         {
             key: '1',
             label: '聊天室',
-            children:<ChatBox />
+            children:<ChatBox roomID={roomID}/>
         },
         {
             key: '2',
