@@ -2,10 +2,14 @@ import {Avatar, Button, Divider, Flex, Tabs, Tag} from "antd";
 import {EditOutlined, GiftOutlined, HeartOutlined, LikeOutlined, UserAddOutlined} from "@ant-design/icons";
 import ChatBox from "../components/ChatBox";
 import UserList from "../components/UserList";
+import {useParams} from "react-router-dom";
 
 export default function LiveAnchor() {
     const title = '直播间的title';
     const tags = ['purple', 'magenta', 'red', 'volcano'];
+
+    const {roomID}=useParams();
+    console.log(roomID);
 
     const onChange = (key) => {
         console.log(key);
@@ -15,7 +19,7 @@ export default function LiveAnchor() {
         {
             key: '1',
             label: '聊天室',
-            children:<ChatBox />
+            children:<ChatBox roomID={roomID}/>
         },
         {
             key: '2',

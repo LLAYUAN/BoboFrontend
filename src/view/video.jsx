@@ -7,23 +7,6 @@ export default function Video() {
     const title = '直播间的title';
     const tags = ['purple', 'magenta', 'red', 'volcano'];
 
-    const onChange = (key) => {
-        console.log(key);
-    };
-
-    const items = [
-        {
-            key: '1',
-            label: '聊天室',
-            children:<ChatBox />
-        },
-        {
-            key: '2',
-            label: '用户列表',
-            children: <UserList />
-        },
-    ];
-
     return (
         <div style={{display:'flex',justifyContent:'center'}}>
             <div style={{display:'flex',flexDirection:'column',width:'90%',padding:'0 30px'}}>

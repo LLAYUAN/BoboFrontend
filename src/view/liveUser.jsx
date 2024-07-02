@@ -1,10 +1,14 @@
 import {Avatar, Button, Divider, Flex, Tag} from "antd";
 import {GiftOutlined, HeartOutlined, LikeOutlined, UserAddOutlined} from "@ant-design/icons";
 import ChatBox from "../components/ChatBox";
+import {useParams} from "react-router-dom";
 
 export default function LiveUser() {
     const title = '直播间的title';
     const tags = ['purple', 'magenta', 'red', 'volcano'];
+
+    const {roomID}=useParams();
+    console.log(roomID);
 
     return (
         <div style={{display:'flex'}}>
@@ -36,7 +40,7 @@ export default function LiveUser() {
                     </div>
                     <Button icon={<UserAddOutlined />} size="large" style={{marginRight:'5%'}}>关注</Button>
                 </div>
-                <ChatBox />
+                <ChatBox roomID={roomID}/>
             </div>
         </div>
     );
