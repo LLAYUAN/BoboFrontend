@@ -24,7 +24,7 @@ export default function LiveUser() {
                 <Divider style={{ margin: '15px 0' }}/>
                 <div style={{width:'90%',background:'#000',paddingBottom:'50%',marginLeft:'5%'}}>这是视频</div>
                 <div style={{display:'flex',padding:'10px 10px'}}>
-                    <Button icon={<GiftOutlined />} style={{marginLeft:'80%'}} size="large"></Button>
+                    <Button icon={<GiftOutlined />} style={{marginLeft:'80%'}} size="large" ></Button>
                     <Button icon={<LikeOutlined />} style={{marginLeft:'2%'}} size="large"></Button>
                     <Button icon={<HeartOutlined />} style={{marginLeft:'2%'}} size="large"></Button>
                 </div>
