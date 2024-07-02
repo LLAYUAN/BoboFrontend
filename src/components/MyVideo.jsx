@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
 import {Button, Modal, List, Divider, Avatar, Image} from 'antd';
 import {
-    DeleteOutlined,
-    LikeOutlined,
+    DeleteOutlined, EyeOutlined,
+    LikeOutlined, UploadOutlined,
     UserAddOutlined,
     UserDeleteOutlined,
     VideoCameraOutlined
 } from "@ant-design/icons";
+import useUploadVideoModal from "../hooks/useUploadVideoModal";
+import VideoEditModal from "./VideoEditModal";
 
 
 
-const MyVideoList = ({ myVideo }) => {
+const MyVideoList = ({ identity, myVideo }) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
 
     const showModal = () => {
@@ -30,6 +32,9 @@ const MyVideoList = ({ myVideo }) => {
         console.log(video);
     }
 
+    const { isModalVisible: isUploadModalVisible, showModal: showUploadModal, handleOk: handleUploadOk, handleCancel: handleUploadCancel } = useUploadVideoModal();
+
+
     return (
         <div>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
@@ -37,9 +42,15 @@ const MyVideoList = ({ myVideo }) => {
                     <VideoCameraOutlined style={{fontSize: '20px'}}/>
                     <h2 style={{paddingLeft:'10px'}}>My Videos</h2>
                 </div>
-                <Button type="link" onClick={showModal}>
-                    View All
-                </Button>
+                <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+                    <Button icon={<UploadOutlined />} type="link" onClick={showUploadModal}>
+                        上传视频
+                    </Button>
+
+                    <Button icon={<EyeOutlined />} type="link" onClick={showModal}>
+                        查看全部
+                    </Button>
+                </div>
             </div>
             <List
                 itemLayout="horizontal"
@@ -51,7 +62,7 @@ const MyVideoList = ({ myVideo }) => {
                             title={video.name}
                             description={`@${video.username}`}
                         />
-                        <Button icon={<DeleteOutlined  />} onClick={handleDelete(video)}/>
+                        {identity==='up'&&<Button icon={<DeleteOutlined  />} onClick={handleDelete(video)}/>}
                     </List.Item>
                 )}
             />
@@ -72,11 +83,13 @@ const MyVideoList = ({ myVideo }) => {
                                 title={video.name}
                                 description={`@${video.username}`}
                             />
-                            <Button icon={<DeleteOutlined  />} onClick={handleDelete(video)}/>
+                            {identity==='up'&&<Button icon={<DeleteOutlined  />} onClick={handleDelete(video)}/>}
                         </List.Item>
                     )}
                 />
             </Modal>
+
+            <VideoEditModal isVisible={isUploadModalVisible} onOk={handleUploadOk} onCancel={handleUploadCancel} />
         </div>
     );
 };
@@ -88,6 +101,6 @@ const myVideo = [
     // Add more users here
 ];
 
-const MyVideo = () => <MyVideoList myVideo={myVideo} />;
+const MyVideo = ({identity}) => <MyVideoList identity={identity} myVideo={myVideo} />;
 
 export default MyVideo

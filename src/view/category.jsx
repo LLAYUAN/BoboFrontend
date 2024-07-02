@@ -6,11 +6,11 @@ import CategorySelect from "../components/CategorySelect";
 
 
 const videoData = [
-    { title: 'React', author: 'Facebook' },
-    { title: 'Vue', author: 'Evan You' },
-    { title: 'Angular', author: 'Google' },
-    { title: 'Angular', author: 'Google' },
-    { title: 'Angular', author: 'Google' },
+    { roomID:1,title: 'React', author: 'Facebook' },
+    { roomID:1,title: 'Vue', author: 'Evan You' },
+    { roomID:1,title: 'Angular', author: 'Google' },
+    { roomID:1,title: 'Angular', author: 'Google' },
+    { roomID:1,title: 'Angular', author: 'Google' },
     // 添加更多数据
 ];
 export default function Category() {
@@ -26,7 +26,7 @@ export default function Category() {
                 <Row justify="space-between" gutter={[10, 30]}>
                     {videoData.map((video, index) => (
                         <Col key={index}>
-                            <VideoCard title={video.title} author={video.author} />
+                            <VideoCard roomID={video.roomID} title={video.title} author={video.author} />
                         </Col>
                     ))}
                 </Row>
