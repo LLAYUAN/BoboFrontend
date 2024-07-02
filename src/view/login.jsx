@@ -1,32 +1,32 @@
 import LoginForm from "../components/LoginForm";
 import {Flex, notification} from 'antd';
 import {useNavigate} from "react-router-dom";
+import {login} from "../service/login";
 
 export default function LoginPage({setIsLogin}) {
     const navigate = useNavigate();
-    const handleLogin = (values) => {
-        // login(values.username,values.password).then(data => {
-        //     const userId = parseInt(data, 10);
-        //     if (userId > 0) {
-        //         //setIsLogin(true);
-        //         setCookie(userId);
-        //         notification.success({
-        //             message: '登录成功',
-        //             description: '欢迎回来'
-        //         });
-        //         navigate("/");
-        //     } else if(userId===-1){
-        //         notification.error({
-        //             message: '登录失败',
-        //             description: '用户被封禁'
-        //         });
-        //     }else{
-        //         notification.error({
-        //             message: '登录失败',
-        //             //description: data.msg
-        //         });
-        //     }
-        // });
+
+    const handleLogin = async(values) => {
+        console.log(values.email, values.password);
+        const response = await login(values.email, values.password);
+        console.log(response);
+        if (response.code === 200) {
+            notification.success({
+                message: '成功',
+                description: '登录成功',
+                placement: 'topRight'
+            });
+            localStorage.setItem('token', response.data.token);
+            localStorage.setItem('tokenHead', response.data.tokenHead);
+            navigate("/home");
+        }
+        else{
+            notification.error({
+                message: '邮箱或密码错误',
+                description: response.message,
+                placement: 'topRight'
+            });
+        }
     }
 
     const backgroundStyle = {
@@ -40,7 +40,7 @@ export default function LoginPage({setIsLogin}) {
     return (
         <Flex style={backgroundStyle} justify='center' align='center'>
             <Flex justify='space-evenly' align='center' vertical className="loginFormbg">
-                <h2>名字</h2>
+                <h2>博播TV</h2>
                 <LoginForm handleLogin={handleLogin}/>
             </Flex>
         </Flex>

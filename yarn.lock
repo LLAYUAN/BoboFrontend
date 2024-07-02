@@ -8734,7 +8734,7 @@ react-refresh@^0.11.0:
 
 react-router-dom@^6.24.0:
   version "6.24.0"
-  resolved "https://mirrors.cloud.tencent.com/npm/react-router-dom/-/react-router-dom-6.24.0.tgz"
+  resolved "https://mirrors.cloud.tencent.com/npm/react-router-dom/-/react-router-dom-6.24.0.tgz#ec49dc38c49bb9bd25b310a8ae849268d3085e1d"
   integrity sha512-960sKuau6/yEwS8e+NVEidYQb1hNjAYM327gjEyXlc6r3Skf2vtwuJ2l7lssdegD2YjoKG5l8MsVyeTDlVeY8g==
   dependencies:
     "@remix-run/router" "1.17.0"

@@ -45,6 +45,7 @@ const Nav = () => {
         navigate('/' + e.key);
     };
     const handleProfileClick = () => {
+
         navigate('/profile');
     };
     return(
