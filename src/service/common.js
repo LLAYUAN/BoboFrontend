@@ -42,7 +42,7 @@ export async function get(url) {
     return res;
 }
 
-export async function postnoJson(url, data) {
+export async function postnoToken(url, data) {
     let opts = {
         method: "POST",
         body: JSON.stringify(data),
@@ -85,10 +85,10 @@ export async function post(url, data) {
 }
 
 // 定义基础URL，如果没有配置REACT_APP_BASE_URL，则使用默认值'http://localhost:8080'
-export const BASEURL = 'http://localhost:8080';
+export const BASEURL = 'http://localhost:9999';
 // 拼接API的前缀，即基础URL+'/api'
 export const PREFIX = `${BASEURL}`;
-export const USERPREFIX = 'http://localhost:8082';
+export const USERPREFIX = `${BASEURL}/user`;
 // 定义一个常量，用于表示网络错误的响应
 export const DUMMY_RESPONSE = {
     ok: false,
