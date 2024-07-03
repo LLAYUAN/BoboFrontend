@@ -5,8 +5,14 @@
 "    include"：总是包含凭据，即始终发送 cookie 等凭据。
  */
 export async function getJson(url) {
-    // alert(url);
-    let res = await fetch(url, { method: "GET", credentials: "include" });
+    let token = `${localStorage.getItem('tokenHead')}${localStorage.getItem('token')}`;
+    let res = await fetch(url, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+            "Authorization": token
+        }
+    });
     //解析响应的json数据并返回
     if (res.status == 401){
         return LOGIN_EXPIRED;
@@ -18,7 +24,15 @@ export async function getJson(url) {
 }
 
 export async function get(url) {
-    let res = await fetch(url, { method: "GET", credentials: "include" });
+    let token = `${localStorage.getItem('tokenHead')}${localStorage.getItem('token')}`;
+    token = token.trim(); // 确保去除可能存在的多余空格或特殊字符
+    let res = await fetch(url, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+            "Authorization": token
+        }
+    });
     if(res.status === 401){
         return LOGIN_EXPIRED;
     }
@@ -28,46 +42,7 @@ export async function get(url) {
     return res;
 }
 
-export async function put(url, data) {
-    let opts = {
-        method: "PUT",
-        body: JSON.stringify(data), // 将数据转换为JSON字符串作为请求体
-        headers: {
-            // 设置请求头Content-Type为application/json,表明请求的主体内容是 JSON 格式的数据。这样做的目的是告诉服务器，请求中包含的数据是以 JSON 格式编码的
-            'Content-Type': 'application/json'
-        },
-        credentials: "include"
-    };
-    let res = await fetch(url, opts);
-    if(res.status === 401){
-        return LOGIN_EXPIRED;
-    }
-    if(res.status !== 200){
-        return DUMMY_RESPONSE;
-    }
-    return res.json();
-}
-
-export async function del(url, data) {
-    let opts = {
-        method: "DELETE",
-        body: JSON.stringify(data),
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        credentials: "include"
-    };
-    let res = await fetch(url, opts);
-    if(res.status === 401){
-        return LOGIN_EXPIRED;
-    }
-    if(res.status !== 200){
-        return DUMMY_RESPONSE;
-    }
-    return res.json();
-}
-
-export async function post(url, data) {
+export async function postnoJson(url, data) {
     let opts = {
         method: "POST",
         body: JSON.stringify(data),
@@ -84,6 +59,28 @@ export async function post(url, data) {
     if(res.status !== 200){
         return DUMMY_RESPONSE;
     }
+    console.log(res);
+    return res.json();
+}
+
+export async function post(url, data) {
+    let token = `${localStorage.getItem('tokenHead')}${localStorage.getItem('token')}`;
+    let opts = {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+            'Content-Type': 'application/json',
+            "Authorization": token
+        },
+        credentials: "include"
+    };
+    let res = await fetch(url, opts);
+    if(res.status === 401){
+        return LOGIN_EXPIRED;
+    }
+    if(res.status !== 200){
+        return DUMMY_RESPONSE;
+    }
     return res.json();
 }
 
@@ -91,6 +88,7 @@ export async function post(url, data) {
 export const BASEURL = 'http://localhost:8080';
 // 拼接API的前缀，即基础URL+'/api'
 export const PREFIX = `${BASEURL}`;
+export const USERPREFIX = 'http://localhost:8082';
 // 定义一个常量，用于表示网络错误的响应
 export const DUMMY_RESPONSE = {
     ok: false,
