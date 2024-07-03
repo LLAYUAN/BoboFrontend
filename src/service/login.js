@@ -1,10 +1,11 @@
-import {postnoJson,USERPREFIX} from "./common";
+import {postnoToken,USERPREFIX} from "./common";
 
 export async function login(email, password) {
     const url = `${USERPREFIX}/login`;
     let result;
     try {
-        result = await postnoJson(url, {email, password });
+        result = await postnoToken(url, {email, password });
+        console.log(result);
     } catch (e) {
         console.log(e);
         result = {
@@ -21,7 +22,7 @@ export async function register(email, password) {
     const url = `${USERPREFIX}/register`;
     let result;
     try {
-        result = await postnoJson(url, {email,password});
+        result = await postnoToken(url, {email,password});
     } catch (e) {
         console.log(e);
         result = {
