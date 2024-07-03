@@ -42,7 +42,7 @@ export default function LiveAnchor() {
                             ))}
                         </Flex>
                     </div>
-                    <Button icon={<EditOutlined />} style={{marginRight:'3%'}} size="large"></Button>
+                    {/*<Button icon={<EditOutlined />} style={{marginRight:'3%'}} size="large"></Button>*/}
                 </div>
                 <Divider style={{ margin: '15px 0' }}/>
                 <div style={{width:'90%',background:'#000',paddingBottom:'50%',marginLeft:'5%'}}>这是视频</div>

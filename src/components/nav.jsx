@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { AppstoreOutlined, MailOutlined, SettingOutlined } from '@ant-design/icons';
-import {Button, Image, Menu,Divider} from 'antd';
+import {Button, Image, Menu, Divider, Dropdown} from 'antd';
 import {useNavigate} from "react-router-dom";
 
 import { AudioOutlined } from '@ant-design/icons';
@@ -23,17 +23,25 @@ const items = [
         label: 'Category',
         key: 'category',
     },
-
 ];
 
-const suffix = (
-    <AudioOutlined
-        style={{
-            fontSize: 16,
-            color: '#1677ff',
-        }}
-    />
-);
+const dropitems = [
+    {
+        key: 'profile',
+        label: '个人空间',
+    },
+    {
+        key: 'changePassword',
+        label: '修改密码',
+    },
+    {
+        key: 'logout',
+        label: '退出登录',
+    },
+];
+
+
+
 const onSearch = (value, _e, info) => console.log(info?.source, value);
 
 const Nav = () => {
@@ -44,10 +52,21 @@ const Nav = () => {
         setCurrent(e.key);
         navigate('/' + e.key);
     };
-    const handleProfileClick = () => {
 
-        navigate('/profile');
-    };
+    const handleMenuClick = (e) => {
+        console.log('click', e);
+        setCurrent('');
+        if(e.key === 'profile'){
+            navigate('/profile');
+        }else if(e.key === 'changePassword'){
+            //todo:处理修改
+
+        }else if(e.key === 'logout'){
+            //todo:处理退出登录
+
+        }
+    }
+
     return(
         <div style={{position: 'fixed',top: '0',left: '0', width: '100%',zIndex:'1000',backgroundColor:'#fff',boxShadow:'0 2px 5px rgba(0, 0, 0, 0.1)'}}>
             <div style={{display: 'flex', justifyContent: 'space-between',alignItems:'center',padding: '0 30px',height:'60px'}}>
@@ -59,7 +78,10 @@ const Nav = () => {
                 <div style={{display: 'flex', justifyContent: 'canter',alignItems: 'center'}}>
                     <Search placeholder="input search text" onSearch={onSearch} enterButton />
                     <Button style={{marginLeft:'20px'}}>我要直播</Button>
-                    <Button onClick={handleProfileClick} type="primary" shape="circle" icon={<UserOutlined  />} style={{marginLeft:'20px'}}/>
+
+                    <Dropdown menu={{ items: dropitems,onClick: handleMenuClick, }} placement="bottomRight" arrow>
+                        <Button type="primary" shape="circle" icon={<UserOutlined  />} style={{marginLeft:'20px'}}/>
+                    </Dropdown>
                 </div>
             </div>
         </div>

@@ -5,11 +5,11 @@ import {Row, Col, Divider} from 'antd';
 
 
 const videoData = [
-    { title: 'React', author: 'Facebook' },
-    { title: 'Vue', author: 'Evan You' },
-    { title: 'Angular', author: 'Google' },
-    { title: 'Angular', author: 'Google' },
-    { title: 'Angular', author: 'Google' },
+    { roomID:1,title: 'React', author: 'Facebook' },
+    { roomID:2,title: 'Vue', author: 'Evan You' },
+    { roomID:3,title: 'Angular', author: 'Google' },
+    { roomID:4,title: 'Angular', author: 'Google' },
+    { roomID:5,title: 'Angular', author: 'Google' },
     // 添加更多数据
 ];
 export default function Home() {
@@ -22,7 +22,7 @@ export default function Home() {
             <Row justify="space-between" gutter={[16, 16]}>
                 {videoData.map((video, index) => (
                     <Col >
-                        <VideoCard title={video.title} author={video.author} />
+                        <VideoCard roomID={video.roomID} title={video.title} author={video.author} />
                     </Col>
                 ))}
             </Row>

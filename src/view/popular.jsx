@@ -6,12 +6,12 @@ import PopularCard from "../components/PopularCard";
 
 
 const videoData = [
-    { title: 'React', author: 'Facebook',rank:1,cover:'https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png' },
-    { title: 'Vue', author: 'Evan You',rank:2 ,cover:'https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png'},
-    { title: 'Angular', author: 'Google',rank:3,cover:'https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png'},
-    { title: 'Angular', author: 'Google',rank:4,cover:'https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png'},
-    { title: 'Angular', author: 'Google',rank:5,cover:'https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png' },
-    { title: 'Angular', author: 'Google',rank:5,cover:'https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png' },
+    { roomID:1,title: 'React', author: 'Facebook',rank:1,cover:'https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png' },
+    { roomID:1,title: 'Vue', author: 'Evan You',rank:2 ,cover:'https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png'},
+    { roomID:1,title: 'Angular', author: 'Google',rank:3,cover:'https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png'},
+    { roomID:1,title: 'Angular', author: 'Google',rank:4,cover:'https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png'},
+    { roomID:1,title: 'Angular', author: 'Google',rank:5,cover:'https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png' },
+    { roomID:1,title: 'Angular', author: 'Google',rank:5,cover:'https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png' },
     // 添加更多数据
 ];
 export default function Popular() {
@@ -20,7 +20,7 @@ export default function Popular() {
             <Row justify="space-evenly" gutter={[16, 50]}>
                 {videoData.map((video, index) => (
                     <Col >
-                        <PopularCard title={video.title} author={video.author} rank={video.rank} cover={video.cover}/>
+                        <PopularCard roomID={video.roomID} title={video.title} author={video.author} rank={video.rank} cover={video.cover}/>
                     </Col>
                 ))}
             </Row>

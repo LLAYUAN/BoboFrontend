@@ -4,7 +4,7 @@ import { PlusOutlined } from '@ant-design/icons';
 
 const { Option } = Select;
 
-const LiveEditModal = ({ isVisible, onOk, onCancel }) => {
+const VideoEditModal = ({ isVisible, onOk, onCancel }) => {
     const [form] = Form.useForm();
     const [imageUrl, setImageUrl] = useState('');
 
@@ -51,7 +51,7 @@ const LiveEditModal = ({ isVisible, onOk, onCancel }) => {
 
     return (
         <Modal
-            title="创建直播间"
+            title="上传视频"
             visible={isVisible}
             onOk={() => onOk(form)}
             onCancel={onCancel}
@@ -60,12 +60,12 @@ const LiveEditModal = ({ isVisible, onOk, onCancel }) => {
                     取消
                 </Button>,
                 <Button key="submit" type="primary" onClick={handleCheck}>
-                    创建
+                    上传
                 </Button>,
             ]}
         >
             <Form form={form} layout="vertical">
-                <Form.Item name="title" label="直播间名称" rules={[{ required: true, message: '请输入名称' }]}>
+                <Form.Item name="title" label="视频名称" rules={[{ required: true, message: '请输入名称' }]}>
                     <Input />
                 </Form.Item>
                 <Form.Item name="author" label="分类" rules={[{ required: true, message: '请选择分类' }]}>
@@ -81,7 +81,10 @@ const LiveEditModal = ({ isVisible, onOk, onCancel }) => {
                         options={options}
                     />
                 </Form.Item>
-                <Form.Item name="cover_image" label="直播间封面" rules={[{ required: true, message: '请上传封面图片' }]}>
+                <Form.Item name="description" label="简介" rules={[{ required: false}]}>
+                    <Input.TextArea />
+                </Form.Item>
+                <Form.Item name="cover_image" label="上传视频" rules={[{ required: true, message: '请上传视频内容' }]}>
                     <div className="flex flex-row justify-center items-center mb-3">
                         {imageUrl ? (
                             <Image src={imageUrl} alt="cover" width={200} />
@@ -111,4 +114,4 @@ const LiveEditModal = ({ isVisible, onOk, onCancel }) => {
     );
 };
 
-export default LiveEditModal;
+export default VideoEditModal;

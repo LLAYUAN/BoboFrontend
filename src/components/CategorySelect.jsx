@@ -5,7 +5,7 @@ const items = [
     {
         key: '1',
         icon: <MailOutlined />,
-        label: 'Navigation One',
+        label: '分类1',
         children: [
             {
                 key: '11',
@@ -28,7 +28,7 @@ const items = [
     {
         key: '2',
         icon: <AppstoreOutlined />,
-        label: 'Navigation Two',
+        label: '分类2',
         children: [
             {
                 key: '21',
@@ -79,7 +79,7 @@ const items = [
     {
         key: '3',
         icon: <SettingOutlined />,
-        label: 'Navigation Three',
+        label: '分类3',
         children: [
             {
                 key: '31',

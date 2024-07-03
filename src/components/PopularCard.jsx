@@ -1,15 +1,18 @@
 import React from 'react';
 import { Card, Avatar, Typography, Row, Col } from 'antd';
 import { YoutubeOutlined } from '@ant-design/icons';
+import {useNavigate} from "react-router-dom";
 
 const { Title, Text } = Typography;
 
-const PopularCard = ({title,author,rank,cover}) => {
+const PopularCard = ({roomID,title,author,rank,cover}) => {
     console.log(cover);
+    const navigate=useNavigate();
     return (
         <Card
             hoverable
-            style={{ width: 500, border: '1px solid #e8e8e8', borderRadius: '8px' }} >
+            style={{ width: 500, border: '1px solid #e8e8e8', borderRadius: '8px' }}
+            onClick={()=>{navigate(`/liveUser/${roomID}`)}}>
             <Row>
                 <Col span={12} >
                     <div style={{ position: 'relative' }}>

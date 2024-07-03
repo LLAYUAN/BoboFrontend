@@ -48,7 +48,7 @@ export default function Profile() {
             <div style={{display: 'flex', padding: '30px 30px', justifyContent: 'space-evenly'}}>
                 <div style={{width: '60%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between'}}>
                     <Card style={{boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)'}}>
-                        <MyVideo />
+                        <MyVideo identity='up'/>
                     </Card>
                 </div>
                     <Card style={{width:'30%',boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)'}}>

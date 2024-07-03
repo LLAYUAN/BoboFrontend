@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {Button, Modal, List, Divider} from 'antd';
-import {HeartOutlined, LikeOutlined, UserAddOutlined, UserDeleteOutlined} from "@ant-design/icons";
+import {EyeOutlined, HeartOutlined, LikeOutlined, UserAddOutlined, UserDeleteOutlined} from "@ant-design/icons";
 
 
 
@@ -31,8 +31,8 @@ const FollowerList = ({ follower }) => {
                     <HeartOutlined  style={{fontSize: '20px'}}/>
                     <h2 style={{paddingLeft:'4px'}}>Follower</h2>
                 </div>
-                <Button type="link" onClick={showModal}>
-                    View All
+                <Button icon={<EyeOutlined />} type="link" onClick={showModal}>
+                    查看全部
                 </Button>
             </div>
             <List
