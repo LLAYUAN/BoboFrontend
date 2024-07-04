@@ -17,13 +17,13 @@ export default function Profile() {
 
 
     const initialUser = async () => {
-        let user = await getUserInfo();
-        if(user.code !== 200){
-            navigate('/login');
-            return;
-        }
-        user = user.data;
-        setUser(user);
+        // let user = await getUserInfo();
+        // if(user.code !== 200){
+        //     navigate('/login');
+        //     return;
+        // }
+        // user = user.data;
+        // setUser(user);
     }
 
     useEffect(() => {

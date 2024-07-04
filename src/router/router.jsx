@@ -23,7 +23,7 @@ function Layout() {
                     <Route path="/home" element={<Home />} />
                     <Route path="/popular" element={<Popular />} />
                     <Route path="/category" element={<Category />} />
-                    <Route path="/video" element={<Video />} />
+                    <Route path="/video/:videoID" element={<Video />} />
                     <Route path="/liveuser/:roomID" element={<LiveUser />} />
                     <Route path="/liveanchor/:roomID" element={<LiveAnchor />} />
                     <Route path="/profile" element={<Profile />} />

@@ -5,6 +5,7 @@ import UserList from "../components/UserList";
 import UserBox from "../components/UserBox";
 import VideoList from "../components/VideoList";
 import React from "react";
+import ReactPlayer from 'react-player';
 
 export default function Video() {
     const title = '直播间的title';
@@ -31,7 +32,24 @@ export default function Video() {
                     </div>
                 </div>
                 <Divider style={{margin: '15px 0'}}/>
-                <div style={{width: '90%', background: '#000', paddingBottom: '50%', marginLeft: '5%'}}>这是视频</div>
+                
+                <div style={{
+                    paddingBottom: '56.25%', // 调整为16:9的宽高比
+                    position: 'relative' // 设置为相对定位，以便子元素可以绝对定位
+                }}>
+                    <ReactPlayer
+                        url={`http://localhost:8080/resources/Screenrecorder-2024-05-15-22-13-05-599.mp4`}
+                        className="customReactPlayer"
+                        controls={true}
+                        style={{
+                            position: 'absolute', // 绝对定位以填满父元素
+                            top: 0,
+                            left: 0,
+                        }}
+                        width = '100%'
+                        height = '100%'
+                    />
+                </div>
 
             </div>
 
