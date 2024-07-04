@@ -60,7 +60,7 @@ const MyVideoList = ({ identity, myVideo }) => {
             </div>
             <List
                 itemLayout="horizontal"
-                dataSource={myVideo.slice(0, 4)} // Show only first 2 users initially
+                dataSource={myVideo.slice(0, 2)} // Show only first 2 users initially
                 renderItem={(video) => (
                     <List.Item>
                         <List.Item.Meta
