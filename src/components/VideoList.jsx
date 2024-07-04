@@ -7,8 +7,10 @@ export default function VideoList() {
 
     //todo:从后端获取视频列表
     const videos = [
-        { name: 'Jared Palmer', username: 'jaredpalmer',imageUrl:'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png' },
-        { name: 'Olivia Davis', username: 'olivia' },
+        { videoID: 0,videoName: 'Video0', ownerName: 'owner0',ownerUserID: 0,imageUrl:'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png', videoAddress:"videoAddress0"},
+        { videoID: 1,videoName: 'Video1', ownerName: 'owner0',ownerUserID: 0,imageUrl:'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png', videoAddress:"videoAddress1"},
+        { videoID: 2,videoName: 'Video2', ownerName: 'owner0',ownerUserID: 0,imageUrl:'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png', videoAddress:"videoAddress2"},
+        { videoID: 3,videoName: 'Video3', ownerName: 'owner0',ownerUserID: 0,imageUrl:'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png', videoAddress:"videoAddress3"},
         // Add more users here
     ];
 
@@ -23,8 +25,8 @@ export default function VideoList() {
                     <List.Item>
                         <List.Item.Meta
                             avatar={<Image src={video.imageUrl} width={160} height={90} style={{borderRadius: '10px'}}/>}
-                            title={video.name}
-                            description={`@${video.username}`}
+                            title={video.videoName}
+                            description={`@${video.ownerName}`}
                         />
                     </List.Item>
                 )}
