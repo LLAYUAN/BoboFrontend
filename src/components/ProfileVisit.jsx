@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
-import {Avatar, Button, Form, Input, notification} from 'antd';
+import {Avatar, Button, Form, Input, DatePicker, notification} from 'antd';
 import {UserOutlined} from "@ant-design/icons";
+import moment from "moment";
 
 const layout = {
     labelCol: {
@@ -24,11 +25,11 @@ const validateMessages = {
 };
 
 const user = {
-    following:123,
-    follower:456,
+    following: 123,
+    follower: 456,
     name: 'John Doe',
     email: '1@1',
-    age: 32,
+    birthday: '2021-01-01',
     introduction: 'A brief introduction about yourself',
 }
 
@@ -41,7 +42,6 @@ export default function ProfileVisit() {
     };
 
     const handleFollow = () => {
-        // 这里可以根据需要设置新的头像URL
         notification.success({
             message: '关注成功',
             description: '成功关注该用户',
@@ -50,20 +50,32 @@ export default function ProfileVisit() {
 
     return (
         <div>
-            <div style={{display:'flex',justifyContent:'left',alignItems:'center'}}>
+            <div style={{display: 'flex', justifyContent: 'left', alignItems: 'center'}}>
                 <UserOutlined style={{fontSize: '20px'}}/>
-                <h2 style={{paddingLeft:'10px'}}>Profile</h2>
+                <h2 style={{paddingLeft: '10px'}}>Profile</h2>
             </div>
-            <div style={{display: 'flex', width:'90%',flexDirection:'column', justifyContent: 'center', alignItems: 'center', paddingBottom: '20px'}}>
+            <div style={{
+                display: 'flex',
+                width: '90%',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                paddingBottom: '20px'
+            }}>
                 <Avatar src={avatarUrl} onClick={handleAvatarClick} size={64} icon={<UserOutlined/>}
                         style={{cursor: 'pointer'}}/>
-                <div style={{display: 'flex', width:'90%',justifyContent: 'space-evenly', alignItems: 'center', paddingTop: '10px'}}>
+                <div style={{
+                    display: 'flex',
+                    width: '90%',
+                    justifyContent: 'space-evenly',
+                    alignItems: 'center',
+                    paddingTop: '10px'
+                }}>
                     <p>关注：{user.following}</p>
                     <p>粉丝：{user.follower}</p>
                 </div>
             </div>
             <Form
-                disabled
                 {...layout}
                 name="nest-messages"
                 style={{
@@ -74,13 +86,8 @@ export default function ProfileVisit() {
                 <Form.Item
                     name={['user', 'name']}
                     label="Name"
-                    rules={[
-                        {
-                            required: true,
-                        },
-                    ]}
                 >
-                    <Input defaultValue={user.name}/>
+                    <Input defaultValue={user.name} readOnly/>
                 </Form.Item>
                 <Form.Item
                     name={['user', 'email']}
@@ -91,26 +98,19 @@ export default function ProfileVisit() {
                         },
                     ]}
                 >
-                    <Input defaultValue={user.email}/>
+                    <Input defaultValue={user.email} readOnly/>
                 </Form.Item>
                 <Form.Item
-                    name={['user', 'age']}
-                    label="Age"
-                    rules={[
-                        {
-                            type: 'number',
-                            min: 0,
-                            max: 99,
-                        },
-                    ]}
+                    name={['user', 'birthday']}
+                    label="Birthday"
                 >
-                    <Input defaultValue={user.age}/>
+                    <Input defaultValue={user.birthday} readOnly/>
                 </Form.Item>
                 <Form.Item name={['user', 'introduction']} label="Introduction">
-                    <Input.TextArea defaultValue={user.introduction}/>
+                    <Input.TextArea defaultValue={user.introduction} readOnly/>
                 </Form.Item>
             </Form>
-            <div style={{display:'flex',justifyContent:'center',alignItems:'center'}}>
+            <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                 <Button type="primary" onClick={handleFollow}>关注</Button>
             </div>
         </div>
