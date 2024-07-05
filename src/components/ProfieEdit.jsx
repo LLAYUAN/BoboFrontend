@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
-import {Avatar, Button, Form, Input, InputNumber} from 'antd';
-import {UserOutlined} from "@ant-design/icons";
+import React, { useEffect, useState } from 'react';
+import { Avatar, Button, Form, Input, InputNumber } from 'antd';
+import { UserOutlined } from "@ant-design/icons";
 
 const layout = {
     labelCol: {
@@ -11,7 +11,6 @@ const layout = {
     },
 };
 
-/* eslint-disable no-template-curly-in-string */
 const validateMessages = {
     required: '${label} is required!',
     types: {
@@ -22,31 +21,44 @@ const validateMessages = {
         range: '${label} must be between ${min} and ${max}',
     },
 };
-/* eslint-enable no-template-curly-in-string */
 
-const onFinish = (values) => {
-    console.log(values);
-};
-
-export default function ProfileEdit() {
-    const [avatarUrl, setAvatarUrl] = useState('https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png');
+export default function ProfileEdit({ user }) {
+    const [avatarUrl, setAvatarUrl] = useState(user.avatarUrl || 'https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png');
+    const [form] = Form.useForm();
 
     const handleAvatarClick = () => {
-        // 这里可以根据需要设置新的头像URL
-        setAvatarUrl('https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png');
+        // 可根据需要设置新的头像URL
+        setAvatarUrl(user.avatarUrl || 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png');
     };
+
+    const onFinish = (values) => {
+        console.log('Received values:', values);
+        // 在这里可以处理提交逻辑，例如发送到后端或其他操作
+    };
+
+    useEffect(() => {
+        form.setFieldsValue({
+            user: {
+                name: user.nickname || '',
+                email: user.email || '',
+                birthday: user.birthday || '',
+                introduction: user.introduction || '',
+            }
+        });
+    }, [user, form]);
+
     return (
         <div>
-            <div style={{display:'flex',justifyContent:'left',alignItems:'center'}}>
-                <UserOutlined style={{fontSize: '20px'}}/>
-                <h2 style={{paddingLeft:'10px'}}>Profile</h2>
+            <div style={{ display: 'flex', justifyContent: 'left', alignItems: 'center' }}>
+                <UserOutlined style={{ fontSize: '20px' }} />
+                <h2 style={{ paddingLeft: '10px' }}>Profile</h2>
             </div>
-            <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', paddingBottom: '20px'}}>
-                <Avatar src={avatarUrl} onClick={handleAvatarClick} size={64} icon={<UserOutlined/>}
-                        style={{cursor: 'pointer'}}/>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', paddingBottom: '20px' }}>
+                <Avatar src={avatarUrl} onClick={handleAvatarClick} size={64} icon={<UserOutlined />} style={{ cursor: 'pointer' }} />
             </div>
             <Form
                 {...layout}
+                form={form}
                 name="nest-messages"
                 onFinish={onFinish}
                 style={{
@@ -60,10 +72,11 @@ export default function ProfileEdit() {
                     rules={[
                         {
                             required: true,
+                            message: 'Please input your name!',
                         },
                     ]}
                 >
-                    <Input/>
+                    <Input />
                 </Form.Item>
                 <Form.Item
                     name={['user', 'email']}
@@ -71,29 +84,28 @@ export default function ProfileEdit() {
                     rules={[
                         {
                             type: 'email',
+                            message: 'Please input a valid email!',
                         },
                     ]}
                 >
-                    <Input/>
+                    <Input />
                 </Form.Item>
                 <Form.Item
-                    name={['user', 'age']}
-                    label="Age"
+                    name={['user', 'birthday']}
+                    label="Birthday"
                     rules={[
                         {
                             type: 'number',
                             min: 0,
                             max: 99,
+                            message: 'Please input a valid age between 0 and 99!',
                         },
                     ]}
                 >
-                    <InputNumber/>
-                </Form.Item>
-                <Form.Item name={['user', 'website']} label="Website">
-                    <Input/>
+                    <InputNumber />
                 </Form.Item>
                 <Form.Item name={['user', 'introduction']} label="Introduction">
-                    <Input.TextArea/>
+                    <Input.TextArea />
                 </Form.Item>
                 <Form.Item
                     wrapperCol={{
@@ -102,7 +114,7 @@ export default function ProfileEdit() {
                     }}
                 >
                     <Button type="primary" htmlType="submit">
-                        保存
+                        Save
                     </Button>
                 </Form.Item>
             </Form>

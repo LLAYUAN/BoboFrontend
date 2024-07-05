@@ -18,6 +18,8 @@ export default function LoginPage({setIsLogin}) {
             });
             localStorage.setItem('token', response.data.token);
             localStorage.setItem('tokenHead', response.data.tokenHead);
+            localStorage.setItem('userID', response.data.userInfo.userID);
+            localStorage.setItem("nickname", response.data.userInfo.nickname);
             navigate("/home");
         }
         else{

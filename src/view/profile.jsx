@@ -17,13 +17,14 @@ export default function Profile() {
 
 
     const initialUser = async () => {
-        // let user = await getUserInfo();
-        // if(user.code !== 200){
-        //     navigate('/login');
-        //     return;
-        // }
-        // user = user.data;
-        // setUser(user);
+        let user = await getUserInfo();
+        if(user.code !== 200){
+            navigate('/login');
+            return;
+        }
+        user = user.data;
+        setUser(user);
+        console.log(user);
     }
 
     useEffect(() => {
@@ -34,7 +35,7 @@ export default function Profile() {
         <div style={{padding: '20px 30px'}}>
             <div style={{display: 'flex', padding: '0 30px', justifyContent: 'space-evenly'}}>
                 <Card style={{width: '40%', boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)'}}>
-                    <ProfieEdit/>
+                    <ProfieEdit user={user}/>
                 </Card>
                 <div style={{width: '50%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between'}}>
                     <Card style={{height: '48%', boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)'}}>
