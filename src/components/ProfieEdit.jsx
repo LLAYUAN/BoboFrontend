@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Avatar, Button, Form, Input, InputNumber } from 'antd';
 import { UserOutlined } from "@ant-design/icons";
+import { DatePicker, Space } from 'antd';
 
 const layout = {
     labelCol: {
@@ -32,6 +33,9 @@ export default function ProfileEdit({ user }) {
     };
 
     const onFinish = (values) => {
+        if (values.user.birthday) {
+            values.user.birthday = values.user.birthday.format('YYYY-MM-DD');
+        }
         console.log('Received values:', values);
         // 在这里可以处理提交逻辑，例如发送到后端或其他操作
     };
@@ -93,16 +97,9 @@ export default function ProfileEdit({ user }) {
                 <Form.Item
                     name={['user', 'birthday']}
                     label="Birthday"
-                    rules={[
-                        {
-                            type: 'number',
-                            min: 0,
-                            max: 99,
-                            message: 'Please input a valid age between 0 and 99!',
-                        },
-                    ]}
+
                 >
-                    <InputNumber />
+                    <DatePicker style={{width:'100%'}}/>
                 </Form.Item>
                 <Form.Item name={['user', 'introduction']} label="Introduction">
                     <Input.TextArea />

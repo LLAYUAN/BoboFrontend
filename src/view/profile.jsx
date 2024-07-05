@@ -10,6 +10,7 @@ import useLiveEditModal from "../hooks/useLiveEditModal";
 import {getUserInfo} from "../service/user";
 import {useNavigate} from "react-router-dom";
 
+
 export default function Profile() {
     const { isModalVisible, showModal, handleOk, handleCancel } = useLiveEditModal();
     const [user, setUser] = useState({});
@@ -17,12 +18,12 @@ export default function Profile() {
 
 
     const initialUser = async () => {
-        let user = await getUserInfo();
-        if(user.code !== 200){
-            navigate('/login');
-            return;
-        }
-        user = user.data;
+        // let user = await getUserInfo();
+        // if(user.code !== 200){
+        //     navigate('/login');
+        //     return;
+        // }
+        // user = user.data;
         setUser(user);
         console.log(user);
     }
