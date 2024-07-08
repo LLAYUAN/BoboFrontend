@@ -20,5 +20,10 @@ export async function updateUserInfo(data) {
 
 export async function follow(followeeID) {
     let url = `${USERPREFIX}/follow`;
-    return post(url, followeeID);
+    return post(url, {followeeID});
+}
+
+export async function unfollow(followeeID) {
+    let url = `${USERPREFIX}/unfollow`;
+    return post(url, {followeeID});
 }

@@ -58,7 +58,7 @@ export default function ProfileEdit({ user }) {
             notification.error({
                 message: '失败',
                 description: '修改失败',
-                placement: 'topRight'
+                placement: 'topMiddle'
             });
         }
         console.log(res);
