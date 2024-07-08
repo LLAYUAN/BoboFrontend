@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import {Button, Modal, List, Divider} from 'antd';
 import {EyeOutlined, LikeOutlined, UserAddOutlined, UserDeleteOutlined} from "@ant-design/icons";
-
-
+import { nameToWebsite } from '../utils/utils';
 
 const FollowingList = ({ following }) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
+    console.log(following);
 
     const showModal = () => {
         setIsModalVisible(true);
@@ -42,8 +42,8 @@ const FollowingList = ({ following }) => {
                     <List.Item>
                         <List.Item.Meta
                             avatar={<span className="anticon anticon-user" />}
-                            title={user.name}
-                            description={`@${user.username}`}
+                            title={user.nickname}
+                            description={nameToWebsite(user.nickname)}
                         />
                         <Button icon={<UserDeleteOutlined />} onClick={handleDelete(user)}/>
                     </List.Item>
@@ -63,8 +63,8 @@ const FollowingList = ({ following }) => {
                         <List.Item>
                             <List.Item.Meta
                                 avatar={<span className="anticon anticon-user" />}
-                                title={user.name}
-                                description={`@${user.username}`}
+                                title={user.nickname}
+                                description={nameToWebsite(user.nickname)}
                             />
                             <Button icon={<UserDeleteOutlined />} onClick={handleDelete(user)}/>
                         </List.Item>
@@ -75,13 +75,14 @@ const FollowingList = ({ following }) => {
     );
 };
 
-// Example usage
-const following = [
-    { name: 'Jared Palmer', username: 'jaredpalmer' },
-    { name: 'Olivia Davis', username: 'olivia' },
-    // Add more users here
-];
+// // Example usage
+// const following = [
+//     { name: 'Jared Palmer', username: 'jaredpalmer' },
+//     { name: 'Olivia Davis', username: 'olivia' },
+//     // Add more users here
+// ];
 
-const Following = () => <FollowingList following={following} />;
+
+const Following = ({following}) => <FollowingList following={following} />;
 
 export default Following;
