@@ -5,7 +5,9 @@
 "    include"：总是包含凭据，即始终发送 cookie 等凭据。
  */
 export async function getJson(url) {
-    let token = `${localStorage.getItem('tokenHead')}${localStorage.getItem('token')}`;
+    //let token = `${localStorage.getItem('tokenHead')}${localStorage.getItem('token')}`;
+    const token = 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI5MCIsImNyZWF0ZWQiOjE3MTk5ODc2NjE0MDgsImV4cCI6MTcyMDU5MjQ2MX0.HyKdhLP0koBNioyG3CJZ9cn7tyWPulTifnBNmy3EuChjMB4B0Xmvb971E5DK5I65xHlFe2AWj5KoTEP6EUtL9Q';
+
     let res = await fetch(url, {
         method: "GET",
         credentials: "include",
