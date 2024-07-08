@@ -25,7 +25,7 @@ export default function Register({setIsLogin}) {
                 notification.success({
                     message: '成功',
                     description: '注册成功',
-                    placement: 'topRight'
+                    placement: 'topMiddle'
                 });
                 navigate("/login");
             }
@@ -33,7 +33,7 @@ export default function Register({setIsLogin}) {
                 notification.error({
                     message: '该用户已存在',
                     description: response.message,
-                    placement: 'topRight'
+                    placement: 'topMiddle'
                 });
             }
         }
