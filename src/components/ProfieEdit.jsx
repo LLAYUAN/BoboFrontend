@@ -46,11 +46,21 @@ export default function ProfileEdit({ user }) {
             avatarUrl: avatarUrl,
         }
         let res = await updateUserInfo(userInfoDTO);
-        notification.success({
-            message: '成功',
-            description: '修改成功',
-            placement: 'topRight'
-        });
+        if(res.code === 200) {
+            notification.success({
+                message: '成功',
+                description: '修改成功',
+                placement: 'topRight'
+            });
+            localStorage.setItem('nickname', values.user.name);
+        }
+        else {
+            notification.error({
+                message: '失败',
+                description: '修改失败',
+                placement: 'topRight'
+            });
+        }
         console.log(res);
     };
 
