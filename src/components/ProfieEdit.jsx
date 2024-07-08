@@ -24,6 +24,7 @@ const validateMessages = {
 };
 
 export default function ProfileEdit({ user }) {
+
     const [avatarUrl, setAvatarUrl] = useState(user.avatarUrl || 'https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png');
     const [form] = Form.useForm();
 
@@ -97,9 +98,8 @@ export default function ProfileEdit({ user }) {
                 <Form.Item
                     name={['user', 'birthday']}
                     label="Birthday"
-
                 >
-                    <DatePicker style={{width:'100%'}}/>
+                    <DatePicker style={{width:'100%'}} />
                 </Form.Item>
                 <Form.Item name={['user', 'introduction']} label="Introduction">
                     <Input.TextArea />
