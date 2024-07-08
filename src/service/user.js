@@ -1,6 +1,24 @@
-import {USERPREFIX,getJson,post} from "./common";
+import {USERPREFIX,getJson,post,BASEURL} from "./common";
 
+// 获取个人主页的所有信息
+export async function personalProfile() {
+    let url = `${USERPREFIX}/personalProfile`;
+    return getJson(url);
+}
+
+// 只获取个人信息
 export async function getUserInfo() {
     let url = `${USERPREFIX}/getUserInfo`;
     return getJson(url);
+}
+
+// 只更改个人信息
+export async function updateUserInfo(data) {
+    let url = `${USERPREFIX}/updateUserInfo`;
+    return post(url, data);
+}
+
+export async function follow(followeeID) {
+    let url = `${USERPREFIX}/follow`;
+    return post(url, followeeID);
 }

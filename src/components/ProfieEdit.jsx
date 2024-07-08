@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Avatar, Button, Form, Input, InputNumber } from 'antd';
+import { Avatar, Button, Form, Input, DatePicker, notification} from 'antd';
 import { UserOutlined } from "@ant-design/icons";
-import { DatePicker, Space } from 'antd';
+import dayjs from 'dayjs';
+import { updateUserInfo } from '../service/user';
 
 const layout = {
     labelCol: {
@@ -28,27 +29,50 @@ export default function ProfileEdit({ user }) {
     const [form] = Form.useForm();
 
     const handleAvatarClick = () => {
-        // 可根据需要设置新的头像URL
         setAvatarUrl(user.avatarUrl || 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png');
     };
 
-    const onFinish = (values) => {
+    const onFinish = async (values) => {
         if (values.user.birthday) {
             values.user.birthday = values.user.birthday.format('YYYY-MM-DD');
         }
         console.log('Received values:', values);
-        // 在这里可以处理提交逻辑，例如发送到后端或其他操作
+        let userInfoDTO = {
+            nickname: values.user.name,
+            email: values.user.email,
+            birthday: values.user.birthday,
+            introduction: values.user.introduction,
+            avatarUrl: avatarUrl,
+        }
+        let res = await updateUserInfo(userInfoDTO);
+        notification.success({
+            message: '成功',
+            description: '修改成功',
+            placement: 'topRight'
+        });
+        console.log(res);
     };
 
     useEffect(() => {
-        form.setFieldsValue({
-            user: {
-                name: user.nickname || '',
-                email: user.email || '',
-                birthday: user.birthday || '',
-                introduction: user.introduction || '',
-            }
-        });
+        if (user.birthday) {
+            const formattedBirthday = dayjs(user.birthday, 'YYYY-MM-DD');
+            form.setFieldsValue({
+                user: {
+                    name: user.nickname || '',
+                    email: user.email || '',
+                    birthday: formattedBirthday, // 使用 dayjs 格式化日期
+                    introduction: user.introduction || '',
+                }
+            });
+        } else {
+            form.setFieldsValue({
+                user: {
+                    name: user.nickname || '',
+                    email: user.email || '',
+                    introduction: user.introduction || '',
+                }
+            });
+        }
     }, [user, form]);
 
     return (
@@ -75,7 +99,6 @@ export default function ProfileEdit({ user }) {
                     label="Name"
                     rules={[
                         {
-                            required: true,
                             message: 'Please input your name!',
                         },
                     ]}
@@ -87,6 +110,7 @@ export default function ProfileEdit({ user }) {
                     label="Email"
                     rules={[
                         {
+                            required: true,
                             type: 'email',
                             message: 'Please input a valid email!',
                         },
@@ -97,9 +121,8 @@ export default function ProfileEdit({ user }) {
                 <Form.Item
                     name={['user', 'birthday']}
                     label="Birthday"
-
                 >
-                    <DatePicker style={{width:'100%'}}/>
+                    <DatePicker style={{ width: '100%' }} />
                 </Form.Item>
                 <Form.Item name={['user', 'introduction']} label="Introduction">
                     <Input.TextArea />
