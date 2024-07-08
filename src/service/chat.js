@@ -1,5 +1,6 @@
 import { Stomp } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
+import { getJson } from './common';  // 假设 common.js 文件在同一目录
 
 const BASEURL = 'http://localhost:9999/message';
 
@@ -61,6 +62,11 @@ class ChatService {
             };
             this.stompClient.send(`/app/chat.sendMessage`, {}, JSON.stringify(chatMessage));
         }
+    }
+
+    static async getHistoryMessages(roomID, timestamp) {
+        const url = `${BASEURL}/history/${roomID}?timestamp=${timestamp}`;
+        return await getJson(url);  // 使用 getJson 方法获取历史消息
     }
 }
 
