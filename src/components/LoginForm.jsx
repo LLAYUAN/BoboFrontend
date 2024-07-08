@@ -1,5 +1,5 @@
 import React, {useMemo} from 'react';
-import {LockOutlined, UserOutlined} from '@ant-design/icons';
+import {LockOutlined, MailOutlined} from '@ant-design/icons';
 import {Button, Checkbox, Form, Input, ConfigProvider, notification} from 'antd';
 import {useNavigate} from "react-router-dom";
 import "../css/login.css";
@@ -46,22 +46,22 @@ export default function LoginForm({handleLogin}) {
                 onFinish={onFinish}
             >
                 <Form.Item
-                    name="username"
+                    name="email"
                     rules={[
                         {
                             required: true,
-                            message: 'Please input your Username!',
+                            message: 'Please input your email!',
                         },
                     ]}
                 >
-                    <Input prefix={<UserOutlined className="site-form-item-icon"/>} placeholder="Username"/>
+                    <Input prefix={<MailOutlined className="site-form-item-icon"/>} placeholder="Email"/>
                 </Form.Item>
                 <Form.Item
                     name="password"
                     rules={[
                         {
                             required: true,
-                            message: 'Please input your Password!',
+                            message: 'Please input your password!',
                         },
                     ]}
                 >

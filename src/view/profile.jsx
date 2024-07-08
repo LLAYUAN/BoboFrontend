@@ -5,31 +5,61 @@ import {Button, Card, notification} from "antd";
 import MyVideo from "../components/MyVideo";
 import {PlaySquareOutlined} from "@ant-design/icons";
 import LiveEditModal from "../components/LiveEditModal";
-import {useState} from "react";
+import {useState,useEffect} from "react";
 import useLiveEditModal from "../hooks/useLiveEditModal";
+import {getUserInfo,personalProfile} from "../service/user";
+import {useNavigate} from "react-router-dom";
+import moment from "moment";
+
+
 
 export default function Profile() {
     const { isModalVisible, showModal, handleOk, handleCancel } = useLiveEditModal();
+    const [user, setUser] = useState({});
+    const [followers, setFollowers] = useState([]);
+    const [following, setFollowing] = useState([]);
+    const navigate = useNavigate();
+
+
+    const initialUser = async () => {
+        let allUser = await personalProfile();
+        console.log(allUser);
+        if(allUser.code !== 200){
+            navigate('/login');
+            return;
+        }
+        const { user, followers, following } = allUser.data;
+        setUser(user);
+        setFollowers(followers);
+        setFollowing(following);
+        console.log(user);
+        // console.log(followers);
+        // console.log(following);
+    }
+
+    useEffect(() => {
+        initialUser();
+    }, []);
 
     return (
         <div style={{padding: '20px 30px'}}>
             <div style={{display: 'flex', padding: '0 30px', justifyContent: 'space-evenly'}}>
                 <Card style={{width: '40%', boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)'}}>
-                    <ProfieEdit/>
+                    <ProfieEdit user={user}/>
                 </Card>
                 <div style={{width: '50%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between'}}>
                     <Card style={{height: '48%', boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)'}}>
-                        <Following/>
+                        <Following following={following}/>
                     </Card>
                     <Card style={{height: '48%', boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)'}}>
-                        <Follower/>
+                        <Follower follower={followers}/>
                     </Card>
                 </div>
             </div>
             <div style={{display: 'flex', padding: '30px 30px', justifyContent: 'space-evenly'}}>
                 <div style={{width: '60%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between'}}>
                     <Card style={{boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)'}}>
-                        <MyVideo />
+                        <MyVideo identity='up'/>
                     </Card>
                 </div>
                     <Card style={{width:'30%',boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)'}}>

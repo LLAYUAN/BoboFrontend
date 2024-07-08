@@ -2,11 +2,13 @@ import { Route, BrowserRouter as Router, Routes, useLocation } from "react-route
 import Home from "../view/home";
 import Popular from "../view/popular";
 import Category from "../view/category";
-import Vedio from "../view/video";
+import Video from "../view/video";
 import LiveUser from "../view/liveUser";
 import Profile from "../view/profile";
 import LiveAnchor from "../view/liveAnchor";
 import Login from "../view/login";
+import Search from "../view/search";
+import VisitProfile from "../view/visitProfile";
 import Nav from "../components/nav";
 import Register from "../view/register";
 
@@ -21,11 +23,13 @@ function Layout() {
                     <Route path="/home" element={<Home />} />
                     <Route path="/popular" element={<Popular />} />
                     <Route path="/category" element={<Category />} />
-                    <Route path="/vedio" element={<Vedio />} />
-                    <Route path="/liveuser" element={<LiveUser />} />
-                    <Route path="/liveanchor" element={<LiveAnchor />} />
+                    <Route path="/video/:videoID" element={<Video />} />
+                    <Route path="/liveuser/:roomID" element={<LiveUser />} />
+                    <Route path="/liveanchor/:roomID" element={<LiveAnchor />} />
                     <Route path="/profile" element={<Profile />} />
                     <Route path="/login" element={<Login />} />
+                    <Route path="/search" element={<Search />} />
+                    <Route path="/visitprofile" element={<VisitProfile />} />
                     <Route path="/register" element={<Register />} />
                 </Routes>
             </div>

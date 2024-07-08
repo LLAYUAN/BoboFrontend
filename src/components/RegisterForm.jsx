@@ -45,15 +45,19 @@ export default function RegisterForm({handleLogin}) {
                 onFinish={onFinish}
             >
                 <Form.Item
-                    name="username"
+                    name="email"
                     rules={[
                         {
                             required: true,
-                            message: 'Please input your Username!',
+                            message: 'Please input your Email!',
                         },
                     ]}
                 >
-                    <Input prefix={<UserOutlined className="site-form-item-icon"/>} placeholder="Username"/>
+                    <Input
+                        prefix={<MailOutlined className="site-form-item-icon" />}
+                        type="email"
+                        placeholder="Email"
+                    />
                 </Form.Item>
                 <Form.Item
                     name="password"
@@ -85,23 +89,6 @@ export default function RegisterForm({handleLogin}) {
                         placeholder="Confirm Password"
                     />
                 </Form.Item>
-
-                <Form.Item
-                    name="email"
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Please input your Email!',
-                        },
-                    ]}
-                >
-                    <Input
-                        prefix={<MailOutlined className="site-form-item-icon" />}
-                        type="email"
-                        placeholder="Email"
-                    />
-                </Form.Item>
-
 
                 <Form.Item>
                     <Button type="default" htmlType="Login" className="login-form-button">

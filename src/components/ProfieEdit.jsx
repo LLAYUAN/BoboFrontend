@@ -1,6 +1,8 @@
-import React, {useState} from 'react';
-import {Avatar, Button, Form, Input, InputNumber} from 'antd';
-import {UserOutlined} from "@ant-design/icons";
+import React, { useEffect, useState } from 'react';
+import { Avatar, Button, Form, Input, DatePicker, notification} from 'antd';
+import { UserOutlined } from "@ant-design/icons";
+import dayjs from 'dayjs';
+import { updateUserInfo } from '../service/user';
 
 const layout = {
     labelCol: {
@@ -11,7 +13,6 @@ const layout = {
     },
 };
 
-/* eslint-disable no-template-curly-in-string */
 const validateMessages = {
     required: '${label} is required!',
     types: {
@@ -22,31 +23,71 @@ const validateMessages = {
         range: '${label} must be between ${min} and ${max}',
     },
 };
-/* eslint-enable no-template-curly-in-string */
 
-const onFinish = (values) => {
-    console.log(values);
-};
+export default function ProfileEdit({ user }) {
 
-export default function Home() {
-    const [avatarUrl, setAvatarUrl] = useState('https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png');
+    const [avatarUrl, setAvatarUrl] = useState(user.avatarUrl || 'https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png');
+    const [form] = Form.useForm();
 
     const handleAvatarClick = () => {
-        // 这里可以根据需要设置新的头像URL
-        setAvatarUrl('https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png');
+        setAvatarUrl(user.avatarUrl || 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png');
     };
+
+    const onFinish = async (values) => {
+        if (values.user.birthday) {
+            values.user.birthday = values.user.birthday.format('YYYY-MM-DD');
+        }
+        console.log('Received values:', values);
+        let userInfoDTO = {
+            nickname: values.user.name,
+            email: values.user.email,
+            birthday: values.user.birthday,
+            introduction: values.user.introduction,
+            avatarUrl: avatarUrl,
+        }
+        let res = await updateUserInfo(userInfoDTO);
+        notification.success({
+            message: '成功',
+            description: '修改成功',
+            placement: 'topRight'
+        });
+        console.log(res);
+    };
+
+    useEffect(() => {
+        if (user.birthday) {
+            const formattedBirthday = dayjs(user.birthday, 'YYYY-MM-DD');
+            form.setFieldsValue({
+                user: {
+                    name: user.nickname || '',
+                    email: user.email || '',
+                    birthday: formattedBirthday, // 使用 dayjs 格式化日期
+                    introduction: user.introduction || '',
+                }
+            });
+        } else {
+            form.setFieldsValue({
+                user: {
+                    name: user.nickname || '',
+                    email: user.email || '',
+                    introduction: user.introduction || '',
+                }
+            });
+        }
+    }, [user, form]);
+
     return (
         <div>
-            <div style={{display:'flex',justifyContent:'left',alignItems:'center'}}>
-                <UserOutlined style={{fontSize: '20px'}}/>
-                <h2 style={{paddingLeft:'10px'}}>Profile</h2>
+            <div style={{ display: 'flex', justifyContent: 'left', alignItems: 'center' }}>
+                <UserOutlined style={{ fontSize: '20px' }} />
+                <h2 style={{ paddingLeft: '10px' }}>Profile</h2>
             </div>
-            <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', paddingBottom: '20px'}}>
-                <Avatar src={avatarUrl} onClick={handleAvatarClick} size={64} icon={<UserOutlined/>}
-                        style={{cursor: 'pointer'}}/>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', paddingBottom: '20px' }}>
+                <Avatar src={avatarUrl} onClick={handleAvatarClick} size={64} icon={<UserOutlined />} style={{ cursor: 'pointer' }} />
             </div>
             <Form
                 {...layout}
+                form={form}
                 name="nest-messages"
                 onFinish={onFinish}
                 style={{
@@ -59,41 +100,33 @@ export default function Home() {
                     label="Name"
                     rules={[
                         {
-                            required: true,
+                            message: 'Please input your name!',
                         },
                     ]}
                 >
-                    <Input/>
+                    <Input />
                 </Form.Item>
                 <Form.Item
                     name={['user', 'email']}
                     label="Email"
                     rules={[
                         {
+                            required: true,
                             type: 'email',
+                            message: 'Please input a valid email!',
                         },
                     ]}
                 >
-                    <Input/>
+                    <Input />
                 </Form.Item>
                 <Form.Item
-                    name={['user', 'age']}
-                    label="Age"
-                    rules={[
-                        {
-                            type: 'number',
-                            min: 0,
-                            max: 99,
-                        },
-                    ]}
+                    name={['user', 'birthday']}
+                    label="Birthday"
                 >
-                    <InputNumber/>
-                </Form.Item>
-                <Form.Item name={['user', 'website']} label="Website">
-                    <Input/>
+                    <DatePicker style={{ width: '100%' }} />
                 </Form.Item>
                 <Form.Item name={['user', 'introduction']} label="Introduction">
-                    <Input.TextArea/>
+                    <Input.TextArea />
                 </Form.Item>
                 <Form.Item
                     wrapperCol={{
@@ -102,7 +135,7 @@ export default function Home() {
                     }}
                 >
                     <Button type="primary" htmlType="submit">
-                        保存
+                        Save
                     </Button>
                 </Form.Item>
             </Form>

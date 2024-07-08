@@ -2,10 +2,14 @@ import {Avatar, Button, Divider, Flex, Tabs, Tag} from "antd";
 import {EditOutlined, GiftOutlined, HeartOutlined, LikeOutlined, UserAddOutlined} from "@ant-design/icons";
 import ChatBox from "../components/ChatBox";
 import UserList from "../components/UserList";
+import {useParams} from "react-router-dom";
 
 export default function LiveAnchor() {
     const title = '直播间的title';
     const tags = ['purple', 'magenta', 'red', 'volcano'];
+
+    const {roomID}=useParams();
+    console.log(roomID);
 
     const onChange = (key) => {
         console.log(key);
@@ -15,7 +19,7 @@ export default function LiveAnchor() {
         {
             key: '1',
             label: '聊天室',
-            children:<ChatBox />
+            children:<ChatBox roomID={roomID}/>
         },
         {
             key: '2',
@@ -38,7 +42,7 @@ export default function LiveAnchor() {
                             ))}
                         </Flex>
                     </div>
-                    <Button icon={<EditOutlined />} style={{marginRight:'3%'}} size="large"></Button>
+                    {/*<Button icon={<EditOutlined />} style={{marginRight:'3%'}} size="large"></Button>*/}
                 </div>
                 <Divider style={{ margin: '15px 0' }}/>
                 <div style={{width:'90%',background:'#000',paddingBottom:'50%',marginLeft:'5%'}}>这是视频</div>
