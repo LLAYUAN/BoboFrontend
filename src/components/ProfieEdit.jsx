@@ -25,6 +25,7 @@ const validateMessages = {
 };
 
 export default function ProfileEdit({ user }) {
+
     const [avatarUrl, setAvatarUrl] = useState(user.avatarUrl || 'https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png');
     const [form] = Form.useForm();
 
