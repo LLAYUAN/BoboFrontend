@@ -9,10 +9,12 @@ import moment from 'moment';
 const ChatBox = ({roomID}) => {
     const [messages, setMessages] = useState([]);
     const [inputValue, setInputValue] = useState('');
-    const [username, setUsername] = useState('User'); // 可以根据实际情况设置默认用户名
+    const username=localStorage.getItem('nickname');
+ //   const [username, setUsername] = useState('User'); // 可以根据实际情况设置默认用户名
     const [chatService, setChatService] = useState(null);
     const [hasMore, setHasMore] = useState(true);
-    const token = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI5MCIsImNyZWF0ZWQiOjE3MTk5ODc2NjE0MDgsImV4cCI6MTcyMDU5MjQ2MX0.HyKdhLP0koBNioyG3CJZ9cn7tyWPulTifnBNmy3EuChjMB4B0Xmvb971E5DK5I65xHlFe2AWj5KoTEP6EUtL9Q';
+    const token = localStorage.getItem('token');
+
     const timestampRef = useRef(new Date().toISOString());  // 初始化为当前时间
 
     useEffect(() => {
