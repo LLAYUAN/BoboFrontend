@@ -90,6 +90,7 @@ export const BASEURL = 'http://localhost:9999';
 // 拼接API的前缀，即基础URL+'/api'
 export const PREFIX = `${BASEURL}`;
 export const USERPREFIX = `${BASEURL}/user`;
+export const RECORDVIDEO_PREFIX = `${BASEURL}/recordvideo`;
 // 定义一个常量，用于表示网络错误的响应
 export const DUMMY_RESPONSE = {
     ok: false,
