@@ -14,7 +14,7 @@ export default function LoginPage({setIsLogin}) {
             notification.success({
                 message: '成功',
                 description: '登录成功',
-                placement: 'topMiddle'
+                placement: 'topRight'
             });
             localStorage.setItem('token', response.data.token);
             localStorage.setItem('tokenHead', response.data.tokenHead);

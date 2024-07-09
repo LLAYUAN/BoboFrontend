@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import {Button, Modal, List, Divider} from 'antd';
 import {EyeOutlined, LikeOutlined, UserAddOutlined, UserDeleteOutlined} from "@ant-design/icons";
 import { nameToWebsite } from '../utils/utils';
+import {useNavigate} from "react-router-dom";
 
 const FollowingList = ({ following }) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
-    console.log(following);
+    const navigate = useNavigate();
 
     const showModal = () => {
         setIsModalVisible(true);
@@ -19,8 +20,16 @@ const FollowingList = ({ following }) => {
         setIsModalVisible(false);
     };
 
-    //delete
+    //todo:delete
     function handleDelete(user) {
+
+        console.log(user);
+    }
+
+    //detail
+    function handleDetail(user) {
+        //跳转到用户详情页
+        navigate(`/visitprofile/${user.userID}`);
         console.log(user);
     }
 
@@ -29,7 +38,7 @@ const FollowingList = ({ following }) => {
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
                 <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
                     <LikeOutlined style={{fontSize: '20px'}}/>
-                    <h2 style={{paddingLeft:'4px'}}>Following</h2>
+                    <h2 style={{paddingLeft:'4px'}}>关注</h2>
                 </div>
                 <Button icon={<EyeOutlined />} type="link" onClick={showModal}>
                     查看全部
@@ -41,9 +50,20 @@ const FollowingList = ({ following }) => {
                 renderItem={(user) => (
                     <List.Item>
                         <List.Item.Meta
-                            avatar={<span className="anticon anticon-user" />}
-                            title={user.nickname}
-                            description={nameToWebsite(user.nickname)}
+                            avatar={<span className="anticon anticon-user"/>}
+                            title={<a onClick={() => handleDetail(user)}>
+                                {user.nickname}
+                            </a>}
+                            description={<div
+                                style={{
+                                    whiteSpace: 'nowrap',
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis',
+                                    maxWidth: '90%' // 根据需要设置最大宽度，或者可以设置具体数值
+                                }}
+                            >
+                                {user.introduction}
+                            </div>}
                         />
                         <Button icon={<UserDeleteOutlined />} onClick={handleDelete(user)}/>
                     </List.Item>
@@ -51,7 +71,7 @@ const FollowingList = ({ following }) => {
             />
 
             <Modal
-                title="Following"
+                title="关注"
                 visible={isModalVisible}
                 onOk={handleOk}
                 onCancel={handleCancel}
@@ -63,10 +83,21 @@ const FollowingList = ({ following }) => {
                         <List.Item>
                             <List.Item.Meta
                                 avatar={<span className="anticon anticon-user" />}
-                                title={user.nickname}
-                                description={nameToWebsite(user.nickname)}
+                                title={<a onClick={() => handleDetail(user)}>
+                                    {user.nickname}
+                                </a>}
+                                description={<div
+                                    style={{
+                                        whiteSpace: 'nowrap',
+                                        overflow: 'hidden',
+                                        textOverflow: 'ellipsis',
+                                        maxWidth: '90%' // 根据需要设置最大宽度，或者可以设置具体数值
+                                    }}
+                                >
+                                    {user.introduction}
+                                </div>}
                             />
-                            <Button icon={<UserDeleteOutlined />} onClick={handleDelete(user)}/>
+                            <Button icon={<UserDeleteOutlined/>} onClick={handleDelete(user)}/>
                         </List.Item>
                     )}
                 />

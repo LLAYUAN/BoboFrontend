@@ -2,12 +2,11 @@ import React, { useState } from 'react';
 import {Button, Modal, List, Divider} from 'antd';
 import {EyeOutlined, HeartOutlined, LikeOutlined, UserAddOutlined, UserDeleteOutlined} from "@ant-design/icons";
 import { nameToWebsite } from '../utils/utils';
-
-
+import {useNavigate} from "react-router-dom";
 
 const FollowerList = ({ follower }) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
-    console.log(follower);
+    const navigate = useNavigate();
 
     const showModal = () => {
         setIsModalVisible(true);
@@ -21,8 +20,14 @@ const FollowerList = ({ follower }) => {
         setIsModalVisible(false);
     };
 
-    //delete
+    //todo:delete
     function handleDelete(user) {
+        console.log(user);
+    }
+
+    //detail
+    function handleDetail(user) {
+        navigate(`/visitprofile/${user.userID}`);
         console.log(user);
     }
 
@@ -31,7 +36,7 @@ const FollowerList = ({ follower }) => {
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
                 <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
                     <HeartOutlined  style={{fontSize: '20px'}}/>
-                    <h2 style={{paddingLeft:'4px'}}>Follower</h2>
+                    <h2 style={{paddingLeft:'4px'}}>粉丝</h2>
                 </div>
                 <Button icon={<EyeOutlined />} type="link" onClick={showModal}>
                     查看全部
@@ -44,11 +49,22 @@ const FollowerList = ({ follower }) => {
                     <List.Item>
                         <List.Item.Meta
                             avatar={<span className="anticon anticon-user" />}
-                            title={user.nickname}
-                            // description={`@${user.username}`}
-                            description = {nameToWebsite(user.nickname)}
+                            title={<a onClick={() => handleDetail(user)}>
+                            {user.nickname}
+                            </a>}
+                            description ={<div
+                                style={{
+                                    whiteSpace: 'nowrap',
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis',
+                                    maxWidth: '90%' // 根据需要设置最大宽度，或者可以设置具体数值
+                                }}
+
+                            >
+                                {user.introduction}
+                            </div>}
                         />
-                        <Button icon={<UserDeleteOutlined />} onClick={handleDelete(user)}/>
+                        <Button icon={<UserDeleteOutlined/>} onClick={handleDelete(user)}/>
                     </List.Item>
                 )}
             />
@@ -66,8 +82,19 @@ const FollowerList = ({ follower }) => {
                         <List.Item>
                             <List.Item.Meta
                                 avatar={<span className="anticon anticon-user" />}
-                                title={user.nickname}
-                                description={nameToWebsite(user.nickname)}
+                                title={<a onClick={() => handleDetail(user)}>
+                                {user.nickname}
+                                </a>}
+                                description={<div
+                                    style={{
+                                        whiteSpace: 'nowrap',
+                                        overflow: 'hidden',
+                                        textOverflow: 'ellipsis',
+                                        maxWidth: '90%' // 根据需要设置最大宽度，或者可以设置具体数值
+                                    }}
+                                >
+                                    {user.introduction}
+                                </div>}
                             />
                             <Button icon={<UserDeleteOutlined />} onClick={handleDelete(user)}/>
                         </List.Item>
@@ -78,7 +105,7 @@ const FollowerList = ({ follower }) => {
     );
 };
 
-// // Example usage
+// Example usage
 // const follower = [
 //     { name: 'Jared Palmer', username: 'jaredpalmer' },
 //     { name: 'Olivia Davis', username: 'olivia' },

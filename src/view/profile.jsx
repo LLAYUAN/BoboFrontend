@@ -20,7 +20,6 @@ export default function Profile() {
     const [following, setFollowing] = useState([]);
     const navigate = useNavigate();
 
-
     const initialUser = async () => {
         let allUser = await personalProfile();
         console.log(allUser);
@@ -29,6 +28,7 @@ export default function Profile() {
             return;
         }
         const { user, followers, following } = allUser.data;
+
         setUser(user);
         setFollowers(followers);
         setFollowing(following);
