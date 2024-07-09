@@ -29,7 +29,7 @@ function Layout() {
                     <Route path="/profile" element={<Profile />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/search" element={<Search />} />
-                    <Route path="/visitprofile" element={<VisitProfile />} />
+                    <Route path="/visitprofile/:userID" element={<VisitProfile />} />
                     <Route path="/register" element={<Register />} />
                 </Routes>
             </div>

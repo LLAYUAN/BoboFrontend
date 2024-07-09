@@ -1,7 +1,9 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Avatar, Button, Form, Input, DatePicker, notification} from 'antd';
 import {UserOutlined} from "@ant-design/icons";
 import moment from "moment";
+import {personalProfile} from "../service/user";
+import {useNavigate} from "react-router-dom";
 
 const layout = {
     labelCol: {
@@ -24,35 +26,58 @@ const validateMessages = {
     },
 };
 
-const user = {
-    following: 123,
-    follower: 456,
-    name: 'John Doe',
-    email: '1@1',
-    birthday: '2021-01-01',
-    introduction: 'A brief introduction about yourself',
-}
-
-export default function ProfileVisit() {
+export default function ProfileVisit({userID}) {
     const [avatarUrl, setAvatarUrl] = useState('https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png');
+    const [user, setUser] = useState();
+    const navigate = useNavigate();
+
+    const initUser = async () => {
+        //todo：根据userID获取用户信息
+
+        // let info = await personalProfile();
+        // if(info.code !== 200){
+        //     navigate('/login');
+        //     return;
+        // }
+        // setUser(info.data);
+        setUser({
+            nickname: 'User',
+            email: '',
+            birthday: moment().format('1999-1-1'),
+            introduction: 'This is a',
+            following: 0,
+            follower: 0,
+        });
+        console.log(user);
+    }
+
+    useEffect(() => {
+        initUser();
+    },[userID]);
 
     const handleAvatarClick = () => {
-        // 这里可以根据需要设置新的头像URL
+        // todo:这里可以根据需要设置新的头像URL
         setAvatarUrl('https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png');
     };
 
     const handleFollow = () => {
+       // todo:关注用户
         notification.success({
             message: '关注成功',
             description: '成功关注该用户',
         });
     }
 
+    if (!user) {
+        return <div>Loading...</div>;
+    }
+
+
     return (
         <div>
             <div style={{display: 'flex', justifyContent: 'left', alignItems: 'center'}}>
                 <UserOutlined style={{fontSize: '20px'}}/>
-                <h2 style={{paddingLeft: '10px'}}>Profile</h2>
+                <h2 style={{paddingLeft: '10px'}}>个人信息</h2>
             </div>
             <div style={{
                 display: 'flex',
@@ -84,10 +109,10 @@ export default function ProfileVisit() {
                 validateMessages={validateMessages}
             >
                 <Form.Item
-                    name={['user', 'name']}
+                    name={['user', 'nickname']}
                     label="Name"
                 >
-                    <Input defaultValue={user.name} readOnly/>
+                    <Input defaultValue={user.nickname} readOnly/>
                 </Form.Item>
                 <Form.Item
                     name={['user', 'email']}

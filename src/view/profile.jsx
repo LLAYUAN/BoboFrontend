@@ -29,6 +29,7 @@ export default function Profile() {
             return;
         }
         const { user, followers, following } = allUser.data;
+
         setUser(user);
         setFollowers(followers);
         setFollowing(following);
