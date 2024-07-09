@@ -3,8 +3,6 @@ import {Button, Modal, List, Divider} from 'antd';
 import {EyeOutlined, HeartOutlined, LikeOutlined, UserAddOutlined, UserDeleteOutlined} from "@ant-design/icons";
 import { nameToWebsite } from '../utils/utils';
 
-
-
 const FollowerList = ({ follower }) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     console.log(follower);
