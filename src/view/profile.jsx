@@ -24,7 +24,7 @@ export default function Profile() {
         let allUser = await personalProfile();
         console.log(allUser);
         if(allUser.code !== 200){
-            navigate('/login');
+            // navigate('/login');
             return;
         }
         const { user, followers, following } = allUser.data;
