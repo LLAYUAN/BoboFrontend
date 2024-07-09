@@ -4,8 +4,6 @@ import {EyeOutlined, HeartOutlined, LikeOutlined, UserAddOutlined, UserDeleteOut
 import { nameToWebsite } from '../utils/utils';
 import {useNavigate} from "react-router-dom";
 
-
-
 const FollowerList = ({ follower }) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const navigate = useNavigate();
