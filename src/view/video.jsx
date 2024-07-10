@@ -9,8 +9,8 @@ import ReactPlayer from 'react-player';
 
 export default function Video() {
     const title = '直播间的title';
-    const tags = ['purple', 'magenta', 'red', 'volcano'];
-
+    // const tags = ['purple', 'magenta', 'red', 'volcano'];
+    const intro = '直播间的简介';
     return (
         <div style={{display: 'flex'}}>
             <div style={{display: 'flex', flexDirection: 'column', width: '70%', padding: '0 30px'}}>
@@ -22,13 +22,7 @@ export default function Video() {
                         width: '100%'
                     }}>
                         <h2 style={{marginLeft: '2%'}}>{title}</h2>
-                        <Flex gap="4px 4px" wrap style={{marginLeft: '2%'}}>
-                            {tags.map(tag => (
-                                <Tag color="purple" key={tag}>
-                                    {tag}
-                                </Tag>
-                            ))}
-                        </Flex>
+                            <text style={{color: 'gray' , marginLeft: '2%'}}>{intro}</text>
                     </div>
                 </div>
                 <Divider style={{margin: '15px 0'}}/>

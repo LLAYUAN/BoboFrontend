@@ -8,13 +8,17 @@ const LiveEditModal = ({ isVisible, onOk, onCancel }) => {
     const [form] = Form.useForm();
     const [imageUrl, setImageUrl] = useState('');
 
-    const options = [];
-    for (let i = 10; i < 36; i++) {
-        options.push({
-            label: i.toString(36) + i,
-            value: i.toString(36) + i,
-        });
-    }
+    const options = [
+        { label: '学习', value: 0 },
+        { label: '娱乐', value: 1 },
+        { label: '其他', value: 2 },
+    ];
+    // for (let i = 10; i < 36; i++) {
+    //     options.push({
+    //         label: i.toString(36) + i,
+    //         value: i.toString(36) + i,
+    //     });
+    // }
     const handleChange = (value) => {
         console.log(`selected ${value}`);
     };
@@ -68,7 +72,7 @@ const LiveEditModal = ({ isVisible, onOk, onCancel }) => {
                 <Form.Item name="title" label="直播间名称" rules={[{ required: true, message: '请输入名称' }]}>
                     <Input />
                 </Form.Item>
-                <Form.Item name="author" label="分类" rules={[{ required: true, message: '请选择分类' }]}>
+                <Form.Item name="tags" label="分类" rules={[{ required: true, message: '请选择分类' }]}>
                     <Select
                         mode="multiple"
                         allowClear
