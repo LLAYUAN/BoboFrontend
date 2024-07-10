@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
-import {Button, Modal, List, Divider} from 'antd';
+import {Button, Modal, List, Divider, notification} from 'antd';
 import {EyeOutlined, HeartOutlined, LikeOutlined, UserAddOutlined, UserDeleteOutlined} from "@ant-design/icons";
 import { nameToWebsite } from '../utils/utils';
 import {useNavigate} from "react-router-dom";
+import {unfollow} from "../service/user";
 
 const FollowerList = ({ follower }) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const [followModalVisible, setFollowModalVisible] = useState(false); // State to control modal visibility
+    const [deleteUser, setDeleteUser] = useState({}); // State to store user details
     const navigate = useNavigate();
 
     const showModal = () => {
@@ -21,8 +24,23 @@ const FollowerList = ({ follower }) => {
     };
 
     //todo:delete
-    function handleDelete(user) {
-        console.log(user);
+    const handleDelete = (user) =>{
+        setDeleteUser(user);
+        console.log(deleteUser);
+        setFollowModalVisible(true);
+    }
+
+    const confirmUnFollow = async () => {
+        setFollowModalVisible(false);
+        let res = await unfollow(deleteUser.userID); // Call API to unfollow user
+        if (res.code !== 200) {
+            notification.error({
+                message: '失败',
+                description: '关注失败',
+                placement: 'topRight'
+            });
+        }
+        console.log(deleteUser);
     }
 
     //detail
@@ -50,7 +68,7 @@ const FollowerList = ({ follower }) => {
                         <List.Item.Meta
                             avatar={<span className="anticon anticon-user" />}
                             title={<a onClick={() => handleDetail(user)}>
-                            {user.nickname}
+                                {user.nickname}
                             </a>}
                             description ={<div
                                 style={{
@@ -61,10 +79,10 @@ const FollowerList = ({ follower }) => {
                                 }}
 
                             >
-                                {user.introduction}
+                                {nameToWebsite(user.nickname)}
                             </div>}
                         />
-                        <Button icon={<UserDeleteOutlined/>} onClick={handleDelete(user)}/>
+                        {/*<Button icon={<UserDeleteOutlined />} onClick={() => handleDelete(user)}/>*/}
                     </List.Item>
                 )}
             />
@@ -83,7 +101,7 @@ const FollowerList = ({ follower }) => {
                             <List.Item.Meta
                                 avatar={<span className="anticon anticon-user" />}
                                 title={<a onClick={() => handleDetail(user)}>
-                                {user.nickname}
+                                    {user.nickname}
                                 </a>}
                                 description={<div
                                     style={{
@@ -96,15 +114,25 @@ const FollowerList = ({ follower }) => {
                                     {user.introduction}
                                 </div>}
                             />
-                            <Button icon={<UserDeleteOutlined />} onClick={handleDelete(user)}/>
+                            {/*<Button icon={<UserDeleteOutlined />} onClick={() => handleDelete(user)}/>*/}
                         </List.Item>
                     )}
                 />
             </Modal>
+
+            <Modal
+                title="取消关注"
+                visible={followModalVisible}
+                onOk={confirmUnFollow}
+                onCancel={() => setFollowModalVisible(false)}
+                okText="确认"
+                cancelText="取消"
+            >
+                <p>确定要取消关注吗？</p>
+            </Modal>
         </div>
     );
 };
-
 // Example usage
 // const follower = [
 //     { name: 'Jared Palmer', username: 'jaredpalmer' },
