@@ -7283,7 +7283,7 @@ mkdirp@~0.5.1:
 
 moment@^2.30.1, "moment@>= 2.x":
   version "2.30.1"
-  resolved "https://mirrors.cloud.tencent.com/npm/moment/-/moment-2.30.1.tgz"
+  resolved "https://registry.npmjs.org/moment/-/moment-2.30.1.tgz"
   integrity sha512-uEmtNhbDOrWPFS+hdjFCBfy9f2YoyzRpwcl+DqpC6taX21FzsTLQVbMV/W7PzNSX6x/bhC1zA3c2UQ5NzH6how==
 
 ms@^2.1.1, ms@2.1.2:
@@ -8934,7 +8934,7 @@ react-fast-compare@^3.0.1:
 
 react-infinite-scroll-component@^6.1.0:
   version "6.1.0"
-  resolved "https://mirrors.cloud.tencent.com/npm/react-infinite-scroll-component/-/react-infinite-scroll-component-6.1.0.tgz#7e511e7aa0f728ac3e51f64a38a6079ac522407f"
+  resolved "https://registry.npmjs.org/react-infinite-scroll-component/-/react-infinite-scroll-component-6.1.0.tgz"
   integrity sha512-SQu5nCqy8DxQWpnUVLx7V7b7LcA37aM7tvoWjTLZp1dk6EJibM5/4EJKzOnl07/BsM1Y40sKLuqjCwwH/xV0TQ==
   dependencies:
     throttle-debounce "^2.1.0"
