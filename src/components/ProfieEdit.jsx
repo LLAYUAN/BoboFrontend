@@ -110,6 +110,7 @@ export default function ProfileEdit({ user }) {
                     label="Name"
                     rules={[
                         {
+                            required: true,
                             message: 'Please input your name!',
                         },
                     ]}
