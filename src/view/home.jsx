@@ -19,7 +19,12 @@ export default function Home() {
 
     useEffect(() => {
         const initVideoData = async () => {
-            SetVideoData(await rank(-1));
+            let res = await rank(-1);
+            console.log(res);
+            SetVideoData(res);
+            // SetVideoData(await rank(-1));
+            // console.log(res);
+
         }
         initVideoData();
     }, []);

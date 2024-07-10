@@ -1,57 +1,115 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, Button, Form, Input, Upload, notification, Image, Select } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
+import { useNavigate } from "react-router-dom";
+import { uploadFile } from '../service/uploadFile'; // 引入上传文件的服务
+import { createRoom, getRoomInfo } from '../service/user'; // 引入创建直播间的服务
 
 const { Option } = Select;
 
 const LiveEditModal = ({ isVisible, onOk, onCancel }) => {
     const [form] = Form.useForm();
     const [imageUrl, setImageUrl] = useState('');
+    const [imageFile, setImageFile] = useState(null); // 存储图片文件
+    const navigate = useNavigate();
+
+    const initModal = async () => {
+        try {
+            const response = await getRoomInfo();
+            const roomData = response.data;
+            console.log('coverUrl:', roomData.coverUrl);
+            form.setFieldsValue({
+                title: roomData.roomName,
+                tags: roomData.tags.map((tagIndex, index) => tagIndex === 1 ? index : null).filter(index => index !== null),
+                // Set imageUrl only if it's not empty
+                cover_image: roomData.coverUrl ? roomData.coverUrl : undefined,
+            });
+            setImageUrl(roomData.coverUrl ? roomData.coverUrl : '');
+        } catch (error) {
+            console.error('Failed to fetch room information:', error);
+            // Handle error, show notification, etc.
+        }
+    };
+
+    useEffect(() => {
+        if (isVisible) {
+            initModal();
+        }
+    }, [isVisible]);
 
     const options = [
         { label: '学习', value: 0 },
         { label: '娱乐', value: 1 },
         { label: '其他', value: 2 },
     ];
-    // for (let i = 10; i < 36; i++) {
-    //     options.push({
-    //         label: i.toString(36) + i,
-    //         value: i.toString(36) + i,
-    //     });
-    // }
+
     const handleChange = (value) => {
         console.log(`selected ${value}`);
     };
 
-    const handleUpload = info => {
-        if (info.file.status === 'done') {
-            // Assuming the backend returns the URL of the uploaded image
-            setImageUrl(info.file.response.url);
+    const beforeImageUpload = (file) => {
+        const reader = new FileReader();
+        reader.onload = (e) => setImageUrl(e.target.result); // 预览图片
+        reader.readAsDataURL(file);
+
+        setImageFile(file); // 存储图片文件
+        return false; // 阻止默认上传行为
+    };
+
+    const handleImageUpload = async (file) => {
+        try {
+            const formData = new FormData();
+            formData.append('file', file);
+            const response = await uploadFile(formData);
+            const newImageUrl = response.data;
+            setImageUrl(newImageUrl); // 设置上传后的图片 URL
+            console.log('Image URL:', newImageUrl);
             notification.success({
                 message: 'Upload Successful',
-                description: `${info.file.name} file uploaded successfully.`,
+                description: 'Cover image uploaded successfully.',
             });
-        } else if (info.file.status === 'error') {
+            return newImageUrl; // 返回新的 imageUrl
+        } catch (error) {
             notification.error({
                 message: 'Upload Failed',
-                description: `${info.file.name} file upload failed.`,
+                description: 'Cover image upload failed.',
             });
+            throw error; // 抛出错误以便外部处理
         }
     };
 
-    const handleCheck = () => {
-        form.validateFields().then(values => {
-            if (!imageUrl) {
+
+    const handleCheck = async () => {
+        try {
+            await form.validateFields();
+            if (!imageFile && !imageUrl) {
+                throw new Error('请上传封面图片');
+            }
+            let newImageUrl = imageUrl; // 保留当前的 imageUrl
+            if (imageFile) {
+                newImageUrl = await handleImageUpload(imageFile); // 更新 newImageUrl
+            }
+            const values = await form.getFieldsValue();
+            const roomData = {
+                title: values.title,
+                tags: values.tags,
+                cover_image: newImageUrl // 使用更新后的 newImageUrl
+            };
+            console.log("imageURL:", newImageUrl);
+            let res = await createRoom(roomData); // 调用 createRoom 函数发送数据到后端
+            if (res.code !== 200) {
                 notification.error({
                     message: 'Error',
-                    description: 'Please upload a cover image.',
+                    description: 'Room creation failed.',
                 });
-                return;
+            } else {
+                let roomID = res.data;
+                navigate(`/liveUser/${roomID}`);
             }
-            onOk({ ...values, cover_image: imageUrl });
-        });
+        } catch (error) {
+            console.error('Error:', error);
+        }
     };
-
 
     return (
         <Modal
@@ -68,7 +126,11 @@ const LiveEditModal = ({ isVisible, onOk, onCancel }) => {
                 </Button>,
             ]}
         >
-            <Form form={form} layout="vertical">
+            <Form
+                form={form}
+                layout="vertical"
+                // onFinish={onOk}
+            >
                 <Form.Item name="title" label="直播间名称" rules={[{ required: true, message: '请输入名称' }]}>
                     <Input />
                 </Form.Item>
@@ -95,8 +157,8 @@ const LiveEditModal = ({ isVisible, onOk, onCancel }) => {
                                 listType="picture-card"
                                 className="cover-uploader"
                                 showUploadList={false}
-                                action="/upload" // Adjust the upload URL as needed
-                                onChange={handleUpload}
+                                action="/upload" // 调整上传的URL
+                                beforeUpload={beforeImageUpload}
                             >
                                 {imageUrl ? (
                                     <Image src={imageUrl} alt="cover" width={200} />
