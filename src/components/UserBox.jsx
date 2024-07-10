@@ -21,7 +21,7 @@ export default function UserBox({userID,nickname,description}) {
             notification.error({
                 message: '失败',
                 description: '关注失败',
-                placement: 'topMiddle'
+                placement: 'topRight'
             });
         }
     };
@@ -30,12 +30,13 @@ export default function UserBox({userID,nickname,description}) {
     const confirmUnfollow = async () => {
         setIsFollowed(false); // Update state to indicate user is unfollowed
         setModalVisible(false); // Hide the modal
+        //TODO: 将2替换为直播间拥有者的userID
         let res = await unfollow(2); // Call API to unfollow user
         if (res.code !== 200) {
             notification.error({
                 message: '失败',
                 description: '关注失败',
-                placement: 'topMiddle'
+                placement: 'topRight'
             });
         }
     };
