@@ -37,13 +37,7 @@ const LiveEditModal = ({ isVisible, onOk, onCancel }) => {
         }
     }, [isVisible]);
 
-    const options = [
-        { label: '学习', value: 0 },
-        { label: '娱乐', value: 1 },
-        { label: '其他', value: 2 },
-    ];
 
-<<<<<<< HEAD
     const options = [
         { label: '学习', value: 0 },
         { label: '娱乐', value: 1 },
@@ -55,8 +49,7 @@ const LiveEditModal = ({ isVisible, onOk, onCancel }) => {
     //         value: i.toString(36) + i,
     //     });
     // }
-=======
->>>>>>> origin/master
+
     const handleChange = (value) => {
         console.log(`selected ${value}`);
     };

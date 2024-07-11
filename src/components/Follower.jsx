@@ -89,7 +89,7 @@ const FollowerList = ({ follower }) => {
 
             <Modal
                 title="Follower"
-                visible={isModalVisible}
+                open={isModalVisible}
                 onOk={handleOk}
                 onCancel={handleCancel}
             >
@@ -122,7 +122,7 @@ const FollowerList = ({ follower }) => {
 
             <Modal
                 title="取消关注"
-                visible={followModalVisible}
+                open={followModalVisible}
                 onOk={confirmUnFollow}
                 onCancel={() => setFollowModalVisible(false)}
                 okText="确认"
@@ -133,13 +133,6 @@ const FollowerList = ({ follower }) => {
         </div>
     );
 };
-// Example usage
-// const follower = [
-//     { name: 'Jared Palmer', username: 'jaredpalmer' },
-//     { name: 'Olivia Davis', username: 'olivia' },
-//     // Add more users here
-// ];
-
 const Follower = ({follower}) => <FollowerList follower={follower} />;
 
 export default Follower;
