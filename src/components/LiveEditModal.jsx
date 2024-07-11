@@ -42,21 +42,14 @@ const LiveEditModal = ({ isVisible, onOk, onCancel }) => {
         { label: '娱乐', value: 1 },
         { label: '其他', value: 2 },
     ];
-
-<<<<<<< HEAD
-    const options = [
-        { label: '学习', value: 0 },
-        { label: '娱乐', value: 1 },
-        { label: '其他', value: 2 },
-    ];
     // for (let i = 10; i < 36; i++) {
     //     options.push({
     //         label: i.toString(36) + i,
     //         value: i.toString(36) + i,
     //     });
     // }
-=======
->>>>>>> origin/master
+
+
     const handleChange = (value) => {
         console.log(`selected ${value}`);
     };
