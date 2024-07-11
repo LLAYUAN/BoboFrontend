@@ -20,6 +20,7 @@ export default function LoginPage({setIsLogin}) {
             localStorage.setItem('tokenHead', response.data.tokenHead);
             localStorage.setItem('userID', response.data.userInfo.userID);
             localStorage.setItem("nickname", response.data.userInfo.nickname);
+            localStorage.setItem("email", response.data.userInfo.email);
             navigate("/home");
         }
         else{

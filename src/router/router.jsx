@@ -11,6 +11,7 @@ import Search from "../view/search";
 import VisitProfile from "../view/visitProfile";
 import Nav from "../components/nav";
 import Register from "../view/register";
+import ModifyPassword from "../view/modifyPassword";
 
 function Layout() {
     const location = useLocation();
@@ -31,6 +32,7 @@ function Layout() {
                     <Route path="/search" element={<Search />} />
                     <Route path="/visitprofile/:userID" element={<VisitProfile />} />
                     <Route path="/register" element={<Register />} />
+                    <Route path="modifypassword" element={<ModifyPassword />} />
                 </Routes>
             </div>
         </>
