@@ -1,7 +1,8 @@
-import React, {useState} from 'react';
-import {Avatar, Button, Form, Input, DatePicker, notification} from 'antd';
+import React, {useEffect, useState} from 'react';
+import {Avatar, Button, Form, Input,  notification,Modal} from 'antd';
 import {UserOutlined} from "@ant-design/icons";
-import moment from "moment";
+import {follow, unfollow} from "../service/user";
+import {useNavigate} from "react-router-dom";
 
 const layout = {
     labelCol: {
@@ -24,35 +25,66 @@ const validateMessages = {
     },
 };
 
-const user = {
-    following: 123,
-    follower: 456,
-    name: 'John Doe',
-    email: '1@1',
-    birthday: '2021-01-01',
-    introduction: 'A brief introduction about yourself',
-}
+export default function ProfileVisit({userID,user}) {
+    const [avatarUrl, setAvatarUrl] = useState(user.avatarUrl || 'https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png');
+    const [isFollowed, setIsFollowed] = useState(user.isFan); // State to track if user is followed
+    const [modalVisible, setModalVisible] = useState(false); // State to control modal visibility
 
-export default function ProfileVisit() {
-    const [avatarUrl, setAvatarUrl] = useState('https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png');
-
-    const handleAvatarClick = () => {
-        // 这里可以根据需要设置新的头像URL
-        setAvatarUrl('https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png');
+    // const handleFollow = () => {
+    //    // todo:关注用户
+    //
+    //     notification.success({
+    //         message: '关注成功',
+    //         description: '成功关注该用户',
+    //     });
+    // }
+    // Function to handle follow/unfollow
+    const handleFollow = async() => {
+        setIsFollowed(true); // Update state to indicate user is followed
+        let res = await follow(userID); // Call API to follow user
+        if (res.code !== 200) {
+            notification.error({
+                message: '失败',
+                description: '关注失败',
+                placement: 'topMiddle'
+            });
+        }
     };
 
-    const handleFollow = () => {
-        notification.success({
-            message: '关注成功',
-            description: '成功关注该用户',
-        });
-    }
+    // Function to handle unfollow confirmation
+    const confirmUnfollow = async () => {
+        setIsFollowed(false); // Update state to indicate user is unfollowed
+        setModalVisible(false); // Hide the modal
+        let res = await unfollow(userID); // Call API to unfollow user
+        if (res.code !== 200) {
+            notification.error({
+                message: '失败',
+                description: '关注失败',
+                placement: 'topMiddle'
+            });
+        }
+    };
+
+    // Function to show modal for unfollow confirmation
+    const showUnfollowModal = () => {
+        setModalVisible(true);
+    };
+
+    useEffect(() => {
+        console.log(user.nickname);
+        console.log(user.email);
+        console.log(user.birthday);
+        console.log(user.introduction);
+        if(user.avatarUrl){
+            setAvatarUrl(user.avatarUrl);
+        }
+    }, [user]);
 
     return (
         <div>
             <div style={{display: 'flex', justifyContent: 'left', alignItems: 'center'}}>
                 <UserOutlined style={{fontSize: '20px'}}/>
-                <h2 style={{paddingLeft: '10px'}}>Profile</h2>
+                <h2 style={{paddingLeft: '10px'}}>个人信息</h2>
             </div>
             <div style={{
                 display: 'flex',
@@ -62,7 +94,7 @@ export default function ProfileVisit() {
                 alignItems: 'center',
                 paddingBottom: '20px'
             }}>
-                <Avatar src={avatarUrl} onClick={handleAvatarClick} size={64} icon={<UserOutlined/>}
+                <Avatar src={user.avatarUrl} size={64} icon={<UserOutlined/>}
                         style={{cursor: 'pointer'}}/>
                 <div style={{
                     display: 'flex',
@@ -71,8 +103,8 @@ export default function ProfileVisit() {
                     alignItems: 'center',
                     paddingTop: '10px'
                 }}>
-                    <p>关注：{user.following}</p>
-                    <p>粉丝：{user.follower}</p>
+                    <p>关注：{user.followeeCount}</p>
+                    <p>粉丝：{user.followerCount}</p>
                 </div>
             </div>
             <Form
@@ -84,10 +116,10 @@ export default function ProfileVisit() {
                 validateMessages={validateMessages}
             >
                 <Form.Item
-                    name={['user', 'name']}
+                    name={['user', 'nickname']}
                     label="Name"
                 >
-                    <Input defaultValue={user.name} readOnly/>
+                    <Input defaultValue={user.nickname} readOnly/>
                 </Form.Item>
                 <Form.Item
                     name={['user', 'email']}
@@ -111,8 +143,26 @@ export default function ProfileVisit() {
                 </Form.Item>
             </Form>
             <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-                <Button type="primary" onClick={handleFollow}>关注</Button>
+                {/*<Button type="primary" onClick={handleFollow}>关注</Button>*/}
+                {isFollowed ? (
+                    <Button size="large" onClick={showUnfollowModal} style={{ marginRight: '5%' }}>
+                        已关注
+                    </Button>
+                ) : (
+                    <Button type="primary" onClick={handleFollow}>关注</Button>
+                )}
             </div>
+            {/* Unfollow confirmation modal */}
+            <Modal
+                title="取消关注"
+                visible={modalVisible}
+                onOk={confirmUnfollow}
+                onCancel={() => setModalVisible(false)}
+                okText="确认"
+                cancelText="取消"
+            >
+                <p>确定要取消关注吗？</p>
+            </Modal>
         </div>
     );
 }

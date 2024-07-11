@@ -1,51 +1,89 @@
 import React, { useState } from 'react';
 import { Modal, Button, Form, Input, Upload, notification, Image, Select } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-
+import { useNavigate } from 'react-router-dom';
+import {uploadFile} from '../service/uploadFile'
+import {RECORDVIDEO_PREFIX} from "../service/common";
+import axios from 'axios';
 const { Option } = Select;
 
 const VideoEditModal = ({ isVisible, onOk, onCancel }) => {
     const [form] = Form.useForm();
+    //video是用来更新recordvideo的数据库的
+    const [video, setVideo] = useState({});
+    //imageUrl和videoUrl是用来更新前端显示的
     const [imageUrl, setImageUrl] = useState('');
+    const [videoUrl, setVideoUrl] = useState('');
+    const navigate = useNavigate();
 
-    const options = [];
-    for (let i = 10; i < 36; i++) {
-        options.push({
-            label: i.toString(36) + i,
-            value: i.toString(36) + i,
-        });
+    const handleImageUpload = async(file) => {
+        console.log("点击handleImageUpload");
+            console.log("经过if");
+            try {
+                // 创建FormData对象
+                const formData = new FormData();
+                formData.append('file', file);
+                console.log("formData:",formData);
+                // 发送请求到服务器端
+                const response = await uploadFile(formData);
+
+                // 上传成功后，更新图片URL
+                console.log("response");
+                const newImageUrl = response.data;
+                console.log(newImageUrl);
+                console.log("图片上传成功");
+                setImageUrl(newImageUrl);
+                const newVideodata = {
+                    ...video,
+                    recordVideoCoverUrl: newImageUrl,
+                }
+                setVideo(newVideodata);
+            } catch (error) {
+                console.log('图片上传失败');
+            }
+    };
+    
+    const handleVideoUpload = async(file) => {
+        console.log("点击handleVideoUpload");
+            console.log("经过if");
+            try {
+                // 创建FormData对象
+                const formData = new FormData();
+                formData.append('file', file);
+
+                // 发送请求到服务器端
+                const response = await uploadFile(formData);
+
+                // 上传成功后，更新图片URL
+                console.log("response");
+                const newVideoUrl = response.data;
+                console.log(newVideoUrl);
+                console.log("视频上传成功");
+                setVideoUrl(newVideoUrl);
+                const newVideodata = {
+                    ...video,
+                    recordVideoAddress: newVideoUrl,
+                }
+                setVideo(newVideodata);
+            } catch (error) {
+                console.log('视频上传失败');
+            }
     }
-    const handleChange = (value) => {
-        console.log(`selected ${value}`);
-    };
 
-    const handleUpload = info => {
-        if (info.file.status === 'done') {
-            // Assuming the backend returns the URL of the uploaded image
-            setImageUrl(info.file.response.url);
-            notification.success({
-                message: 'Upload Successful',
-                description: `${info.file.name} file uploaded successfully.`,
-            });
-        } else if (info.file.status === 'error') {
-            notification.error({
-                message: 'Upload Failed',
-                description: `${info.file.name} file upload failed.`,
-            });
-        }
+    const beforeImageUpload = async (file) => {
+        handleImageUpload(file);
+        return false; // 阻止默认上传行为
     };
+    
+    const beforeVideoUpload = async (file) => {
+        handleVideoUpload(file);
+        return false;
+    }
 
     const handleCheck = () => {
-        form.validateFields().then(values => {
-            if (!imageUrl) {
-                notification.error({
-                    message: 'Error',
-                    description: 'Please upload a cover image.',
-                });
-                return;
-            }
-            onOk({ ...values, cover_image: imageUrl });
-        });
+        console.log("点击上传按钮")
+        console.log("imageUrl:",imageUrl);
+        console.log("videoUrl:",videoUrl);
     };
 
 
@@ -68,41 +106,57 @@ const VideoEditModal = ({ isVisible, onOk, onCancel }) => {
                 <Form.Item name="title" label="视频名称" rules={[{ required: true, message: '请输入名称' }]}>
                     <Input />
                 </Form.Item>
-                <Form.Item name="author" label="分类" rules={[{ required: true, message: '请选择分类' }]}>
-                    <Select
-                        mode="multiple"
-                        allowClear
-                        style={{
-                            width: '100%',
-                        }}
-                        placeholder="Please select"
-                        defaultValue={[]}
-                        onChange={handleChange}
-                        options={options}
-                    />
-                </Form.Item>
-                <Form.Item name="description" label="简介" rules={[{ required: false}]}>
+                <Form.Item name="description" label="简介" rules={[{ required: true,  message: '请输入视频简介'}]}>
                     <Input.TextArea />
                 </Form.Item>
-                <Form.Item name="cover_image" label="上传视频" rules={[{ required: true, message: '请上传视频内容' }]}>
+                <Form.Item name="cover_image" label="上传视频封面" rules={[{required: true, message: '请上传视频封面'}]}>
                     <div className="flex flex-row justify-center items-center mb-3">
                         {imageUrl ? (
-                            <Image src={imageUrl} alt="cover" width={200} />
+                            <Image src={imageUrl} alt="cover" width={200}/>
                         ) : (
                             <Upload
                                 name="cover"
                                 listType="picture-card"
                                 className="cover-uploader"
                                 showUploadList={false}
-                                action="/upload" // Adjust the upload URL as needed
-                                onChange={handleUpload}
+                                action={`${RECORDVIDEO_PREFIX}/uploadFile`} // Adjust the upload URL as needed
+                                accept="image/*"
+                                //onChange={handleImageUpload}
+                                beforeUpload={beforeImageUpload}
                             >
                                 {imageUrl ? (
-                                    <Image src={imageUrl} alt="cover" width={200} />
+                                    <Image src={imageUrl} alt="cover" width={200}/>
                                 ) : (
                                     <div>
-                                        <PlusOutlined />
-                                        <div style={{ marginTop: 8 }}>Upload</div>
+                                        <PlusOutlined/>
+                                        <div style={{marginTop: 8}}>Upload</div>
+                                    </div>
+                                )}
+                            </Upload>
+                        )}
+                    </div>
+                </Form.Item>
+                <Form.Item name="video" label="上传视频" rules={[{required: true, message: '请上传视频内容'}]}>
+                    <div className="flex flex-row justify-center items-center mb-3">
+                        {videoUrl ? (
+                            <video src={videoUrl} controls width={200}/>
+                        ) : (
+                            <Upload
+                                name="video"
+                                listType="picture-card"
+                                className="video-uploader"
+                                showUploadList={false}
+                                action={`${RECORDVIDEO_PREFIX}/uploadFile`} // 后端接收视频的URL
+                                accept="video/*" // 只接受视频文件
+                                //onChange={handleVideoUpload}
+                                beforeUpload={beforeVideoUpload}
+                            >
+                                {videoUrl ? (
+                                    <video src={videoUrl} controls width={200}/>
+                                ) : (
+                                    <div>
+                                        <PlusOutlined/>
+                                        <div style={{marginTop: 8}}>Upload</div>
                                     </div>
                                 )}
                             </Upload>

@@ -66,7 +66,13 @@ const MyVideoList = ({ identity, myVideo }) => {
                         <List.Item.Meta
                             avatar={<Image src={video.imageUrl} width={160} height={90} style={{borderRadius: '10px',cursor:'pointer'}} preview={false} onClick={() => handleClickVideo(video.videoID)}/>}
                             title={video.videoName}
-                            description={`@${video.ownerName}`}
+                            description={
+                                <>
+                                    {`@${video.ownerName}`}
+                                    <br/>
+                                    {video.videoIntro}
+                                </>
+                            }
                         />
                         {identity==='up'&&<Button icon={<DeleteOutlined  />} onClick={() => handleDelete(video)}/>}
                     </List.Item>
@@ -87,7 +93,13 @@ const MyVideoList = ({ identity, myVideo }) => {
                             <List.Item.Meta
                                 avatar={<Image src={video.imageUrl} width={160} height={90} style={{borderRadius: '10px',cursor:'pointer'}} preview={false} onClick={() => handleClickVideo(video.videoID)}/>}
                                 title={video.videoName}
-                                description={`@${video.ownerName}`}
+                                description={
+                                    <>
+                                        {`@${video.ownerName}`}
+                                        <br/>
+                                        {video.videoIntro}
+                                    </>
+                                }
                             />
                             {identity==='up'&&<Button icon={<DeleteOutlined  />} onClick={() => handleDelete(video)}/>}
                         </List.Item>
@@ -102,10 +114,10 @@ const MyVideoList = ({ identity, myVideo }) => {
 
 // Example usage
 const myVideo = [
-    { videoID: 0,videoName: 'Video0', ownerName: 'owner0',ownerUserID: 0,imageUrl:'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png', videoAddress:"videoAddress0"},
-    { videoID: 1,videoName: 'Video1', ownerName: 'owner0',ownerUserID: 0,imageUrl:'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png', videoAddress:"videoAddress1"},
-    { videoID: 2,videoName: 'Video2', ownerName: 'owner0',ownerUserID: 0,imageUrl:'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png', videoAddress:"videoAddress2"},
-    { videoID: 3,videoName: 'Video3', ownerName: 'owner0',ownerUserID: 0,imageUrl:'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png', videoAddress:"videoAddress3"},
+    { videoID: 0,videoName: 'Video0', ownerName: 'owner0',imageUrl:'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',videoIntro:'简介1'},
+    { videoID: 1,videoName: 'Video1', ownerName: 'owner0',imageUrl:'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',videoIntro:'简介2'},
+    { videoID: 2,videoName: 'Video2', ownerName: 'owner0',imageUrl:'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',videoIntro:'简介3'},
+    { videoID: 3,videoName: 'Video3', ownerName: 'owner0',imageUrl:'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',videoIntro:'简介4'},
     // Add more users here
 ];
 

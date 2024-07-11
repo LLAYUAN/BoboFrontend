@@ -1,4 +1,4 @@
-import {USERPREFIX,getJson,post,BASEURL} from "./common";
+import {USERPREFIX,getJson,post } from "./common";
 
 // 获取个人主页的所有信息
 export async function personalProfile() {
@@ -20,5 +20,31 @@ export async function updateUserInfo(data) {
 
 export async function follow(followeeID) {
     let url = `${USERPREFIX}/follow`;
-    return post(url, followeeID);
+    return post(url, {followeeID});
+}
+
+export async function unfollow(followeeID) {
+    let url = `${USERPREFIX}/unfollow`;
+    return post(url, {followeeID});
+}
+
+export async function visitInfo(userID) {
+    let url = `${USERPREFIX}/visitInfo`;
+    return post(url, {userID});
+
+}
+
+export async function createRoom(data) {
+    let url = `${USERPREFIX}/createRoom`;
+    return post(url, data);
+}
+
+export async function getRoomInfo() {
+    let url = `${USERPREFIX}/getRoomInfo`;
+    return getJson(url);
+}
+
+export async function modifyPassword(oldPassword, newPassword) {
+    let url = `${USERPREFIX}/modifyPassword`;
+    return post(url, {oldPassword, newPassword});
 }

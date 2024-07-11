@@ -1,19 +1,20 @@
-import React, {useState, useEffect, useRef} from 'react';
-import {Input, Button, List, Divider} from 'antd';
-import InfiniteScroll from 'react-infinite-scroll-component';
-import {CompatClient, Stomp} from '@stomp/stompjs';
-import SockJS from 'sockjs-client';
+import React, { useState, useEffect, useRef } from 'react';
+import { Input, Button, List, Divider, FloatButton } from 'antd';
+
 import ChatService from '../service/chat';
 import moment from 'moment';
+import {VerticalAlignBottomOutlined} from "@ant-design/icons";
 
-const ChatBox = ({roomID}) => {
+const ChatBox = ({ roomID }) => {
     const [messages, setMessages] = useState([]);
     const [inputValue, setInputValue] = useState('');
-    const [username, setUsername] = useState('User'); // 可以根据实际情况设置默认用户名
+    const username = localStorage.getItem('nickname');
     const [chatService, setChatService] = useState(null);
     const [hasMore, setHasMore] = useState(true);
-    const token = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI5MCIsImNyZWF0ZWQiOjE3MTk5ODc2NjE0MDgsImV4cCI6MTcyMDU5MjQ2MX0.HyKdhLP0koBNioyG3CJZ9cn7tyWPulTifnBNmy3EuChjMB4B0Xmvb971E5DK5I65xHlFe2AWj5KoTEP6EUtL9Q';
-    const timestampRef = useRef(new Date().toISOString());  // 初始化为当前时间
+    const token = localStorage.getItem('token');
+    const [showBackToBottom, setShowBackToBottom] = useState(false);
+
+    const timestampRef = useRef(new Date().toISOString());
 
     useEffect(() => {
         const service = new ChatService(roomID, onMessageReceived, onError);
@@ -30,9 +31,7 @@ const ChatBox = ({roomID}) => {
         try {
             const historyMessages = await ChatService.getHistoryMessages(roomID, timestampRef.current);
             console.log('historyMessages:', historyMessages);
-            //逆序
             historyMessages.reverse();
-            //更新时间戳
             if (historyMessages.length > 0) {
                 timestampRef.current = historyMessages[0].timestamp;
             }
@@ -66,42 +65,42 @@ const ChatBox = ({roomID}) => {
     };
 
     const listRef = useRef(null);
-    const [changetype,setChangetype] = useState(false);//0是send导致的messages变更，1是loadMore导致的messages变更
+    const [changetype, setChangetype] = useState(false);
+
     const pushListBottom = () => {
         if (listRef.current) {
             listRef.current.scrollTop = listRef.current.scrollHeight;
         }
-    }
-    const pushListTop = () => {
-        if (listRef.current) {
-            listRef.current.scrollTop = 0;
+    };
+
+    const handleScroll = () => {
+        if (listRef.current.scrollTop < listRef.current.scrollHeight-2000){
+            setShowBackToBottom(true);
+        } else {
+            setShowBackToBottom(false);
         }
-    }
+    };
 
     useEffect(() => {
-        console.log('messages changed',changetype);
-        if(changetype === false){
+        console.log('messages changed', changetype);
+        if (changetype === false) {
             pushListBottom();
-        }else{
-            pushListTop();
         }
-    }, [messages,changetype]);
-
+    }, [messages, changetype]);
 
     return (
         <div style={{
-            maxHeight: '600px',
-            height: '75%',
-            maxWidth: '400px',
+            height: '70vh',
+            maxWidth: '95%',
             margin: '0 auto',
             padding: '10px',
             border: '1px solid #f0f0f0',
-            borderRadius: '4px'
+            borderRadius: '4px',
+            position: 'relative'
         }}>
             <div ref={listRef}
                  style={{
-                     maxHeight: '500px',
-                     height: '85%',
+                     height: '86%',
                      overflowY: 'auto',
                      marginBottom: '20px',
                      border: '1px solid #f0f0f0',
@@ -109,10 +108,11 @@ const ChatBox = ({roomID}) => {
                      padding: '10px',
                      display: 'flex',
                      flexDirection: 'column'
-
-                 }}>
-                {hasMore && <Button onClick={()=>{setChangetype(true);loadMore();}} style={{marginBottom: '10px'}} >加载历史消息</Button>}
-                {!hasMore && <Divider style={{marginBottom: '10px', textAlign: 'center'}}>暂无更多历史记录</Divider>}
+                 }}
+                 onScroll={handleScroll}
+            >
+                {hasMore && <Button onClick={() => { setChangetype(true); loadMore(); }} style={{ marginBottom: '10px' }} >加载历史消息</Button>}
+                {!hasMore && <Divider style={{ marginBottom: '10px', textAlign: 'center' }}>暂无更多历史记录</Divider>}
                 <List
                     size="small"
                     dataSource={messages}
@@ -122,7 +122,7 @@ const ChatBox = ({roomID}) => {
                                 title={item.sender}
                                 description={item.content}
                             />
-                            <div style={{marginLeft: 'auto', color: 'gray', fontSize: 'smaller'}}>
+                            <div style={{ marginLeft: 'auto', color: 'gray', fontSize: 'smaller' }}>
                                 {moment(item.timestamp).format('MM-DD HH:mm:ss')}
                             </div>
                         </List.Item>
@@ -131,13 +131,22 @@ const ChatBox = ({roomID}) => {
             </div>
             <Input.Group compact>
                 <Input
-                    style={{width: 'calc(100% - 70px)'}}
+                    style={{ width: 'calc(100% - 70px)' }}
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
-                    onPressEnter={()=>{setChangetype(false);sendMessage();}}
+                    onPressEnter={() => { setChangetype(false); sendMessage(); }}
                 />
-                <Button type="primary" onClick={()=>{setChangetype(false);sendMessage();}}>发送</Button>
+                <Button type="primary" onClick={() => { setChangetype(false); sendMessage(); }}>发送</Button>
             </Input.Group>
+            {showBackToBottom && (
+                <Button
+                    type="primary"
+                    onClick={pushListBottom}
+                    style={{ left:'85%', bottom: '18%',borderRadius: '50%'}}
+                    icon={<VerticalAlignBottomOutlined />}
+                >
+                </Button>
+            )}
         </div>
     );
 };
