@@ -32,7 +32,6 @@ export default function UserBox({ userID, nickname, description, avatar }) {
         setModalVisible(false); // Hide the modal
         //TODO: 将2替换为直播间拥有者的userID
         let res = await unfollow(userID); // Call API to unfollow user
-
         if (res.code !== 200) {
             notification.error({
                 message: '失败',

@@ -103,8 +103,8 @@ export default function ProfileVisit({userID,user}) {
                     alignItems: 'center',
                     paddingTop: '10px'
                 }}>
-                    <p>关注：{user.followerCount}</p>
-                    <p>粉丝：{user.followeeCount}</p>
+                    <p>关注：{user.followeeCount}</p>
+                    <p>粉丝：{user.followerCount}</p>
                 </div>
             </div>
             <Form
