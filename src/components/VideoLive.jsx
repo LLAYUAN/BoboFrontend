@@ -49,20 +49,16 @@ const LiveDemo = ({ roomId }) => {
             videoRef.current.play();
         }
     };
-
     const handlePause = () => {
         if (videoRef.current) {
             videoRef.current.pause();
         }
     };
-
     const handleSeekTo = () => {
         if (videoRef.current) {
             videoRef.current.currentTime = parseFloat(seekPoint);
         }
     };
-
-
     const handleDestroy = () => {
         if (flvPlayer) {
             flvPlayer.pause();
@@ -73,7 +69,7 @@ const LiveDemo = ({ roomId }) => {
         }
     };
 
-    const handleStartCameraStream = async () => {
+    const handleStartCameraStream = async (localFilePath) => {
         handleDestroy();  // 先销毁当前流
         const response = await fetch('http://localhost:8081/api/camera-live', {
             method: 'POST',
@@ -82,7 +78,8 @@ const LiveDemo = ({ roomId }) => {
             },
             body: JSON.stringify({
                 rtmpUrl: `rtmp://10.180.138.227:1935/live/camera${roomId}`,
-                cameraDevice: selectedCamera
+                cameraDevice: selectedCamera,
+                localFilePath: localFilePath
             }),
         });
 
@@ -98,7 +95,7 @@ const LiveDemo = ({ roomId }) => {
         }
     };
 
-    const handleStartDesktopStream = async () => {
+    const handleStartDesktopStream = async (localFilePath) => {
         handleDestroy();  // 先销毁当前流
         const response = await fetch('http://localhost:8081/api/desktop-live', {
             method: 'POST',
@@ -107,6 +104,7 @@ const LiveDemo = ({ roomId }) => {
             },
             body: JSON.stringify({
                 rtmpUrl: `rtmp://10.180.138.227:1935/live/desktop${roomId}`,
+                localFilePath: localFilePath
             }),
         });
 
@@ -120,6 +118,45 @@ const LiveDemo = ({ roomId }) => {
             const errorData = await response.json();
             alert(`Failed to start desktop stream: ${errorData.error}`);
         }
+    };
+
+    const handleStartCameraRecord = async (localFilePath) => {
+        const response = await fetch('http://localhost:8081/api/record', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                rtmpUrl: `rtmp://10.180.138.227:1935/live/camera${roomId}`,
+                localFilePath: localFilePath
+            }),
+        });
+    };
+
+    const handleStartDesktopRecord = async (localFilePath) => {
+        const response = await fetch('http://localhost:8081/api/record', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                rtmpUrl: `rtmp://10.180.138.227:1935/live/desktop${roomId}`,
+                localFilePath: localFilePath
+            }),
+        });
+    };
+
+    const handleStopStream = async () => {
+        await fetch('http://localhost:8081/api/stop-stream', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                roomId: roomId
+            }),
+        });
+        handleDestroy();
     };
 
     return (
@@ -148,8 +185,10 @@ const LiveDemo = ({ roomId }) => {
                 />
                 <button onClick={handleSeekTo}>跳转</button>
                 <br />
-                <button onClick={handleStartCameraStream}>开始摄像头直播</button>
-                <button onClick={handleStartDesktopStream}>开始桌面直播</button>
+                <button onClick={()=>handleStartCameraStream()}>开始摄像头直播</button>
+                <button onClick={()=>handleStartDesktopStream()}>开始桌面直播</button>
+                <button onClick={()=>handleStartCameraRecord(`C:/Users/77043/Desktop/video/camera${roomId}.mp4`)}>开始摄像头录制</button>
+                <button onClick={()=>handleStartDesktopRecord(`C:/Users/77043/Desktop/video/desktop${roomId}.mp4`)}>开始桌面录制</button>
             </div>
         </div>
     );
