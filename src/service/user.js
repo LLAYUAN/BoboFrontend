@@ -36,6 +36,7 @@ export async function startLive(name,tags,coverUrl) {
 export async function visitInfo(userID) {
     let url = `${USERPREFIX}/visitInfo`;
     return post(url, {userID});
+
 }
 
 export async function createRoom(data) {
