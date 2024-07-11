@@ -28,11 +28,6 @@ export async function unfollow(followeeID) {
     return post(url, {followeeID});
 }
 
-export async function startLive(name,tags,coverUrl) {
-    let url = `${USERPREFIX}/startLive`;
-    return post(url, {name, tags, coverUrl});
-}
-
 export async function visitInfo(userID) {
     let url = `${USERPREFIX}/visitInfo`;
     return post(url, {userID});
@@ -47,5 +42,9 @@ export async function createRoom(data) {
 export async function getRoomInfo() {
     let url = `${USERPREFIX}/getRoomInfo`;
     return getJson(url);
+}
 
+export async function modifyPassword(oldPassword, newPassword) {
+    let url = `${USERPREFIX}/modifyPassword`;
+    return post(url, {oldPassword, newPassword});
 }
