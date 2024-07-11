@@ -4,13 +4,35 @@ import ChatBox from "../components/ChatBox";
 import UserList from "../components/UserList";
 import UserBox from "../components/UserBox";
 import VideoList from "../components/VideoList";
-import React from "react";
+import React , { useState, useEffect }from "react";
 import ReactPlayer from 'react-player';
+import {useParams} from "react-router-dom";
+import {getPlayingRecordVideo} from "../service/recordVideo"
 
 export default function Video() {
-    const title = '直播间的title';
-    // const tags = ['purple', 'magenta', 'red', 'volcano'];
-    const intro = '直播间的简介';
+    const [isLoading, setIsLoading] = useState(true);
+    const [videoPlaying, setVideoPlaying] = useState({});
+    const {videoID} = useParams();
+    const playingVideoID = parseInt(videoID, 10);
+    const loadPlayingVideo = async () => {
+        setIsLoading(true);
+        const data = await getPlayingRecordVideo(playingVideoID);
+        console.log("在播放视频界面getPlayingRecordVideo:");
+        console.log(data);
+        await setVideoPlaying(data);
+        setIsLoading(false);
+    }
+
+    useEffect(() => {
+        loadPlayingVideo();
+    }, [videoID]);
+    
+
+    useEffect(() => {
+        console.log("修改videoPlaying:",videoPlaying);
+    }, [videoPlaying]);
+
+    if (isLoading) return <text>Loading...</text>
     return (
         <div style={{display: 'flex'}}>
             <div style={{display: 'flex', flexDirection: 'column', width: '70%', padding: '0 30px'}}>
@@ -21,8 +43,8 @@ export default function Video() {
                         justifyContent: 'space-between',
                         width: '100%'
                     }}>
-                        <h2 style={{marginLeft: '2%'}}>{title}</h2>
-                            <text style={{color: 'gray' , marginLeft: '2%'}}>{intro}</text>
+                        <h2 style={{marginLeft: '2%'}}>{videoPlaying.videoName}</h2>
+                            <text style={{color: 'gray' , marginLeft: '2%'}}>{videoPlaying.videoIntro}</text>
                     </div>
                 </div>
                 <Divider style={{margin: '15px 0'}}/>
@@ -32,7 +54,7 @@ export default function Video() {
                     position: 'relative' // 设置为相对定位，以便子元素可以绝对定位
                 }}>
                     <ReactPlayer
-                        url={`http://localhost:8080/resources/Screenrecorder-2024-05-15-22-13-05-599.mp4`}
+                        url={videoPlaying.videoUrl}
                         className="customReactPlayer"
                         controls={true}
                         style={{
@@ -48,8 +70,8 @@ export default function Video() {
             </div>
 
             <div style={{width: '30%', padding: '0 10px'}}>
-                <UserBox/>
-                <VideoList />
+                <UserBox ownerUserID={videoPlaying.ownerUserID} ownerNickName={videoPlaying.ownerName} ownerSelfIntro={videoPlaying.ownerIntro} ownerAvatarUrl={videoPlaying.ownerAvatarUrl}/>
+                <VideoList ownerUserID={videoPlaying.ownerUserID}/>
             </div>
         </div>
     );

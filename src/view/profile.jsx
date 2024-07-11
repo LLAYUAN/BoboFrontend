@@ -59,7 +59,7 @@ export default function Profile() {
             <div style={{display: 'flex', padding: '30px 30px', justifyContent: 'space-evenly'}}>
                 <div style={{width: '60%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between'}}>
                     <Card style={{boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)'}}>
-                        <MyVideo identity='up'/>
+                        <MyVideo identity='up' userID={0}/>
                     </Card>
                 </div>
                     <Card style={{width:'30%',boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)'}}>

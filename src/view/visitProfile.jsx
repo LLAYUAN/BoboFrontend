@@ -5,7 +5,7 @@ import {useParams} from "react-router-dom";
 
 export default function VisitProfile() {
     const {userID}=useParams();
-    console.log(userID);
+    console.log("VisitProfile userID:",userID);
 
     return (
         <div style={{padding: '20px 30px'}}>
@@ -15,7 +15,7 @@ export default function VisitProfile() {
                 </Card>
                 <div style={{width: '55%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between'}}>
                     <Card style={{boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)'}}>
-                        <MyVideo userID={userID}/>
+                        <MyVideo identity="noup" userID={userID}/>
                     </Card>
                 </div>
             </div>
