@@ -39,9 +39,9 @@ export default function VisitProfile() {
                 <Card style={{ width: '40%', boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)' }}>
                     <ProfileVisit userID={userID} user={user} />
                 </Card>
-                <div style={{ width: '55%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                    <Card style={{ boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)' }}>
-                        <MyVideo userID={userID} />
+                <div style={{width: '55%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between'}}>
+                    <Card style={{boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)'}}>
+                        <MyVideo identity="noup" userID={userID}/>
                     </Card>
                     {/* 返回按钮 */}
                     <div style={{ marginTop: '20px', alignSelf: 'flex-end' }}>
