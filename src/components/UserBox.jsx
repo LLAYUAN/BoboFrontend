@@ -31,11 +31,7 @@ export default function UserBox({userID,nickname,description,avatar}) {
         setIsFollowed(false); // Update state to indicate user is unfollowed
         setModalVisible(false); // Hide the modal
         //TODO: 将2替换为直播间拥有者的userID
-<<<<<<< HEAD
-        let res = await unfollow(2); // Call API to unfollow user
-=======
         let res = await unfollow(userID); // Call API to unfollow user
->>>>>>> origin/master
         if (res.code !== 200) {
             notification.error({
                 message: '失败',
