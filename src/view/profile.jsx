@@ -9,9 +9,7 @@ import {useState,useEffect} from "react";
 import useLiveEditModal from "../hooks/useLiveEditModal";
 import {getUserInfo,personalProfile} from "../service/user";
 import {useNavigate} from "react-router-dom";
-import moment from "moment";
-
-
+// import moment from "moment";
 
 export default function Profile() {
     const { isModalVisible, showModal, handleOk, handleCancel } = useLiveEditModal();
@@ -24,7 +22,7 @@ export default function Profile() {
         let allUser = await personalProfile();
         console.log(allUser);
         if(allUser.code !== 200){
-            navigate('/login');
+            // navigate('/login');
             return;
         }
         const { user, followers, following } = allUser.data;

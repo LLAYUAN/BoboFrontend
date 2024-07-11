@@ -3,7 +3,7 @@ import { Avatar, Button, Modal,notification } from 'antd';
 import { UserAddOutlined } from '@ant-design/icons';
 import {follow,unfollow} from '../service/user';
 
-export default function UserBox({userID,nickname,description}) {
+export default function UserBox({userID,nickname,description,avatar}) {
     const [isFollowed, setIsFollowed] = useState(false); // State to track if user is followed
     const [modalVisible, setModalVisible] = useState(false); // State to control modal visibility
 
@@ -16,12 +16,12 @@ export default function UserBox({userID,nickname,description}) {
     // Function to handle follow/unfollow
     const handleFollow = async() => {
         setIsFollowed(true); // Update state to indicate user is followed
-        let res = await follow(2); // Call API to follow user
+        let res = await follow(userID); // Call API to follow user
         if (res.code !== 200) {
             notification.error({
                 message: '失败',
                 description: '关注失败',
-                placement: 'topMiddle'
+                placement: 'topRight'
             });
         }
     };
@@ -30,12 +30,13 @@ export default function UserBox({userID,nickname,description}) {
     const confirmUnfollow = async () => {
         setIsFollowed(false); // Update state to indicate user is unfollowed
         setModalVisible(false); // Hide the modal
-        let res = await unfollow(2); // Call API to unfollow user
+        //TODO: 将2替换为直播间拥有者的userID
+        let res = await unfollow(userID); // Call API to unfollow user
         if (res.code !== 200) {
             notification.error({
                 message: '失败',
                 description: '关注失败',
-                placement: 'topMiddle'
+                placement: 'topRight'
             });
         }
     };

@@ -15,10 +15,10 @@ export async function getJson(url) {
         }
     });
     //解析响应的json数据并返回
-    if (res.status == 401){
+    if (res.status == 401) {
         return LOGIN_EXPIRED;
     }
-    if (res.status !== 200){
+    if (res.status !== 200) {
         return DUMMY_RESPONSE;
     }
     return res.json();
@@ -34,10 +34,10 @@ export async function get(url) {
             "Authorization": token
         }
     });
-    if(res.status === 401){
+    if (res.status === 401) {
         return LOGIN_EXPIRED;
     }
-    if(res.status !== 200){
+    if (res.status !== 200) {
         return DUMMY_RESPONSE;
     }
     return res;
@@ -54,10 +54,10 @@ export async function postnoToken(url, data) {
     };
     let res = await fetch(url, opts);
     console.log(res);
-    if(res.status === 401){
+    if (res.status === 401) {
         return LOGIN_EXPIRED;
     }
-    if(res.status !== 200){
+    if (res.status !== 200) {
         return DUMMY_RESPONSE;
     }
     console.log(res);
@@ -76,10 +76,10 @@ export async function post(url, data) {
         credentials: "include"
     };
     let res = await fetch(url, opts);
-    if(res.status === 401){
+    if (res.status === 401) {
         return LOGIN_EXPIRED;
     }
-    if(res.status !== 200){
+    if (res.status !== 200) {
         return DUMMY_RESPONSE;
     }
     return res.json();
@@ -90,6 +90,9 @@ export const BASEURL = 'http://localhost:9999';
 // 拼接API的前缀，即基础URL+'/api'
 export const PREFIX = `${BASEURL}`;
 export const USERPREFIX = `${BASEURL}/user`;
+
+export const RECOMMENDPREFIX = `${BASEURL}/recommend`;
+
 export const RECORDVIDEO_PREFIX = `${BASEURL}/recordvideo`;
 // 定义一个常量，用于表示网络错误的响应
 export const DUMMY_RESPONSE = {

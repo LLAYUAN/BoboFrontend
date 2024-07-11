@@ -4,24 +4,26 @@ import { PlusOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import {uploadFile} from '../service/uploadFile'
 import {RECORDVIDEO_PREFIX} from "../service/common";
+import axios from 'axios';
 const { Option } = Select;
 
 const VideoEditModal = ({ isVisible, onOk, onCancel }) => {
     const [form] = Form.useForm();
+    //video是用来更新recordvideo的数据库的
     const [video, setVideo] = useState({});
+    //imageUrl和videoUrl是用来更新前端显示的
     const [imageUrl, setImageUrl] = useState('');
     const [videoUrl, setVideoUrl] = useState('');
     const navigate = useNavigate();
 
-    const handleImageUpload = async(info) => {
-        console.log("点击handleUploadImgChange");
-        if (info.file.status === 'done') {
+    const handleImageUpload = async(file) => {
+        console.log("点击handleImageUpload");
             console.log("经过if");
             try {
                 // 创建FormData对象
                 const formData = new FormData();
-                formData.append('file', info.file.originFileObj);
-
+                formData.append('file', file);
+                console.log("formData:",formData);
                 // 发送请求到服务器端
                 const response = await uploadFile(formData);
 
@@ -39,17 +41,15 @@ const VideoEditModal = ({ isVisible, onOk, onCancel }) => {
             } catch (error) {
                 console.log('图片上传失败');
             }
-        }
     };
     
-    const handleVideoUpload = async(info) => {
+    const handleVideoUpload = async(file) => {
         console.log("点击handleVideoUpload");
-        if (info.file.status === 'done') {
             console.log("经过if");
             try {
                 // 创建FormData对象
                 const formData = new FormData();
-                formData.append('file', info.file.originFileObj);
+                formData.append('file', file);
 
                 // 发送请求到服务器端
                 const response = await uploadFile(formData);
@@ -68,8 +68,18 @@ const VideoEditModal = ({ isVisible, onOk, onCancel }) => {
             } catch (error) {
                 console.log('视频上传失败');
             }
-        }
     }
+
+    const beforeImageUpload = async (file) => {
+        handleImageUpload(file);
+        return false; // 阻止默认上传行为
+    };
+    
+    const beforeVideoUpload = async (file) => {
+        handleVideoUpload(file);
+        return false;
+    }
+
     const handleCheck = () => {
         console.log("点击上传按钮")
         console.log("imageUrl:",imageUrl);
@@ -111,7 +121,8 @@ const VideoEditModal = ({ isVisible, onOk, onCancel }) => {
                                 showUploadList={false}
                                 action={`${RECORDVIDEO_PREFIX}/uploadFile`} // Adjust the upload URL as needed
                                 accept="image/*"
-                                onChange={handleImageUpload}
+                                //onChange={handleImageUpload}
+                                beforeUpload={beforeImageUpload}
                             >
                                 {imageUrl ? (
                                     <Image src={imageUrl} alt="cover" width={200}/>
@@ -137,7 +148,8 @@ const VideoEditModal = ({ isVisible, onOk, onCancel }) => {
                                 showUploadList={false}
                                 action={`${RECORDVIDEO_PREFIX}/uploadFile`} // 后端接收视频的URL
                                 accept="video/*" // 只接受视频文件
-                                onChange={handleVideoUpload}
+                                //onChange={handleVideoUpload}
+                                beforeUpload={beforeVideoUpload}
                             >
                                 {videoUrl ? (
                                     <video src={videoUrl} controls width={200}/>
