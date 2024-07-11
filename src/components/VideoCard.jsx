@@ -1,14 +1,14 @@
 import React from 'react';
 import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons';
 import { Avatar, Card } from 'antd';
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 const { Meta } = Card;
-export default function VideoCard ({roomID,title,author}) {
-    const navigate=useNavigate();
-    const handleClick=()=>{
-        navigate(`/liveUser/${roomID}`);
+export default function VideoCard({ video }) {
+    const navigate = useNavigate();
+    const handleClick = () => {
+        navigate(`/liveUser/${video.id}`);
     }
-    return(
+    return (
         <Card
             hoverable
             style={{
@@ -17,21 +17,22 @@ export default function VideoCard ({roomID,title,author}) {
             cover={
                 <img
                     alt="example"
-                    src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+                    src={video.coverUrl}
                 />
             }
             onClick={handleClick}
-            // actions={[
-            //     <SettingOutlined key="setting" />,
-            //     <EditOutlined key="edit" />,
-            //     <EllipsisOutlined key="ellipsis" />,
-            // ]}
+        // actions={[
+        //     <SettingOutlined key="setting" />,
+        //     <EditOutlined key="edit" />,
+        //     <EllipsisOutlined key="ellipsis" />,
+        // ]}
         >
             <Meta
-                avatar={<Avatar src="https://api.dicebear.com/7.x/miniavs/svg?seed=8" />}
-                title={title}
-                description={author}
+                avatar={<Avatar src={video.avatarUrl} />}
+                title={video.roomName}
+                description={video.userName}
             />
+            <span key="hotIndex">热度: {video.hotIndex}</span>
         </Card>
     )
 }

@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
-import {Button, Modal, List, Divider} from 'antd';
-import {EyeOutlined, LikeOutlined, UserAddOutlined, UserDeleteOutlined} from "@ant-design/icons";
+import {Button, Modal, List, Divider, notification} from 'antd';
+import {EyeOutlined, HeartOutlined, LikeOutlined, UserAddOutlined, UserDeleteOutlined} from "@ant-design/icons";
 import { nameToWebsite } from '../utils/utils';
 import {useNavigate} from "react-router-dom";
+import {unfollow} from "../service/user";
 
 const FollowingList = ({ following }) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const [followModalVisible, setFollowModalVisible] = useState(false); // State to control modal visibility
+    const [deleteUser, setDeleteUser] = useState({}); // State to store user details
     const navigate = useNavigate();
 
     const showModal = () => {
@@ -21,14 +24,27 @@ const FollowingList = ({ following }) => {
     };
 
     //todo:delete
-    function handleDelete(user) {
+    const handleDelete = (user) =>{
+        setDeleteUser(user);
+        console.log(deleteUser);
+        setFollowModalVisible(true);
+    }
 
-        console.log(user);
+    const confirmUnFollow = async () => {
+        setFollowModalVisible(false);
+        let res = await unfollow(deleteUser.userID); // Call API to unfollow user
+        if (res.code !== 200) {
+            notification.error({
+                message: '失败',
+                description: '关注失败',
+                placement: 'topRight'
+            });
+        }
+        console.log(deleteUser);
     }
 
     //detail
     function handleDetail(user) {
-        //跳转到用户详情页
         navigate(`/visitprofile/${user.userID}`);
         console.log(user);
     }
@@ -37,7 +53,7 @@ const FollowingList = ({ following }) => {
         <div>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
                 <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-                    <LikeOutlined style={{fontSize: '20px'}}/>
+                    <HeartOutlined  style={{fontSize: '20px'}}/>
                     <h2 style={{paddingLeft:'4px'}}>关注</h2>
                 </div>
                 <Button icon={<EyeOutlined />} type="link" onClick={showModal}>
@@ -50,28 +66,29 @@ const FollowingList = ({ following }) => {
                 renderItem={(user) => (
                     <List.Item>
                         <List.Item.Meta
-                            avatar={<span className="anticon anticon-user"/>}
+                            avatar={<span className="anticon anticon-user" />}
                             title={<a onClick={() => handleDetail(user)}>
                                 {user.nickname}
                             </a>}
-                            description={<div
+                            description ={<div
                                 style={{
                                     whiteSpace: 'nowrap',
                                     overflow: 'hidden',
                                     textOverflow: 'ellipsis',
                                     maxWidth: '90%' // 根据需要设置最大宽度，或者可以设置具体数值
                                 }}
+
                             >
-                                {user.introduction}
+                                {nameToWebsite(user.nickname)}
                             </div>}
                         />
-                        <Button icon={<UserDeleteOutlined />} onClick={handleDelete(user)}/>
+                        <Button icon={<UserDeleteOutlined />} onClick={() => handleDelete(user)}/>
                     </List.Item>
                 )}
             />
 
             <Modal
-                title="关注"
+                title="Following"
                 visible={isModalVisible}
                 onOk={handleOk}
                 onCancel={handleCancel}
@@ -97,22 +114,25 @@ const FollowingList = ({ following }) => {
                                     {user.introduction}
                                 </div>}
                             />
-                            <Button icon={<UserDeleteOutlined/>} onClick={handleDelete(user)}/>
+                            <Button icon={<UserDeleteOutlined />} onClick={() => handleDelete(user)}/>
                         </List.Item>
                     )}
                 />
             </Modal>
+
+            <Modal
+                title="取消关注"
+                visible={followModalVisible}
+                onOk={confirmUnFollow}
+                onCancel={() => setFollowModalVisible(false)}
+                okText="确认"
+                cancelText="取消"
+            >
+                <p>确定要取消关注吗？</p>
+            </Modal>
         </div>
     );
 };
-
-// // Example usage
-// const following = [
-//     { name: 'Jared Palmer', username: 'jaredpalmer' },
-//     { name: 'Olivia Davis', username: 'olivia' },
-//     // Add more users here
-// ];
-
 
 const Following = ({following}) => <FollowingList following={following} />;
 

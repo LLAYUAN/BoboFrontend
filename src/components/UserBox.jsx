@@ -45,7 +45,7 @@ export default function UserBox({ownerUserID,ownerNickName,ownerSelfIntro,ownerA
             notification.error({
                 message: '失败',
                 description: '关注失败',
-                placement: 'topMiddle'
+                placement: 'topRight'
             });
         }
     };
@@ -59,7 +59,7 @@ export default function UserBox({ownerUserID,ownerNickName,ownerSelfIntro,ownerA
             notification.error({
                 message: '失败',
                 description: '关注失败',
-                placement: 'topMiddle'
+                placement: 'topRight'
             });
         }
     };
