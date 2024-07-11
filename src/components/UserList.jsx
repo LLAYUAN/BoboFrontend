@@ -1,5 +1,6 @@
 import React from 'react';
 import { List, Avatar, Button } from 'antd';
+import {useEffect,useState} from 'react'
 
 // 示例用户数据
 const users = [
@@ -20,7 +21,20 @@ const users = [
     },
 ];
 
-const UserList = () => {
+const UserList = ({ roomId }) => {
+
+    const [activeUsers, setActiveUsers] = useState([]);
+
+    useEffect(() => {
+        const fetchActiveUsers = async () => {
+            const response = await fetch(`http://localhost:8081/api/active-users/${roomId}`);
+            const users = await response.json();
+            setActiveUsers(users);
+        };
+
+        fetchActiveUsers();
+    }, [roomId]);
+
     const handleDelete = (key) => {
         console.log(`Deleted user with key: ${key}`);
         // 实现删除功能

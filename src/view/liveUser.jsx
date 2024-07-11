@@ -3,14 +3,28 @@ import {GiftOutlined, HeartOutlined, LikeOutlined, UserAddOutlined} from "@ant-d
 import ChatBox from "../components/ChatBox";
 import {useParams} from "react-router-dom";
 import UserBox from "../components/UserBox";
-import VideoLive from "../components/VideoLive"
+// import VideoLive from "../components/VideoLive"
+import VideoShow from "../components/VideoShow"
+import {useState, useEffect} from "react";
 
 export default function LiveUser() {
-    const title = '直播间的title';
-    const tags = ['purple', 'magenta', 'red', 'volcano'];
+    const [title, setTitle] = useState('');
+    const [tags, setTags] = useState([]);
 
     const {roomID}=useParams();
     console.log(roomID);
+
+    useEffect(() => {
+        const fetchRoomInfo = async () => {
+            const response = await fetch(`http://localhost:8085/recommend/roominfo/${roomID}`);
+            const roomInfo = await response.json();
+            console.log(roomInfo);
+
+            setTitle(roomInfo.title);
+            setTags(roomInfo.tags);
+        };
+        fetchRoomInfo();
+    }, []);
 
     return (
         <div style={{display:'flex'}}>

@@ -94,6 +94,8 @@ export const USERPREFIX = `${BASEURL}/user`;
 export const RECOMMENDPREFIX = `${BASEURL}/recommend`;
 
 export const RECORDVIDEO_PREFIX = `${BASEURL}/recordvideo`;
+
+export const LIVEVIDEO_PREFIX = `${BASEURL}/livevideo`;
 // 定义一个常量，用于表示网络错误的响应
 export const DUMMY_RESPONSE = {
     ok: false,
