@@ -48,3 +48,8 @@ export async function modifyPassword(oldPassword, newPassword) {
     let url = `${USERPREFIX}/modifyPassword`;
     return post(url, {oldPassword, newPassword});
 }
+
+export async function userCheckIsFan(followeeID) {
+    let url = `${USERPREFIX}/checkIsFan?followeeID=${followeeID}`;
+    return getJson(url);
+}

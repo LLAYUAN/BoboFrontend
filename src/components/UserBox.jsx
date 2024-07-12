@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Avatar, Button, Modal,notification } from 'antd';
 import { UserAddOutlined } from '@ant-design/icons';
-import {follow,unfollow} from '../service/user';
+import {follow,unfollow, userCheckIsFan} from '../service/user';
 import { useNavigate } from 'react-router-dom';
 
 export default function UserBox({ownerUserID,ownerNickName,ownerSelfIntro,ownerAvatarUrl}) {
@@ -23,7 +23,7 @@ export default function UserBox({ownerUserID,ownerNickName,ownerSelfIntro,ownerA
     //         setIsAuth(true);
     //     }
     // }
-    useEffect(() => {
+    const checkIsAuth = async () => {
         const authUserID_String = localStorage.getItem('userID');
         const authUserID = parseInt(authUserID_String);
         console.log("本地找authUserID:",authUserID);
@@ -31,10 +31,20 @@ export default function UserBox({ownerUserID,ownerNickName,ownerSelfIntro,ownerA
         console.log("ownerNickName", ownerNickName);
         if (authUserID === ownerUserID) {
             console.log("是本人");
-            setIsAuth(true);
+            await setIsAuth(true);
         } else {
             console.log("不是本人");
         }
+    }
+
+    const checkIsFan = async () => {
+        const response = await userCheckIsFan(ownerUserID);
+        await setIsFollowed(response.data);
+    }
+    
+    useEffect(() => {
+        checkIsAuth();
+        checkIsFan();
     }, []);
 
     // Function to handle follow/unfollow

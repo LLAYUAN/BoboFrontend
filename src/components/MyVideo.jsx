@@ -8,9 +8,11 @@ import {
     UserDeleteOutlined,
     VideoCameraOutlined
 } from "@ant-design/icons";
-import {getUsersRecordVideos} from '../service/recordVideo';
+import {getUsersRecordVideos,getPlayingRecordVideo, deleteRecordVideoByRecordVideoID} from '../service/recordVideo';
 import useUploadVideoModal from "../hooks/useUploadVideoModal";
 import VideoEditModal from "./VideoEditModal";
+import {transUrltoFileName} from "../utils/utils";
+import {deleteFile} from '../service/deleteFile';
 
 
 
@@ -18,6 +20,10 @@ const MyVideoList = ({ identity, ownerID }) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     //用于在videoEditModal操作后重新渲染profile页面(true/false都没关系,主要是状态要改变)
     const [updateVideoList, setUpdateVideoList] = useState(false);
+    const [isDeleteVideoModalVisible, setIsDeleteVideoModalVisible] = useState(false);
+    const [videoIDtoDelete, setVideoIDtoDelete] = useState(0);
+    const [videoNametoDelete, setVideoNametoDelete] = useState('');
+    const [imageUrltoDelete, setImageUrltoDelete] = useState('');
     const [myVideo, setMyVideo] = useState([]);
     const handleChangeState = () => {
         setUpdateVideoList(!updateVideoList);
@@ -50,6 +56,36 @@ const MyVideoList = ({ identity, ownerID }) => {
     //delete
     const handleDelete = (video) => {
         console.log(video);
+        setVideoIDtoDelete(video.videoID);
+        setVideoNametoDelete(video.videoName);
+        setImageUrltoDelete(video.imageUrl);
+        setIsDeleteVideoModalVisible(true);
+    }
+
+    const confirmDelete = async () => {
+        console.log("confirmDelete",videoIDtoDelete, imageUrltoDelete);
+        //先删除数据库
+        await deleteRecordVideoByRecordVideoID(videoIDtoDelete);
+        //再删除资源
+        const videoAllInfotoDelete = await getPlayingRecordVideo(videoIDtoDelete);
+        const videoUrltoDelete = videoAllInfotoDelete.videoUrl;
+        const videoFileNametoDelete = transUrltoFileName(videoUrltoDelete);
+        const imageFileNametoDelete = transUrltoFileName(imageUrltoDelete);
+        if (deleteFile(videoFileNametoDelete)) {
+            console.log("删除video资源成功")
+        } else {
+            console.log("删除video资源失败")
+        }
+        if (deleteFile(imageFileNametoDelete)) {
+            console.log("删除image资源成功")
+        } else {
+            console.log("删除image资源失败")
+        }
+        setVideoNametoDelete('');
+        setVideoIDtoDelete(0);
+        setImageUrltoDelete('');
+        setIsDeleteVideoModalVisible(false);
+        handleChangeState();
     }
 
     const handleClickVideo = (videoID) => {
@@ -126,6 +162,17 @@ const MyVideoList = ({ identity, ownerID }) => {
             </Modal>
 
             <VideoEditModal isVisible={isUploadModalVisible} onOk={handleUploadOk} onCancel={handleUploadCancel} changeState={handleChangeState}/>
+
+            <Modal
+                title="删除视频"
+                visible={isDeleteVideoModalVisible}
+                onOk={confirmDelete}
+                onCancel={() => setIsDeleteVideoModalVisible(false)}
+                okText="确认"
+                cancelText="取消"
+            >
+                <p>确定要删除视频“{videoNametoDelete}”吗？</p>
+            </Modal>
         </div>
     );
 };
