@@ -3,6 +3,7 @@ import {EditOutlined, GiftOutlined, HeartOutlined, LikeOutlined, UserAddOutlined
 import ChatBox from "../components/ChatBox";
 import UserList from "../components/UserList";
 import {useParams} from "react-router-dom";
+import VideoLive from "../components/VideoLive"
 
 export default function LiveAnchor() {
     const title = '直播间的title';
@@ -45,8 +46,9 @@ export default function LiveAnchor() {
                     {/*<Button icon={<EditOutlined />} style={{marginRight:'3%'}} size="large"></Button>*/}
                 </div>
                 <Divider style={{ margin: '15px 0' }}/>
-                <div style={{width:'90%',background:'#000',paddingBottom:'50%',marginLeft:'5%'}}>这是视频</div>
-                <div style={{display:'flex',padding:'10px 10px'}}>
+                <div style={{width: '90%', background: '#000', paddingBottom: '50%', marginLeft: '5%'}}>这是视频</div>
+                
+                <div style={{display: 'flex', padding: '10px 10px'}}>
                     <Button icon={<GiftOutlined />} style={{marginLeft:'80%'}} size="large"></Button>
                     <Button icon={<LikeOutlined />} style={{marginLeft:'2%'}} size="large"></Button>
                     <Button icon={<HeartOutlined />} style={{marginLeft:'2%'}} size="large"></Button>

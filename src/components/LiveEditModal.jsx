@@ -110,8 +110,10 @@ const LiveEditModal = ({ isVisible, onOk, onCancel }) => {
                     description: 'Room creation failed.',
                 });
             } else {
+                onCancel();
+                // onOk(form);
                 let roomID = res.data;
-                navigate(`/liveUser/${roomID}`);
+                navigate(`/liveAnchor/${roomID}`);
             }
         } catch (error) {
             console.error('Error:', error);
@@ -122,7 +124,7 @@ const LiveEditModal = ({ isVisible, onOk, onCancel }) => {
         <Modal
             title="创建直播间"
             visible={isVisible}
-            onOk={() => onOk(form)}
+            onOk={onOk}
             onCancel={onCancel}
             footer={[
                 <Button key="back" type="default" onClick={onCancel}>

@@ -9,25 +9,26 @@ const useLiveEditModal = () => {
         setIsModalVisible(true);
     };
 
-    const handleOk = () => async(values) => {
+    const handleOk = () => (values) => {
         // 处理提交表单后的逻辑
         console.log('Received values:', values);
         notification.success({
             message: '直播间创建成功',
             description: `直播间 ${values.title} 已创建`,
         });
-        console.log()
-        let res = await startLive(values.title,values.tags,values.cover_image);
+        console.log("start live");
+        // let res = await startLive(values.title,values.tags,values.cover_image);
         setIsModalVisible(false);
-        if(res.code === 200){
-            // TODO: 跳转到对应的开启直播页面
-        }
+        // if(res.code === 200){
+        //     // TODO: 跳转到对应的开启直播页面
+        // }
         // if (onSuccess) {
         //     onSuccess(values);
         // }
     };
 
     const handleCancel = () => {
+        console.log('Clicked cancel button');
         setIsModalVisible(false);
     };
 
