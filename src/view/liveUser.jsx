@@ -6,6 +6,7 @@ import UserBox from "../components/UserBox";
 // import VideoLive from "../components/VideoLive"
 import VideoShow from "../components/VideoShow"
 import {useState, useEffect} from "react";
+import { RECOMMENDPREFIX } from "../service/common"
 
 export default function LiveUser() {
     const [title, setTitle] = useState('');
@@ -15,17 +16,16 @@ export default function LiveUser() {
     console.log(roomID);
 
     useEffect(() => {
-        const fetchRoomInfo = async () => {
-            const response = await fetch(`http://localhost:8085/recommend/roominfo/${roomID}`);
-            const roomInfo = await response.json();
-            console.log(roomInfo);
 
+        fetchRoomInfo().then(response => {
+            console.log(response);
+
+            const roomInfo = response.data;
             setTitle(roomInfo.title);
             setTags(roomInfo.tags);
-        };
-        fetchRoomInfo();
-    }, []);
-
+        })
+    }
+    
     return (
         <div style={{display:'flex'}}>
             <div style={{display:'flex',flexDirection:'column',width:'70%',padding:'0 30px'}}>
@@ -39,7 +39,7 @@ export default function LiveUser() {
                 </Flex>
                 <Divider style={{ margin: '15px 0' }}/>
                 <div style={{width:'90%',marginLeft:'5%'}}>
-                    <VideoLive
+                    <VideoShow
                         roomId = {roomID}
                         style={{height:'80%'}}
                     />

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import flvJs from 'flv.js';
-import {LOGIN_EXPIRED, DUMMY_RESPONSE}from "../service/common"
+import {userEnter, userExit} from "../service/livevideo"
 
 const VideoShow = ({ roomId }) => {
     const videoRef = useRef(null);
@@ -46,58 +46,25 @@ const VideoShow = ({ roomId }) => {
         }
     };
 
-    async function getUserId() {
-        let token = `${localStorage.getItem('tokenHead')}${localStorage.getItem('token')}`;
+    
 
-        let res = await fetch(`http://localhost:8081/api/getUserId`, {
-            method: "GET",
-            credentials: "include",
-            headers: {
-                "Authorization": token
-            }
-        });
-        //解析响应的json数据并返回
-        if (res.status == 401) {
-            return LOGIN_EXPIRED;
-        }
-        if (res.status !== 200) {
-            return DUMMY_RESPONSE;
-        }
-        return res.json().data;
-    }
+    const userId = localStorage.getItem('userID')
 
-    const userId = getUserId();
-
-    useEffect(() => {
+     useEffect(() => {
         showCameraStream();
         // showDesktopStream();
-
-        const userEnter = async () => {
-            await fetch('http://localhost:8081/api/user-enter', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ userId: userId, roomId: roomId }),
-            });
+         let data1 = {
+            userId: userId,
+            roomId: roomId,
         };
 
-        const userExit = async () => {
-            await fetch('http://localhost:8081/api/user-exit', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ userId: userId }),
-            });
-        };
-
-        userEnter();
+         let data2  = { userId: userId };
+        userEnter(data1);
 
         window.addEventListener('beforeunload', userExit);
 
         return () => {
-            userExit();
+            userExit(data2);
             window.removeEventListener('beforeunload', userExit);
         };
     }, [roomId]);

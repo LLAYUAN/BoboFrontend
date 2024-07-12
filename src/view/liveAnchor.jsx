@@ -4,10 +4,10 @@ import ChatBox from "../components/ChatBox";
 import UserList from "../components/UserList";
 import {useParams} from "react-router-dom";
 import VideoLive from "../components/VideoLive"
+import {useEffect, useState} from "react";
+import {fetchRoomInfo} from "../service/livevideo"
 
 export default function LiveAnchor() {
-    const title = '直播间的title';
-    const tags = ['purple', 'magenta', 'red', 'volcano'];
 
     const {roomID}=useParams();
     console.log(roomID);
@@ -15,6 +15,23 @@ export default function LiveAnchor() {
     const onChange = (key) => {
         console.log(key);
     };
+
+    const [title, setTitle] = useState('');
+    const [tags, setTags] = useState([]);
+
+    const {roomID}=useParams();
+    console.log(roomID);
+
+    useEffect(() => {
+
+        fetchRoomInfo().then(response => {
+            console.log(response);
+
+            const roomInfo = response.data;
+            setTitle(roomInfo.title);
+            setTags(roomInfo.tags);
+        })
+    }
 
     const items = [
         {
@@ -25,7 +42,7 @@ export default function LiveAnchor() {
         {
             key: '2',
             label: '用户列表',
-            children: <UserList />
+            children: <UserList roomId = {roomID}/>
         },
     ];
 
@@ -46,7 +63,7 @@ export default function LiveAnchor() {
                     {/*<Button icon={<EditOutlined />} style={{marginRight:'3%'}} size="large"></Button>*/}
                 </div>
                 <Divider style={{ margin: '15px 0' }}/>
-                <div style={{width: '90%', background: '#000', paddingBottom: '50%', marginLeft: '5%'}}>
+                <div style={{width: '90%', marginLeft: '5%'}}>
                     <VideoLive
                         roomId = {roomID}
                         style={{height:'80%'}}
