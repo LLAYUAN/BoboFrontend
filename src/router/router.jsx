@@ -20,7 +20,7 @@ function Layout() {
             {location.pathname !== '/login' && location.pathname !== "/register" && <Nav />}
             <div style={{ paddingTop: location.pathname !== '/login' && location.pathname !== '/register' ? '80px' : '0' }}>
                 <Routes>
-                    <Route path="/" element={<Home />} />
+                    <Route path="/" element={<Login />} />
                     <Route path="/home" element={<Home />} />
                     <Route path="/popular" element={<Popular />} />
                     <Route path="/category" element={<Category />} />
