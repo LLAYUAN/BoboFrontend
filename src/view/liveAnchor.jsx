@@ -8,30 +8,36 @@ import {useEffect, useState} from "react";
 import {fetchRoomInfo} from "../service/livevideo"
 
 export default function LiveAnchor() {
-
-    const {roomID}=useParams();
-    console.log(roomID);
-
     const onChange = (key) => {
         console.log(key);
     };
 
     const [title, setTitle] = useState('');
     const [tags, setTags] = useState([]);
+    const trueTags = ['学习', '娱乐', '其他'];
 
-    const {roomID}=useParams();
+    const { roomID } = useParams();
     console.log(roomID);
 
     useEffect(() => {
-
-        fetchRoomInfo().then(response => {
+        fetchRoomInfo(roomID).then(response => {
             console.log(response);
 
-            const roomInfo = response.data;
-            setTitle(roomInfo.title);
-            setTags(roomInfo.tags);
-        })
-    }
+            const roomInfo = response;
+            console.log(roomInfo);
+            setTitle(roomInfo.roomName);
+
+            const newTags = [];
+            if (roomInfo.tags) {
+                if (roomInfo.tags[0]) newTags.push(trueTags[0]);
+                if (roomInfo.tags[1]) newTags.push(trueTags[1]);
+                if (roomInfo.tags[2]) newTags.push(trueTags[2]);
+            }
+            setTags(newTags);
+            console.log(newTags);
+        });
+    }, []);
+
 
     const items = [
         {
@@ -43,7 +49,7 @@ export default function LiveAnchor() {
             key: '2',
             label: '用户列表',
             children: <UserList roomId = {roomID}/>
-        },
+        }
     ];
 
     return (

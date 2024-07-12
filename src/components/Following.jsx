@@ -89,7 +89,7 @@ const FollowingList = ({ following }) => {
 
             <Modal
                 title="Following"
-                visible={isModalVisible}
+                open={isModalVisible}
                 onOk={handleOk}
                 onCancel={handleCancel}
             >
@@ -122,7 +122,7 @@ const FollowingList = ({ following }) => {
 
             <Modal
                 title="取消关注"
-                visible={followModalVisible}
+                open={followModalVisible}
                 onOk={confirmUnFollow}
                 onCancel={() => setFollowModalVisible(false)}
                 okText="确认"

@@ -3,6 +3,10 @@ import flvJs from 'flv.js';
 import {LIVEVIDEOPREFIX} from "../service/common"
 import {fetchCameraDevices, startCamera, startDesktop, record, stop} from "../service/livevideo"
 
+const RTMP = `rtmp://10.180.138.227:1935`;
+const HTTP = `http://10.180.138.227:8000`;
+const PATH = `C:/Users`;
+
 const LiveDemo = ({ roomId }) => {
 
     const videoRef = useRef(null);
@@ -81,7 +85,7 @@ const LiveDemo = ({ roomId }) => {
         handleDestroy();
 
         let data = {
-            rtmpUrl: `rtmp://10.180.138.227:1935/live/camera${roomId}`,
+            rtmpUrl: `${RTMP}/live/camera${roomId}`,
             cameraDevice: selectedCamera,
             roomId: roomId,
             localFilePath: localFilePath
@@ -91,7 +95,7 @@ const LiveDemo = ({ roomId }) => {
             console.log(result);
 
             if (result.status === 200) {
-                const player = initializePlayer(`http://10.180.138.227:8000/live/camera${roomId}.flv`);
+                const player = initializePlayer(`${HTTP}/live/camera${roomId}.flv`);
                 if (player) {
                     player.play();
                 }
@@ -106,14 +110,14 @@ const LiveDemo = ({ roomId }) => {
         handleDestroy();
         
         let data = {
-            rtmpUrl: `rtmp://10.180.138.227:1935/live/desktop${roomId}`,
+            rtmpUrl: `${RTMP}/live/desktop${roomId}`,
             roomId: roomId,
             localFilePath: localFilePath
         };
         
         startDesktop(data).then(result => {
             if (result.status === 200) {
-                const player = initializePlayer(`http://10.180.138.227:8000/live/desktop${roomId}.flv`);
+                const player = initializePlayer(`${HTTP}/live/desktop${roomId}.flv`);
                 if (player) {
                     player.play();
                 }
@@ -127,7 +131,7 @@ const LiveDemo = ({ roomId }) => {
     const handleStartCameraRecord = async (localFilePath) => {
         
         let data = {
-            rtmpUrl: `rtmp://10.180.138.227:1935/live/camera${roomId}`,
+            rtmpUrl: `${RTMP}/live/camera${roomId}`,
             localFilePath: localFilePath
         };
         record(data);
@@ -136,7 +140,7 @@ const LiveDemo = ({ roomId }) => {
     const handleStartDesktopRecord = async (localFilePath) => {
 
         let data = {
-            rtmpUrl: `rtmp://10.180.138.227:1935/live/desktop${roomId}`,
+            rtmpUrl: `${RTMP}/live/desktop${roomId}`,
             localFilePath: localFilePath
         };
 
@@ -195,10 +199,10 @@ const LiveDemo = ({ roomId }) => {
                 <button onClick={() => handleStartDesktopStream('')}>开始桌面直播</button>
                 <button onClick={handleStopStream}>结束直播</button>
                 <button
-                    onClick={() => handleStartCameraRecord(`C:/Users/77043/Desktop/video/camera${roomId}.mp4`)}>开始摄像头录制
+                    onClick={() => handleStartCameraRecord(`${PATH}/77043/Desktop/video/camera${roomId}.mp4`)}>开始摄像头录制
                 </button>
                 <button
-                    onClick={() => handleStartDesktopRecord(`C:/Users/77043/Desktop/video/desktop${roomId}.mp4`)}>开始桌面录制
+                    onClick={() => handleStartDesktopRecord(`${PATH}/77043/Desktop/video/desktop${roomId}.mp4`)}>开始桌面录制
                 </button>
             </div>
         </div>
