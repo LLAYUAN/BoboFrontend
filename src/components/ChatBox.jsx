@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Input, Button, List, Divider, FloatButton } from 'antd';
+import { Input, Button, List, Divider, FloatButton,Space } from 'antd';
 
 import ChatService from '../service/chat';
 import moment from 'moment';
@@ -40,7 +40,7 @@ const ChatBox = ({ roomID }) => {
                 setHasMore(false);
             }
         } catch (error) {
-            console.error('Error fetching history messages:', error);
+            console.log('Error fetching history messages:', error);
         }
     };
 
@@ -82,7 +82,7 @@ const ChatBox = ({ roomID }) => {
     };
 
     useEffect(() => {
-        console.log('messages changed', changetype);
+       // console.log('messages changed', changetype);
         if (changetype === false) {
             pushListBottom();
         }
@@ -129,7 +129,7 @@ const ChatBox = ({ roomID }) => {
                     )}
                 />
             </div>
-            <Input.Group compact>
+            <Space.Compact>
                 <Input
                     style={{ width: 'calc(100% - 70px)' }}
                     value={inputValue}
@@ -137,7 +137,7 @@ const ChatBox = ({ roomID }) => {
                     onPressEnter={() => { setChangetype(false); sendMessage(); }}
                 />
                 <Button type="primary" onClick={() => { setChangetype(false); sendMessage(); }}>发送</Button>
-            </Input.Group>
+            </Space.Compact>
             {showBackToBottom && (
                 <Button
                     type="primary"
