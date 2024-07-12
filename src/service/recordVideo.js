@@ -19,3 +19,8 @@ export async function getPlayingRecordVideo(videoID) {
     let playingRecordVideoInfo =  getJson(url);
     return playingRecordVideoInfo;
 }
+
+export async function deleteRecordVideoByRecordVideoID(recordVideoID) {
+    const url = `${RECORDVIDEO_PREFIX}/deleteRecordVideoByRecordVideoID?recordVideoID=${recordVideoID}`;
+    getJson(url);
+}

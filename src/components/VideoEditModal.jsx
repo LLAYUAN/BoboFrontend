@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, Button, Form, Input, Upload, notification, Image, Select, Progress } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import {uploadFile} from '../service/uploadFile'
 import {deleteFile} from '../service/deleteFile'
 import {RECORDVIDEO_PREFIX} from "../service/common";
-import {saveRecordVideo} from "../service/recordVideo"
+import {saveRecordVideo} from "../service/recordVideo";
+import {transUrltoFileName} from "../utils/utils";
 import axios from 'axios';
 const { Option } = Select;
 
@@ -18,13 +19,15 @@ const VideoEditModal = ({ isVisible, onOk, onCancel, changeState }) => {
     const [videoProgress, setVideoProgress] = useState(0);
     const [imageCancelTokenSource, setImageCancelTokenSource] = useState(null);
     const [videoCancelTokenSource, setVideoCancelTokenSource] = useState(null);
+    const [isImageUploading, setIsImageUploading] = useState(false);
+    const [isVideoUploading, setIsVideoUploading] = useState(false);
     const navigate = useNavigate();
 
-    const transUrltoFileName = (url) => {
-        const urlParts = url.split('/'); // 使用 '/' 分割字符串
-        const filename = urlParts[urlParts.length - 1]; // 获取最后一个元素
-        return filename;
-    }
+    // const transUrltoFileName = (url) => {
+    //     const urlParts = url.split('/'); // 使用 '/' 分割字符串
+    //     const filename = urlParts[urlParts.length - 1]; // 获取最后一个元素
+    //     return filename;
+    // }
     
     const cleanAllFormInfo = () => {
         setImageUrl('');
@@ -37,6 +40,7 @@ const VideoEditModal = ({ isVisible, onOk, onCancel, changeState }) => {
     }
 
     const handleImageUpload = async(file) => {
+        await setIsImageUploading(true);
         console.log("点击handleImageUpload");
         console.log("经过if");
         // 创建FormData对象
@@ -67,9 +71,11 @@ const VideoEditModal = ({ isVisible, onOk, onCancel, changeState }) => {
                     });
                 }
             }
+        setIsImageUploading(false);    
     };
     
     const handleVideoUpload = async(file) => {
+        await setIsVideoUploading(true);
         console.log("点击handleVideoUpload");
         console.log("经过if");
         // 创建FormData对象
@@ -99,12 +105,14 @@ const VideoEditModal = ({ isVisible, onOk, onCancel, changeState }) => {
                     });
                 }
             }
+        setIsImageUploading(false);    
     }
 
     const beforeImageUpload = async (file) => {
         handleImageUpload(file);
         return false; // 阻止默认上传行为
     };
+    
     
     const beforeVideoUpload = async (file) => {
         handleVideoUpload(file);
@@ -171,9 +179,9 @@ const VideoEditModal = ({ isVisible, onOk, onCancel, changeState }) => {
             console.log("关闭时videoUrl不为空,需要从文件夹中删除");
             const videoFileName = transUrltoFileName(videoUrl);
             if (deleteFile(videoFileName)) {
-                console.log("删除video成功")
+                console.log("删除video资源成功")
             } else {
-                console.log("删除video失败")
+                console.log("删除video资源失败")
             }
         }
         if (imageCancelTokenSource) {
@@ -228,6 +236,7 @@ const VideoEditModal = ({ isVisible, onOk, onCancel, changeState }) => {
                                 //onChange={handleImageUpload}
                                 beforeUpload={beforeImageUpload}
                                 onProgress={handleImageProgress}
+                                disabled={isImageUploading}
                             >
                                 {imageUrl ? (
                                     <Image src={imageUrl} alt="cover" width={200}/>
@@ -257,6 +266,7 @@ const VideoEditModal = ({ isVisible, onOk, onCancel, changeState }) => {
                                 //onChange={handleVideoUpload}
                                 beforeUpload={beforeVideoUpload}
                                 onProgress={handleVideoProgress}
+                                disabled={isVideoUploading}
                             >
                                 {videoUrl ? (
                                     <video src={videoUrl} controls width={200}/>
