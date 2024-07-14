@@ -8,7 +8,9 @@ export default function UserBox({ownerUserID,ownerNickName,ownerSelfIntro,ownerA
     const [isFollowed, setIsFollowed] = useState(false); // State to track if user is followed
     const [modalVisible, setModalVisible] = useState(false); // State to control modal visibility
     const [isAuth, setIsAuth] = useState(false);
+    const [loading, setLoading] = useState(true); // 添加加载状态
     const navigate = useNavigate();
+    console.log("ownerUserID",ownerUserID);
     // const user = {
     //     nickname: '用户名',
     //     selfIntro: '用户简介',
@@ -39,6 +41,8 @@ export default function UserBox({ownerUserID,ownerNickName,ownerSelfIntro,ownerA
 
     const checkIsFan = async () => {
         const response = await userCheckIsFan(ownerUserID);
+        console.log("response",response.data);
+        setLoading(false); // 检查完毕后设置loading为false
         await setIsFollowed(response.data);
     }
     
@@ -100,6 +104,10 @@ export default function UserBox({ownerUserID,ownerNickName,ownerSelfIntro,ownerA
         } else {
             navigate(`/visitprofile/${ownerUserID}`);
         }
+    }
+
+    if (loading) {
+        return <div>Loading...</div>; // 当loading为true时，显示加载提示
     }
 
     return (
