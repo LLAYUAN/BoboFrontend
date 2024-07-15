@@ -88,7 +88,7 @@ const FollowerList = ({ follower }) => {
             />
 
             <Modal
-                title="Follower"
+                title="粉丝"
                 open={isModalVisible}
                 onOk={handleOk}
                 onCancel={handleCancel}
@@ -111,7 +111,7 @@ const FollowerList = ({ follower }) => {
                                         maxWidth: '90%' // 根据需要设置最大宽度，或者可以设置具体数值
                                     }}
                                 >
-                                    {user.introduction}
+                                    {nameToWebsite(user.nickname)}
                                 </div>}
                             />
                             {/*<Button icon={<UserDeleteOutlined />} onClick={() => handleDelete(user)}/>*/}
