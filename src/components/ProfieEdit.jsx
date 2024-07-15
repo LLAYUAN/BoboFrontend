@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Avatar, Button, Form, Input, DatePicker, Upload, notification } from 'antd';
 import { UserOutlined, UploadOutlined } from "@ant-design/icons";
 import dayjs from 'dayjs';
-import { uploadFile } from '../service/uploadFile'; // 引入上传文件的服务
-import { updateUserInfo } from '../service/user'; // Assuming uploadFile is moved to user service for consistency
+// import { uploadFile } from '../service/uploadFile'; // 引入上传文件的服务
+import { updateUserInfo,uploadFile } from '../service/user'; // Assuming uploadFile is moved to user service for consistency
 
 const layout = {
     labelCol: {
@@ -50,10 +50,10 @@ export default function ProfileEdit({ user }) {
             const newAvatarUrl = response.data;
             setAvatarUrl(newAvatarUrl); // Set uploaded avatar URL
             console.log('Avatar URL:', newAvatarUrl);
-            notification.success({
-                message: 'Upload Successful',
-                description: 'Avatar uploaded successfully.',
-            });
+            // notification.success({
+            //     message: 'Upload Successful',
+            //     description: 'Avatar uploaded successfully.',
+            // });
             return newAvatarUrl; // Return new avatar URL
         } catch (error) {
             notification.error({
