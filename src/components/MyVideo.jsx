@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from "react";
 import {Button, Modal, List, Divider, Avatar, Image} from 'antd';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -8,14 +8,38 @@ import {
     UserDeleteOutlined,
     VideoCameraOutlined
 } from "@ant-design/icons";
+import {getUsersRecordVideos,getPlayingRecordVideo, deleteRecordVideoByRecordVideoID} from '../service/recordVideo';
 import useUploadVideoModal from "../hooks/useUploadVideoModal";
 import VideoEditModal from "./VideoEditModal";
+import {transUrltoFileName} from "../utils/utils";
+import {deleteFile} from '../service/deleteFile';
 
 
 
-const MyVideoList = ({ identity, myVideo }) => {
+const MyVideoList = ({ identity, ownerID }) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
+    //用于在videoEditModal操作后重新渲染profile页面(true/false都没关系,主要是状态要改变)
+    const [updateVideoList, setUpdateVideoList] = useState(false);
+    const [isDeleteVideoModalVisible, setIsDeleteVideoModalVisible] = useState(false);
+    const [videoIDtoDelete, setVideoIDtoDelete] = useState(0);
+    const [videoNametoDelete, setVideoNametoDelete] = useState('');
+    const [imageUrltoDelete, setImageUrltoDelete] = useState('');
+    const [myVideo, setMyVideo] = useState([]);
+    const handleChangeState = () => {
+        setUpdateVideoList(!updateVideoList);
+    };
     const navigate = useNavigate();
+
+    const loadVideoList = async () => {
+        const data = await getUsersRecordVideos(ownerID);
+        console.log("getUsersRecordVideos:");
+        console.log(data);
+        setMyVideo(data);
+    }
+
+    useEffect(() => {
+        loadVideoList();
+    }, [updateVideoList]);
 
     const showModal = () => {
         setIsModalVisible(true);
@@ -32,6 +56,36 @@ const MyVideoList = ({ identity, myVideo }) => {
     //delete
     const handleDelete = (video) => {
         console.log(video);
+        setVideoIDtoDelete(video.videoID);
+        setVideoNametoDelete(video.videoName);
+        setImageUrltoDelete(video.imageUrl);
+        setIsDeleteVideoModalVisible(true);
+    }
+
+    const confirmDelete = async () => {
+        console.log("confirmDelete",videoIDtoDelete, imageUrltoDelete);
+        //先删除数据库
+        await deleteRecordVideoByRecordVideoID(videoIDtoDelete);
+        //再删除资源
+        const videoAllInfotoDelete = await getPlayingRecordVideo(videoIDtoDelete);
+        const videoUrltoDelete = videoAllInfotoDelete.videoUrl;
+        const videoFileNametoDelete = transUrltoFileName(videoUrltoDelete);
+        const imageFileNametoDelete = transUrltoFileName(imageUrltoDelete);
+        if (deleteFile(videoFileNametoDelete)) {
+            console.log("删除video资源成功")
+        } else {
+            console.log("删除video资源失败")
+        }
+        if (deleteFile(imageFileNametoDelete)) {
+            console.log("删除image资源成功")
+        } else {
+            console.log("删除image资源失败")
+        }
+        setVideoNametoDelete('');
+        setVideoIDtoDelete(0);
+        setImageUrltoDelete('');
+        setIsDeleteVideoModalVisible(false);
+        handleChangeState();
     }
 
     const handleClickVideo = (videoID) => {
@@ -107,20 +161,22 @@ const MyVideoList = ({ identity, myVideo }) => {
                 />
             </Modal>
 
-            <VideoEditModal isVisible={isUploadModalVisible} onOk={handleUploadOk} onCancel={handleUploadCancel} />
+            <VideoEditModal isVisible={isUploadModalVisible} onOk={handleUploadOk} onCancel={handleUploadCancel} changeState={handleChangeState}/>
+
+            <Modal
+                title="删除视频"
+                visible={isDeleteVideoModalVisible}
+                onOk={confirmDelete}
+                onCancel={() => setIsDeleteVideoModalVisible(false)}
+                okText="确认"
+                cancelText="取消"
+            >
+                <p>确定要删除视频“{videoNametoDelete}”吗？</p>
+            </Modal>
         </div>
     );
 };
 
-// Example usage
-const myVideo = [
-    { videoID: 0,videoName: 'Video0', ownerName: 'owner0',imageUrl:'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',videoIntro:'简介1'},
-    { videoID: 1,videoName: 'Video1', ownerName: 'owner0',imageUrl:'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',videoIntro:'简介2'},
-    { videoID: 2,videoName: 'Video2', ownerName: 'owner0',imageUrl:'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',videoIntro:'简介3'},
-    { videoID: 3,videoName: 'Video3', ownerName: 'owner0',imageUrl:'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',videoIntro:'简介4'},
-    // Add more users here
-];
-
-const MyVideo = ({identity}) => <MyVideoList identity={identity} myVideo={myVideo} />;
+const MyVideo = ({identity, userID}) => <MyVideoList identity={identity} ownerID={userID}/>;
 
 export default MyVideo

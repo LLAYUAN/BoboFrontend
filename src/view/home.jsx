@@ -37,7 +37,7 @@ export default function Home() {
             <Row justify="space-between" gutter={[16, 16]}>
                 {videoData.map(video => (
                     <Col >
-                        <VideoCard video={video} roomID={video.id} title={video.roomName} author={video.userName} />
+                        <VideoCard video={video} />
                     </Col>
                 ))}
             </Row>

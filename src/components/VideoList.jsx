@@ -1,20 +1,24 @@
 import {Button, Image, Input, List} from "antd";
-import React from "react";
+import React, {useState, useEffect} from "react";
 import VideoCard from "./VideoCard";
 import { useNavigate } from 'react-router-dom';
 import {DeleteOutlined} from "@ant-design/icons";
+import {getUsersRecordVideos} from '../service/recordVideo';
 
-export default function VideoList() {
+export default function VideoList({ownerUserID}) {
     const navigate = useNavigate();
-    //todo:从后端获取视频列表
-    const videos = [
-        { videoID: 0,videoName: 'Video0', ownerName: 'owner0',imageUrl:'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',videoIntro:'简介1'},
-        { videoID: 1,videoName: 'Video1', ownerName: 'owner0',imageUrl:'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',videoIntro:'简介2'},
-        { videoID: 2,videoName: 'Video2', ownerName: 'owner0',imageUrl:'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',videoIntro:'简介3'},
-        { videoID: 3,videoName: 'Video3', ownerName: 'owner0',imageUrl:'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',videoIntro:'简介4'},
-        // Add more users here
-    ];
+    const [videos, setVideos] = useState([]);
+    const loadVideoList = async () => {
+        const data = await getUsersRecordVideos(ownerUserID);
+        console.log("getUsersRecordVideos:");
+        console.log(data);
+        setVideos(data);
+    }
 
+    useEffect(() => {
+        loadVideoList();
+    }, []);
+    
     const handleClickVideo = (videoID) => {
         console.log("ClickVideo,videoID:",videoID);
         navigate(`/video/${videoID}`);

@@ -1,44 +1,52 @@
 import React from 'react';
 import { List, Avatar, Button } from 'antd';
+import { useEffect, useState } from 'react';
+import { fetchActiveUsers, userExit} from '../service/livevideo';
 
-// 示例用户数据
-const users = [
-    {
-        key: '1',
-        user: 'John Brown',
-        text: 'New York No. 1 Lake Park',
-    },
-    {
-        key: '2',
-        user: 'Jim Green',
-        text: 'London No. 1 Lake Park',
-    },
-    {
-        key: '3',
-        user: 'Joe Black',
-        text: 'Sidney No. 1 Lake Park',
-    },
-];
+const UserList = ({ roomId }) => {
+    const [activeUsers, setActiveUsers] = useState([]);
 
-const UserList = () => {
-    const handleDelete = (key) => {
-        console.log(`Deleted user with key: ${key}`);
+    useEffect(() => {
+        console.log(roomId);
+        fetchActiveUsers(roomId).then(response => {
+            console.log(response);
+            if (response.status === 200) {
+                setActiveUsers(response.data);
+            } else {
+                console.error(`Failed to fetch active users: ${response.message}`);
+            }
+        });
+
+        console.log(activeUsers);
+    }, [roomId]);
+
+    const handleDelete = (userId) => {
+        console.log(`Deleted user with userId: ${userId}`);
         // 实现删除功能
+        userExit({ userId }).then(response => {
+            if (response.status === 200) {
+                console.log('User removed successfully');
+                // Update activeUsers state after successful removal
+                setActiveUsers(prevUsers => prevUsers.filter(user => user.userId !== userId));
+            } else {
+                console.log(`Failed to remove user: ${response.message}`);
+            }
+        });
     };
 
     return (
         <List
-            style={{ height: '100%',padding:'0 10px' }}
+            style={{ height: '100%', padding: '0 10px' }}
             itemLayout="horizontal"
-            dataSource={users}
+            dataSource={activeUsers}
             renderItem={item => (
                 <List.Item
-                    actions={[<Button type="primary" onClick={() => handleDelete(item.key)}>移除</Button>]}
+                    actions={[<Button type="primary" onClick={() => handleDelete(item.userId)}>移除</Button>]}
                 >
                     <List.Item.Meta
-                        avatar={<Avatar>{item.user.charAt(0)}</Avatar>}
-                        title={item.user}
-                        description={item.text}
+                        avatar={<Avatar>{item.userId.charAt(0)}</Avatar>}
+                        title={item.userId}
+                        description={`Room: ${item.roomId}, Entered at: ${item.enterTime}`}
                     />
                 </List.Item>
             )}
