@@ -1,29 +1,32 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { List, Avatar, Button } from 'antd';
-import { useEffect, useState } from 'react';
-import { fetchActiveUsers, userExit} from '../service/livevideo';
+import { fetchActiveUsers, userExit } from '../service/livevideo';
 
 const UserList = ({ roomId }) => {
     const [activeUsers, setActiveUsers] = useState([]);
 
     useEffect(() => {
-        console.log(roomId);
-        fetchActiveUsers(roomId).then(response => {
-            console.log(response);
-            if (response.status === 200) {
-                setActiveUsers(response.data);
-            } else {
-                console.error(`Failed to fetch active users: ${response.message}`);
-            }
-        });
+        const fetchUsers = () => {
+            fetchActiveUsers(roomId).then(response => {
+                if (response.status === 200) {
+                    setActiveUsers(response.data);
+                } else {
+                    console.error(`Failed to fetch active users: ${response.message}`);
+                }
+            });
+        };
 
-        console.log(activeUsers);
+        fetchUsers(); // Initial fetch
+
+        const interval = setInterval(fetchUsers, 10000); // Fetch every 10 seconds
+
+        return () => clearInterval(interval); // Clear interval on component unmount
     }, [roomId]);
 
     const handleDelete = (userId) => {
         console.log(`Deleted user with userId: ${userId}`);
         // 实现删除功能
-        userExit({ userId }).then(response => {
+        userExit({ userId, roomId }).then(response => {
             if (response.status === 200) {
                 console.log('User removed successfully');
                 // Update activeUsers state after successful removal

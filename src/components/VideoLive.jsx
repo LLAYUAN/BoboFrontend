@@ -3,8 +3,8 @@ import flvJs from 'flv.js';
 import {LIVEVIDEOPREFIX} from "../service/common"
 import {fetchCameraDevices, startCamera, startDesktop, record, stop} from "../service/livevideo"
 
-const RTMP = `rtmp://10.180.74.35:1935`;
-const HTTP = `http://10.180.74.35:8000`;
+const RTMP = `rtmp://10.180.138.227:1935`;
+const HTTP = `http://10.180.138.227:8000`;
 const PATH = `C:/Users`;
 
 const LiveDemo = ({ roomId }) => {
