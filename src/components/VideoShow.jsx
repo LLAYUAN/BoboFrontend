@@ -35,7 +35,7 @@ const VideoShow = ({ roomId }) => {
     const showCameraStream = async () => {
         const player = initializePlayer(`${HTTP}/live/camera${roomId}.flv`);
         if (player) {
-            player.play();
+            // player.play();
             setCurrentStream('camera');
         }
     };
@@ -43,7 +43,7 @@ const VideoShow = ({ roomId }) => {
     const showDesktopStream = async () => {
         const player = initializePlayer(`${HTTP}/live/desktop${roomId}.flv`);
         if (player) {
-            player.play();
+            // player.play();
             setCurrentStream('desktop');
         }
     };

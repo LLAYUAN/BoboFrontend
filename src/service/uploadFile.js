@@ -3,6 +3,7 @@ import axios from 'axios';
 export async function uploadFile(formData,setProgress,cancelTokenSource) {
     console.log("调用uploadFile");
     const url = `${RECORDVIDEO_PREFIX}/uploadFile`;
+    console.log("url",url);
     let token = `${localStorage.getItem('tokenHead')}${localStorage.getItem('token')}`;
     const response = await axios.post(url, formData, {
         headers: {

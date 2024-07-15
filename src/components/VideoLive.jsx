@@ -96,9 +96,9 @@ const LiveDemo = ({ roomId }) => {
 
             if (result.status === 200) {
                 const player = initializePlayer(`${HTTP}/live/camera${roomId}.flv`);
-                if (player) {
-                    player.play();
-                }
+                // if (player) {
+                //     player.play();
+                // }
             } else {
                 alert(`Failed to start camera stream: ${result.message}`);
             }
@@ -118,9 +118,9 @@ const LiveDemo = ({ roomId }) => {
         startDesktop(data).then(result => {
             if (result.status === 200) {
                 const player = initializePlayer(`${HTTP}/live/desktop${roomId}.flv`);
-                if (player) {
-                    player.play();
-                }
+                // if (player) {
+                //     player.play();
+                // }
             } else {
                 alert(`Failed to start desktop stream: ${result.message}`);
             }
