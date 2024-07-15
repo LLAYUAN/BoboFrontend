@@ -1,4 +1,4 @@
-import {Button, Image, Input, List} from "antd";
+import {Button, Image, Input, List, Pagination} from "antd";
 import React, {useState, useEffect} from "react";
 import VideoCard from "./VideoCard";
 import { useNavigate } from 'react-router-dom';
@@ -8,6 +8,8 @@ import {getUsersRecordVideos} from '../service/recordVideo';
 export default function VideoList({ownerUserID}) {
     const navigate = useNavigate();
     const [videos, setVideos] = useState([]);
+    const [paginatedVideoList, setPaginatedVideoList] = useState([]);
+    const [pagination, setPagination] = useState({ current: 0, pageSize: 5 });
     const loadVideoList = async () => {
         const data = await getUsersRecordVideos(ownerUserID);
         console.log("getUsersRecordVideos:");
@@ -18,11 +20,24 @@ export default function VideoList({ownerUserID}) {
     useEffect(() => {
         loadVideoList();
     }, []);
+
+    useEffect(() => {
+        const tmp_paginatedVideoList = videos.slice(0, 5);
+        setPaginatedVideoList(tmp_paginatedVideoList);
+    }, [videos]);
     
     const handleClickVideo = (videoID) => {
         console.log("ClickVideo,videoID:",videoID);
         navigate(`/video/${videoID}`);
     }
+
+    const handlePageChange = (page, pageSize) => {
+        const startIndex = (page - 1) * pageSize;
+        const endIndex = page * pageSize;
+        const tmp_paginatedVideoList = videos.slice(startIndex, endIndex);
+        setPaginatedVideoList(tmp_paginatedVideoList);
+        setPagination({ current: page, pageSize });
+    };
 
 
     return (
@@ -30,7 +45,7 @@ export default function VideoList({ownerUserID}) {
             视频列表
             <List
                 itemLayout="horizontal"
-                dataSource={videos}
+                dataSource={paginatedVideoList}
                 renderItem={(video) => (
                     <List.Item>
                         <List.Item.Meta
@@ -46,6 +61,13 @@ export default function VideoList({ownerUserID}) {
                         />
                     </List.Item>
                 )}
+            />
+            <Pagination
+                current={pagination.current}
+                pageSize={pagination.pageSize}
+                total={videos.length}
+                onChange={handlePageChange}
+                style={{ marginTop: 16 }}
             />
         </div>
     );
