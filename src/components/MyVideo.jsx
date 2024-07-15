@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Button, Modal, List, Divider, Avatar, Image} from 'antd';
+import {Button, Modal, List, Divider, Avatar, Image, Pagination} from 'antd';
 import { useNavigate } from 'react-router-dom';
 import {
     DeleteOutlined, EyeOutlined,
@@ -25,6 +25,8 @@ const MyVideoList = ({ identity, ownerID }) => {
     const [videoNametoDelete, setVideoNametoDelete] = useState('');
     const [imageUrltoDelete, setImageUrltoDelete] = useState('');
     const [myVideo, setMyVideo] = useState([]);
+    const [paginatedVideoList, setPaginatedVideoList] = useState([]);
+    const [pagination, setPagination] = useState({ current: 1, pageSize: 6 });
     const handleChangeState = () => {
         setUpdateVideoList(!updateVideoList);
     };
@@ -34,12 +36,17 @@ const MyVideoList = ({ identity, ownerID }) => {
         const data = await getUsersRecordVideos(ownerID);
         console.log("getUsersRecordVideos:");
         console.log(data);
-        setMyVideo(data);
+        await setMyVideo(data);
     }
 
     useEffect(() => {
         loadVideoList();
     }, [updateVideoList]);
+
+    useEffect(() => {
+        const tmp_paginatedVideoList = myVideo.slice(0, 6);
+        setPaginatedVideoList(tmp_paginatedVideoList);
+    }, [myVideo]);
 
     const showModal = () => {
         setIsModalVisible(true);
@@ -51,6 +58,15 @@ const MyVideoList = ({ identity, ownerID }) => {
 
     const handleCancel = () => {
         setIsModalVisible(false);
+    };
+
+    const handlePageChange = (page, pageSize) => {
+        console.log("handlePageChange", page);
+        const startIndex = (page - 1) * pageSize;
+        const endIndex = page * pageSize;
+        const tmp_paginatedVideoList = myVideo.slice(startIndex, endIndex);
+        setPaginatedVideoList(tmp_paginatedVideoList);
+        setPagination({ current: page, pageSize });
     };
 
     //delete
@@ -141,7 +157,7 @@ const MyVideoList = ({ identity, ownerID }) => {
             >
                 <List
                     itemLayout="horizontal"
-                    dataSource={myVideo}
+                    dataSource={paginatedVideoList}
                     renderItem={(video) => (
                         <List.Item>
                             <List.Item.Meta
@@ -158,6 +174,13 @@ const MyVideoList = ({ identity, ownerID }) => {
                             {identity==='up'&&<Button icon={<DeleteOutlined  />} onClick={() => handleDelete(video)}/>}
                         </List.Item>
                     )}
+                />
+                <Pagination
+                    current={pagination.current}
+                    pageSize={pagination.pageSize}
+                    total={myVideo.length}
+                    onChange={handlePageChange}
+                    style={{ marginTop: 16 }}
                 />
             </Modal>
 
