@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import VideoCard from "../components/VideoCard";
 import Autoplay from "../components/Autoplay";
 import { Row, Col, Divider } from 'antd';
-import { rank } from '../service/recommend';
+import { recommend } from '../service/recommend';
 
 
 // const videoData = [
@@ -19,7 +19,7 @@ export default function Home() {
 
     useEffect(() => {
         const initVideoData = async () => {
-            let res = await rank(-1);
+            let res = await recommend(-1);
             console.log(res);
             SetVideoData(res);
             // SetVideoData(await rank(-1));

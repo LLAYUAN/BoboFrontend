@@ -52,7 +52,7 @@ export default function UserBox({ownerUserID,ownerNickName,ownerSelfIntro,ownerA
     }, []);
 
     // Function to handle follow/unfollow
-    const handleFollow = async() => {
+    const handleFollow = async () => {
         setIsFollowed(true); // Update state to indicate user is followed
         let res = await follow(ownerUserID); // Call API to follow user
         if (res.code !== 200) {
