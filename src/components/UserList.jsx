@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { List, Avatar, Button } from 'antd';
-import { useEffect, useState } from 'react';
 import { fetchActiveUsers, userExit } from '../service/livevideo';
 
 const UserList = ({ roomId }) => {
@@ -27,7 +26,7 @@ const UserList = ({ roomId }) => {
     const handleDelete = (userId) => {
         console.log(`Deleted user with userId: ${userId}`);
         // 实现删除功能
-        userExit({ userId }).then(response => {
+        userExit({ userId, roomId }).then(response => {
             if (response.status === 200) {
                 console.log('User removed successfully');
                 // Update activeUsers state after successful removal

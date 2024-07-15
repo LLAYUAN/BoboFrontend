@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Modal, Button, Form, Input, Upload, notification, Image, Select } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { useNavigate } from "react-router-dom";
-import { uploadFile } from '../service/uploadFile'; // git引入上传文件的服务
-import { createRoom, getRoomInfo } from '../service/user'; // 引入创建直播间的服务
+import { createRoom, getRoomInfo ,uploadFile} from '../service/user'; // 引入创建直播间的服务
 
 const { Option } = Select;
 
@@ -22,7 +21,6 @@ const LiveEditModal = ({ isVisible, onOk, onCancel }) => {
             form.setFieldsValue({
                 title: roomData.roomName,
                 tags: roomData.tags.map((tagIndex, index) => tagIndex === 1 ? index : null).filter(index => index !== null),
-                // Set imageUrl only if it's not empty
                 cover_image: roomData.coverUrl ? roomData.coverUrl : undefined,
             });
             setImageUrl(roomData.coverUrl ? roomData.coverUrl : '');
@@ -38,18 +36,11 @@ const LiveEditModal = ({ isVisible, onOk, onCancel }) => {
         }
     }, [isVisible]);
 
-
     const options = [
         { label: '学习', value: 0 },
         { label: '娱乐', value: 1 },
         { label: '其他', value: 2 },
     ];
-    // for (let i = 10; i < 36; i++) {
-    //     options.push({
-    //         label: i.toString(36) + i,
-    //         value: i.toString(36) + i,
-    //     });
-    // }
 
     const handleChange = (value) => {
         console.log(`selected ${value}`);
@@ -72,10 +63,10 @@ const LiveEditModal = ({ isVisible, onOk, onCancel }) => {
             const newImageUrl = response.data;
             setImageUrl(newImageUrl); // 设置上传后的图片 URL
             console.log('Image URL:', newImageUrl);
-            notification.success({
-                message: 'Upload Successful',
-                description: 'Cover image uploaded successfully.',
-            });
+            // notification.success({
+            //     message: 'Upload Successful',
+            //     description: 'Cover image uploaded successfully.',
+            // });
             return newImageUrl; // 返回新的 imageUrl
         } catch (error) {
             notification.error({
@@ -85,7 +76,6 @@ const LiveEditModal = ({ isVisible, onOk, onCancel }) => {
             throw error; // 抛出错误以便外部处理
         }
     };
-
 
     const handleCheck = async () => {
         try {
@@ -112,7 +102,6 @@ const LiveEditModal = ({ isVisible, onOk, onCancel }) => {
                 });
             } else {
                 onCancel();
-                // onOk(form);
                 let roomID = res.data;
                 navigate(`/liveAnchor/${roomID}`);
             }
@@ -139,7 +128,6 @@ const LiveEditModal = ({ isVisible, onOk, onCancel }) => {
             <Form
                 form={form}
                 layout="vertical"
-                // onFinish={onOk}
             >
                 <Form.Item name="title" label="直播间名称" rules={[{ required: true, message: '请输入名称' }]}>
                     <Input />
@@ -158,28 +146,27 @@ const LiveEditModal = ({ isVisible, onOk, onCancel }) => {
                     />
                 </Form.Item>
                 <Form.Item name="cover_image" label="直播间封面" rules={[{ required: true, message: '请上传封面图片' }]}>
-                    <div className="flex flex-row justify-center items-center mb-3">
+                    <div className="flex flex-row items-center mb-3">
                         {imageUrl ? (
                             <Image src={imageUrl} alt="cover" width={200} />
                         ) : (
+                            <div style={{ width: 200, height: 200, border: '1px dashed #d9d9d9', display: 'flex', alignItems: 'center', justifyContent: 'center',  }}>
+                                <span>图片预览</span>
+                            </div>
+                        )}
+                        <div style={{ marginLeft: '10px'}}>
                             <Upload
                                 name="cover"
-                                listType="picture-card"
-                                className="cover-uploader"
                                 showUploadList={false}
-                                action="/upload" // 调整上传的URL
                                 beforeUpload={beforeImageUpload}
+
                             >
-                                {imageUrl ? (
-                                    <Image src={imageUrl} alt="cover" width={200} />
-                                ) : (
-                                    <div>
-                                        <PlusOutlined />
-                                        <div style={{ marginTop: 8 }}>Upload</div>
-                                    </div>
-                                )}
+                                <Button
+                                    icon={<PlusOutlined />}
+                                    style={{ marginTop: '10px' }}
+                                >选择图片</Button>
                             </Upload>
-                        )}
+                        </div>
                     </div>
                 </Form.Item>
             </Form>

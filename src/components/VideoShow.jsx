@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import flvJs from 'flv.js';
-import {userEnter, userExit} from "../service/livevideo"
+import { userEnter, userExit } from "../service/livevideo";
 
 const HTTP = `http://10.180.138.227:8000`;
 
@@ -36,7 +36,6 @@ const VideoShow = ({ roomId }) => {
         handleDestroy();
         const player = initializePlayer(`${HTTP}/live/camera${roomId}.flv`);
         if (player) {
-            // player.play();
             setCurrentStream('camera');
         }
     };
@@ -45,7 +44,6 @@ const VideoShow = ({ roomId }) => {
         handleDestroy();
         const player = initializePlayer(`${HTTP}/live/desktop${roomId}.flv`);
         if (player) {
-            // player.play();
             setCurrentStream('desktop');
         }
     };
@@ -60,32 +58,36 @@ const VideoShow = ({ roomId }) => {
         }
     };
 
-    
+    const userId = localStorage.getItem('userID');
 
-    const userId = localStorage.getItem('userID')
-
-     useEffect(() => {
-        // showCameraStream();
+    useEffect(() => {
         showDesktopStream();
-         let data1 = {
+
+        const data = {
             userId: userId,
             roomId: roomId,
         };
 
-         let data2  = { userId: userId };
-        userEnter(data1);
+        const handleUserEnter = async () => {
+            await userEnter(data);
+        };
 
-        window.addEventListener('beforeunload', userExit);
+        handleUserEnter();
+
+        const handleUserExit = async () => {
+            await userExit(data);
+        };
+
+        window.addEventListener('beforeunload', handleUserExit);
 
         return () => {
-            userExit(data2);
-            window.removeEventListener('beforeunload', userExit);
+            handleUserExit();
+            window.removeEventListener('beforeunload', handleUserExit);
         };
     }, [roomId]);
 
     return (
         <div className="mainContainer">
-
             <video
                 ref={videoRef}
                 className="centeredVideo"
