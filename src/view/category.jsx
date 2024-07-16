@@ -13,7 +13,7 @@ export default function Category() {
 
 
     const [currentPage, setCurrentPage] = useState(1);
-    const pageSize = 4;
+    const pageSize = 8;
     const currentData = videoData.slice((currentPage - 1) * pageSize, currentPage * pageSize);
 
     const onChangePage = (page) => {
@@ -37,7 +37,7 @@ export default function Category() {
 
             {/* 右侧可以滑动的部分 */}
             <div style={{ marginLeft: '220px', padding: '10px 10px', width: 'calc(100% - 220px)' }}>
-                <Row justify="center" gutter={[16, 16]}>
+                <Row justify="start" gutter={[16, 16]}>
                     {currentData.map((video, index) => (
                         <Col key={index}>
                             <VideoCard video={video} />
