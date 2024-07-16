@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { AppstoreOutlined, MailOutlined, SettingOutlined } from '@ant-design/icons';
+import { AppstoreOutlined, FireOutlined, MailOutlined, SettingOutlined } from '@ant-design/icons';
 import { Menu } from 'antd';
 // const items = [
 //     {
@@ -142,6 +142,11 @@ import { Menu } from 'antd';
 // };
 
 const items = [
+    {
+        key: '-1',
+        icon: <FireOutlined />,
+        label: '热门',
+    },
     {
         key: '0',
         icon: <MailOutlined />,
