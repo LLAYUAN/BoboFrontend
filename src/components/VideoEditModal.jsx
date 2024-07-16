@@ -105,7 +105,7 @@ const VideoEditModal = ({ isVisible, onOk, onCancel, changeState }) => {
                     });
                 }
             }
-        setIsImageUploading(false);    
+        setIsVideoUploading(false);    
     }
 
     const beforeImageUpload = async (file) => {

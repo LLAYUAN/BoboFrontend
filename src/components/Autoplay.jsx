@@ -1,5 +1,6 @@
 import React from 'react';
 import { Carousel } from 'antd';
+import VideoCard from './VideoCard';
 const contentStyle = {
     height: '320px',
     color: '#fff',
@@ -7,9 +8,14 @@ const contentStyle = {
     textAlign: 'center',
     background: '#364d79',
 };
-const Autoplay = () => (
+const Autoplay = (hotVideoData) => (
     <Carousel autoplay>
-        <div>
+        {hotVideoData.map((video, index) => (
+            <div>
+                {/* <VideoCard video={video} /> */}
+            </div>
+        ))}
+        {/* <div>
             <h3 style={contentStyle}>1</h3>
         </div>
         <div>
@@ -20,7 +26,7 @@ const Autoplay = () => (
         </div>
         <div>
             <h3 style={contentStyle}>4</h3>
-        </div>
+        </div> */}
     </Carousel>
 );
 export default Autoplay;

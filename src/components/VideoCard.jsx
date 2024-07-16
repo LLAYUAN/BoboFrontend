@@ -1,5 +1,4 @@
 import React from 'react';
-import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons';
 import { Avatar, Card } from 'antd';
 import { useNavigate } from "react-router-dom";
 const { Meta } = Card;
@@ -21,18 +20,13 @@ export default function VideoCard({ video }) {
                 />
             }
             onClick={handleClick}
-        // actions={[
-        //     <SettingOutlined key="setting" />,
-        //     <EditOutlined key="edit" />,
-        //     <EllipsisOutlined key="ellipsis" />,
-        // ]}
         >
             <Meta
                 avatar={<Avatar src={video.avatarUrl} />}
                 title={video.roomName}
                 description={video.userName}
             />
-            <span key="hotIndex">热度: {video.hotIndex}</span>
+            <div key="hotIndex" style={{ padding: "15px 45px" }}>热度: {video.hotIndex}</div>
         </Card>
     )
 }

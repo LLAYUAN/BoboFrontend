@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Modal, Button, Form, Input, Upload, notification, Image, Select } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { useNavigate } from "react-router-dom";
-// import { uploadFile } from '../service/uploadFile'; // 引入上传文件的服务
 import { createRoom, getRoomInfo ,uploadFile} from '../service/user'; // 引入创建直播间的服务
 
 const { Option } = Select;
@@ -16,6 +15,7 @@ const LiveEditModal = ({ isVisible, onOk, onCancel }) => {
     const initModal = async () => {
         try {
             const response = await getRoomInfo();
+            console.log('roomData:', response.data);
             const roomData = response.data;
             console.log('coverUrl:', roomData.coverUrl);
             form.setFieldsValue({

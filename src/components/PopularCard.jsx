@@ -31,7 +31,7 @@ const PopularCard = ({ video }) => {
                         <Title level={4} style={{ marginBottom: '8px' }}>{video.roomName}</Title>
                         <Row align="middle" style={{ paddingTop: '8px' }}>
                             <Col>
-                                <Avatar src="path_to_avatar_image" />
+                                <Avatar src={video.avatarUrl} />
                             </Col>
                             <Col flex="auto" style={{ paddingLeft: '8px' }}>
                                 <Text>{video.userName}</Text>
