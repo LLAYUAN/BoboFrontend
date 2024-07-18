@@ -53,17 +53,17 @@ export default function Video() {
                     paddingBottom: '56.25%', // 调整为16:9的宽高比
                     position: 'relative' // 设置为相对定位，以便子元素可以绝对定位
                 }}>
-                    <ReactPlayer
-                        url={videoPlaying.videoUrl}
+                    <video
+                        src={videoPlaying.videoUrl}
                         className="customReactPlayer"
-                        controls={true}
+                        controls
                         style={{
                             position: 'absolute', // 绝对定位以填满父元素
                             top: 0,
                             left: 0,
+                            width: '100%',
+                            height: '100%'
                         }}
-                        width = '100%'
-                        height = '100%'
                     />
                 </div>
 
