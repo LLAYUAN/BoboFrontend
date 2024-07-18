@@ -91,7 +91,8 @@ export default function ProfileEdit({ user }) {
         } else {
             notification.error({
                 message: '失败',
-                description: '修改失败',
+                // 失败显示后端返回的错误信息
+                description: res.message,
                 placement: 'topRight'
             });
         }
