@@ -27,7 +27,7 @@ export default function Search() {
             <Row justify="space-between" gutter={[16, 16]}>
                 {videoData.map((video, index) => (
                     <Col >
-                        <VideoCard title={video.title} author={video.author} />
+                        <VideoCard video={video} />
                     </Col>
                 ))}
             </Row>
