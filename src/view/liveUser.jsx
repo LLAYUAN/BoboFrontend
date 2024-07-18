@@ -4,7 +4,7 @@ import ChatBox from "../components/ChatBox";
 import { useParams } from "react-router-dom";
 import UserBox from "../components/UserBox";
 import VideoShow from "../components/VideoShow";
-import { useState, useEffect } from "react";
+import React,{ useState, useEffect } from "react";
 import { fetchRoomInfo } from "../service/livevideo";
 
 export default function LiveUser() {
