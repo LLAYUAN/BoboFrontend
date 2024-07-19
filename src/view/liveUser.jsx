@@ -132,7 +132,7 @@ export default function LiveUser() {
             newFollowerCount: 0,
             sumViewTime: 0
         }
-        postAddHistory(body);
+        postAddRoomHot(body);
     }
 
     function homeMessageCountChange() {
@@ -146,7 +146,7 @@ export default function LiveUser() {
             newFollowerCount: 0,
             sumViewTime: 0
         }
-        postAddHistory(body);
+        postAddRoomHot(body);
     }
 
     function homeLikeCountChange() {
@@ -160,7 +160,7 @@ export default function LiveUser() {
             newFollowerCount: 0,
             sumViewTime: 0
         }
-        postAddHistory(body);
+        postAddRoomHot(body);
     }
 
     function homeShareCountChange() {
@@ -174,10 +174,11 @@ export default function LiveUser() {
             newFollowerCount: 0,
             sumViewTime: 0
         }
-        postAddHistory(body);
+        postAddRoomHot(body);
     }
 
     function homeConsumptionCountChange() {
+        console.log('consumption')
         let body = {
             roomId: roomID,
             viewCount: 0,
@@ -188,35 +189,36 @@ export default function LiveUser() {
             newFollowerCount: 0,
             sumViewTime: 0
         }
-        postAddHistory(body);
+        postAddRoomHot(body);
     }
 
-    function homeNewFollowerCountChange() {
-        let body;
-        if(followStatus){
-            body = {
-                roomId: roomID,
-                viewCount: 0,
-                likeCount: 0,
-                shareCount: 0,
-                consumptionCount: 0,
-                messageCount: 0,
-                newFollowerCount: -1,
-                sumViewTime: 0
-            }
-        }else {
-            body = {
-                roomId: roomID,
-                viewCount: 0,
-                likeCount: 0,
-                shareCount: 0,
-                consumptionCount: 0,
-                messageCount: 0,
-                newFollowerCount: 1,
-                sumViewTime: 0
-            }
+    function homeNewFollowerCountAdd() {
+        let body = {
+            roomId: roomID,
+            viewCount: 0,
+            likeCount: 0,
+            shareCount: 0,
+            consumptionCount: 0,
+            messageCount: 0,
+            newFollowerCount: 1,
+            sumViewTime: 0
         }
-        postAddHistory(body);
+        postAddRoomHot(body);
+    }
+
+    function homeNewFollowerCountMinus() {
+        let body;
+        body = {
+            roomId: roomID,
+            viewCount: 0,
+            likeCount: 0,
+            shareCount: 0,
+            consumptionCount: 0,
+            messageCount: 0,
+            newFollowerCount: -1,
+            sumViewTime: 0
+        }
+        postAddRoomHot(body);
     }
 
     function homeSumViewTimeChange() {
@@ -230,7 +232,7 @@ export default function LiveUser() {
             newFollowerCount: 0,
             sumViewTime: Date.now() - startTime
         }
-        postAddHistory(body);
+        postAddRoomHot(body);
     }
 
     //按钮的处理函数
@@ -255,8 +257,13 @@ export default function LiveUser() {
     }
 
     function pushFollowButton(){
-        homeNewFollowerCountChange();
-        setFollowStatus(!followStatus);
+        homeNewFollowerCountAdd();
+        setFollowStatus(true);
+    }
+
+    function pushUnFollowButton(){
+        homeNewFollowerCountMinus();
+        setFollowStatus(false);
     }
 
     return (
@@ -290,6 +297,8 @@ export default function LiveUser() {
                         ownerNickName={roomInfo.userName}
                         ownerSelfIntro={roomInfo.userDescription}
                         ownerAvatarUrl={roomInfo.avatarUrl}
+                        userFollow={pushFollowButton}
+                        userUnfollow={pushUnFollowButton}
                     />
                 )}
                 <ChatBox roomID={roomID} />
