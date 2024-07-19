@@ -45,9 +45,11 @@ const ChatBox = ({ roomID }) => {
     };
 
     const onMessageReceived = (payload) => {
-        const message = JSON.parse(payload.body);
-        setMessages((prevMessages) => [...prevMessages, message]);
+        const messages = JSON.parse(payload.body); // 假设 payload.body 是一个 JSON 数组
+        console.log('onMessageReceived:', messages);
+        setMessages((prevMessages) => [...prevMessages, ...messages]);
     };
+
 
     const onError = (err) => {
         console.error(err);

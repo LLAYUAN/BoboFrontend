@@ -4,7 +4,7 @@ import ChatBox from "../components/ChatBox";
 import { useParams, useNavigate, useBeforeUnload } from "react-router-dom";
 import UserBox from "../components/UserBox";
 import VideoShow from "../components/VideoShow";
-import { useState, useEffect } from "react";
+import {useState, useEffect, useRef} from "react";
 import { fetchRoomInfo, userEnter, userExit, postAddHistory, postAddRoomHot } from "../service/livevideo";
 
 export default function LiveUser() {
@@ -16,8 +16,13 @@ export default function LiveUser() {
     const [shareCount, setShareCount] = useState(0);
     const [consumptionCount, setConsumptionCount] = useState(0);
     const [messageCount, setMessageCount] = useState(0);
-    const [followStatus, setFollowStatus] = useState(false);
-    const [startTime, setStartTime] = useState('');
+    const [followStatus, setFollowStatus] = useState(0);
+    const [startTime, setStartTime] = useState(() => {
+        const now = new Date();
+        const offset = now.getTimezoneOffset() * 60000; // 时区偏移的毫秒数
+        const localISOTime = new Date(now - offset).toISOString().slice(0, 19); // 去掉毫秒部分
+        return localISOTime;
+    }); // 记录用户进入页面的时间
 
     const trueTags = ['学习', '娱乐', '其他'];
 
@@ -51,17 +56,24 @@ export default function LiveUser() {
     //进入退出房间的处理
     //这里需要加上升哥的处理逻辑，进入发一次，退出发一次
     const userId = localStorage.getItem('userID');
+    const nickname = localStorage.getItem('nickname');
 
     const data = {
         userId: userId,
         roomId: roomID,
+        nickname: nickname,
     };
 
   
     useEffect(() => {
         console.log('user enter');
         userEnter(data);
-        setStartTime(Date.now());
+
+        // const now = new Date().toISOString().split('.')[0]; // ISO 8601格式，只保留到秒
+        // console.log(now);
+        // setStartTime(now);
+
+        // console.log(Date.now());
         setEntered(true);
 
         homeViewCountChange();
@@ -70,9 +82,12 @@ export default function LiveUser() {
             userExit(data);
             console.log('user exit');
             setEntered(false);
-
-            singleAddHistory();
-            homeSumViewTimeChange();
+            const now = new Date();
+            const watchDuration =  Math.floor((now - new Date(startTime)) / 1000); // 计算观看时长，以秒为单位
+            if(watchDuration !== 0) {
+                singleAddHistory(watchDuration);
+                homeSumViewTimeChange(watchDuration);
+            }
         };
 
         const handleBeforeUnload = (event) => {
@@ -103,8 +118,11 @@ export default function LiveUser() {
         return message;
     });
 
-    function singleAddHistory(){
+    function singleAddHistory(watchDuration){
         //给个人用户历史浏览记录改一下
+
+        console.log(watchDuration);
+        console.log(startTime);
         let body = {
             roomId: roomID,
             likeCount: likeCount,
@@ -113,7 +131,7 @@ export default function LiveUser() {
             messageCount: messageCount,
             followStatus: followStatus,
             startTime: startTime,
-            watchDuration: Date.now() - startTime,
+            watchDuration: watchDuration
         }
         postAddHistory(body);
     }
@@ -130,7 +148,7 @@ export default function LiveUser() {
             newFollowerCount: 0,
             sumViewTime: 0
         }
-        postAddHistory(body);
+        postAddRoomHot(body);
     }
 
     function homeMessageCountChange() {
@@ -144,7 +162,7 @@ export default function LiveUser() {
             newFollowerCount: 0,
             sumViewTime: 0
         }
-        postAddHistory(body);
+        postAddRoomHot(body);
     }
 
     function homeLikeCountChange() {
@@ -158,7 +176,7 @@ export default function LiveUser() {
             newFollowerCount: 0,
             sumViewTime: 0
         }
-        postAddHistory(body);
+        postAddRoomHot(body);
     }
 
     function homeShareCountChange() {
@@ -172,10 +190,11 @@ export default function LiveUser() {
             newFollowerCount: 0,
             sumViewTime: 0
         }
-        postAddHistory(body);
+        postAddRoomHot(body);
     }
 
     function homeConsumptionCountChange() {
+        console.log('consumption')
         let body = {
             roomId: roomID,
             viewCount: 0,
@@ -186,38 +205,40 @@ export default function LiveUser() {
             newFollowerCount: 0,
             sumViewTime: 0
         }
-        postAddHistory(body);
+        postAddRoomHot(body);
     }
 
-    function homeNewFollowerCountChange() {
-        let body;
-        if(followStatus){
-            body = {
-                roomId: roomID,
-                viewCount: 0,
-                likeCount: 0,
-                shareCount: 0,
-                consumptionCount: 0,
-                messageCount: 0,
-                newFollowerCount: -1,
-                sumViewTime: 0
-            }
-        }else {
-            body = {
-                roomId: roomID,
-                viewCount: 0,
-                likeCount: 0,
-                shareCount: 0,
-                consumptionCount: 0,
-                messageCount: 0,
-                newFollowerCount: 1,
-                sumViewTime: 0
-            }
+    function homeNewFollowerCountAdd() {
+        let body = {
+            roomId: roomID,
+            viewCount: 0,
+            likeCount: 0,
+            shareCount: 0,
+            consumptionCount: 0,
+            messageCount: 0,
+            newFollowerCount: 1,
+            sumViewTime: 0
         }
-        postAddHistory(body);
+        postAddRoomHot(body);
     }
 
-    function homeSumViewTimeChange() {
+    function homeNewFollowerCountMinus() {
+        let body;
+        body = {
+            roomId: roomID,
+            viewCount: 0,
+            likeCount: 0,
+            shareCount: 0,
+            consumptionCount: 0,
+            messageCount: 0,
+            newFollowerCount: -1,
+            sumViewTime: 0
+        }
+        postAddRoomHot(body);
+    }
+
+    function homeSumViewTimeChange(watchDuration) {
+        console.log(startTime);
         let body = {
             roomId: roomID,
             viewCount: -1,
@@ -226,9 +247,9 @@ export default function LiveUser() {
             consumptionCount: 0,
             messageCount: 0,
             newFollowerCount: 0,
-            sumViewTime: Date.now() - startTime
+            sumViewTime: watchDuration
         }
-        postAddHistory(body);
+        postAddRoomHot(body);
     }
 
     //按钮的处理函数
@@ -253,8 +274,13 @@ export default function LiveUser() {
     }
 
     function pushFollowButton(){
-        homeNewFollowerCountChange();
-        setFollowStatus(!followStatus);
+        homeNewFollowerCountAdd();
+        setFollowStatus(1);
+    }
+
+    function pushUnFollowButton(){
+        homeNewFollowerCountMinus();
+        setFollowStatus(0);
     }
 
     return (
@@ -276,9 +302,9 @@ export default function LiveUser() {
                     />
                 </div>
                 <div style={{ display: 'flex', padding: '50px 50px' }}>
-                    <Button icon={<GiftOutlined />} style={{ marginLeft: '80%' }} size="large" onclick={pushConsumptionButton}></Button>
-                    <Button icon={<LikeOutlined />} style={{ marginLeft: '2%' }} size="large" onclick={pushLikeButton}></Button>
-                    <Button icon={<HeartOutlined />} style={{ marginLeft: '2%' }} size="large" onclick={pushShareButton}></Button>
+                    <Button icon={<GiftOutlined />} style={{ marginLeft: '80%' }} size="large" onClick={pushConsumptionButton}></Button>
+                    <Button icon={<LikeOutlined />} style={{ marginLeft: '2%' }} size="large" onClick={pushLikeButton}></Button>
+                    <Button icon={<HeartOutlined />} style={{ marginLeft: '2%' }} size="large" onClick={pushShareButton}></Button>
                 </div>
             </div>
             <div style={{ width: '30%', padding: '0 10px' }}>
@@ -288,6 +314,8 @@ export default function LiveUser() {
                         ownerNickName={roomInfo.userName}
                         ownerSelfIntro={roomInfo.userDescription}
                         ownerAvatarUrl={roomInfo.avatarUrl}
+                        userFollow={pushFollowButton}
+                        userUnfollow={pushUnFollowButton}
                     />
                 )}
                 <ChatBox roomID={roomID} />

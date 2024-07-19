@@ -16,6 +16,10 @@ class ChatService {
         const sock = new SockJS(`${BASEURL}/chat?token=${token}`);
         this.stompClient = Stomp.over(sock);
 
+        // 配置心跳机制，outgoing 和 incoming 的时间间隔（以毫秒为单位）
+        this.stompClient.heartbeat.outgoing = 20000; // 客户端每20秒发送一次心跳
+        this.stompClient.heartbeat.incoming = 20000; // 客户端每20秒期望收到一次心跳
+
         this.stompClient.connect(
             {},
             (frame) => {

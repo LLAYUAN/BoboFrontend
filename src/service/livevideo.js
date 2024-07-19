@@ -66,12 +66,13 @@ export async function fetchRoomInfo (roomId){
 
 export async function postAddHistory(body){
     let url = `${RECOMMENDPREFIX}/history/add`;
+    console.log("postAddHistory", body);
     
     return post(url, body);
 }
 
 export async function postAddRoomHot(body){
-    let url = `${RECOMMENDPREFIX}/roominfo/addRoomHotindex`;
-
+    let url = `${RECOMMENDPREFIX}/roomInfo/addRoomHotIndex`;
+    console.log("postAddRoomHot", body);
     return post(url, body);
 }
