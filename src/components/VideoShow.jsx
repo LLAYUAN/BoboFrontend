@@ -1,8 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import flvJs from 'flv.js';
-import { userEnter, userExit } from "../service/livevideo";
 
-const HTTP = `http://10.180.74.35:8000`;
+const HTTP = `http://10.180.138.227:8000`;
 
 const VideoShow = ({ roomId }) => {
     const videoRef = useRef(null);
@@ -34,7 +33,7 @@ const VideoShow = ({ roomId }) => {
 
     const showCameraStream = async () => {
         handleDestroy();
-        const player = initializePlayer(`${HTTP}/live/camera${roomId}.flv`);
+        const player = initializePlayer(`${HTTP}/live/${roomId}.flv`);
         if (player) {
             setCurrentStream('camera');
         }
@@ -42,7 +41,7 @@ const VideoShow = ({ roomId }) => {
 
     const showDesktopStream = async () => {
         handleDestroy();
-        const player = initializePlayer(`${HTTP}/live/desktop${roomId}.flv`);
+        const player = initializePlayer(`${HTTP}/live/${roomId}.flv`);
         if (player) {
             setCurrentStream('desktop');
         }
@@ -58,35 +57,6 @@ const VideoShow = ({ roomId }) => {
         }
     };
 
-    const userId = localStorage.getItem('userID');
-
-    useEffect(() => {
-        showDesktopStream();
-
-        const data = {
-            userId: userId,
-            roomId: roomId,
-            nickname: localStorage.getItem('nickname'),
-        };
-
-        const handleUserEnter = async () => {
-            await userEnter(data);
-        };
-
-        handleUserEnter();
-
-        const handleUserExit = async () => {
-            await userExit(data);
-        };
-
-        window.addEventListener('beforeunload', handleUserExit);
-
-        return () => {
-            handleUserExit();
-            window.removeEventListener('beforeunload', handleUserExit);
-        };
-    }, [roomId]);
-
     return (
         <div className="mainContainer">
             <video
@@ -100,8 +70,8 @@ const VideoShow = ({ roomId }) => {
                 Your browser is too old which doesn't support HTML5 video.
             </video>
             <div className="streamSelector">
-                <button onClick={showCameraStream}>观看摄像头直播</button>
-                <button onClick={showDesktopStream}>观看桌面直播</button>
+                <button onClick={showCameraStream}>观看直播</button>
+                {/*<button onClick={showDesktopStream}>观看桌面直播</button>*/}
             </div>
         </div>
     );
