@@ -25,7 +25,6 @@ export default function LiveUser() {
     const navigate = useNavigate();
     console.log(roomID);
 
-
     //自动获取房间信息
     useEffect(() => {
         fetchRoomInfo(roomID).then(response => {
