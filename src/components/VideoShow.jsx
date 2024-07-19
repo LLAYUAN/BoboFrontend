@@ -9,7 +9,6 @@ const VideoShow = ({ roomId }) => {
     const [currentStream, setCurrentStream] = useState(null);
 
     const initializePlayer = (url) => {
-        console.log(url);
         if (flvJs.isSupported()) {
             const playerInstance = flvJs.createPlayer(
                 {
@@ -31,22 +30,6 @@ const VideoShow = ({ roomId }) => {
         return null;
     };
 
-    const showCameraStream = async () => {
-        handleDestroy();
-        const player = initializePlayer(`${HTTP}/live/${roomId}.flv`);
-        if (player) {
-            setCurrentStream('camera');
-        }
-    };
-
-    const showDesktopStream = async () => {
-        handleDestroy();
-        const player = initializePlayer(`${HTTP}/live/${roomId}.flv`);
-        if (player) {
-            setCurrentStream('desktop');
-        }
-    };
-
     const handleDestroy = () => {
         if (flvPlayer) {
             flvPlayer.pause();
@@ -56,7 +39,25 @@ const VideoShow = ({ roomId }) => {
             setFlvPlayer(null);
         }
     };
-    
+
+    const showCameraStream = () => {
+        handleDestroy();
+        const player = initializePlayer(`${HTTP}/live/${roomId}.flv`);
+        if (player) {
+            player.play();
+            setCurrentStream('camera');
+        }
+    };
+
+    const showDesktopStream = () => {
+        handleDestroy();
+        const player = initializePlayer(`${HTTP}/live/${roomId}.flv`);
+        if (player) {
+            player.play();
+            setCurrentStream('desktop');
+        }
+    };
+
     return (
         <div className="mainContainer">
             <video
@@ -71,7 +72,7 @@ const VideoShow = ({ roomId }) => {
             </video>
             <div className="streamSelector">
                 <button onClick={showCameraStream}>观看直播</button>
-                {/*<button onClick={showDesktopStream}>观看桌面直播</button>*/}
+                {/* <button onClick={showDesktopStream}>观看桌面直播</button> */}
             </div>
         </div>
     );
