@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import flvJs from 'flv.js';
+import {userEnter, userExit} from "../service/livevideo";
 
 const HTTP = `http://10.180.138.227:8000`;
 
@@ -49,6 +50,7 @@ const VideoShow = ({ roomId }) => {
         }
     };
 
+
     const showDesktopStream = () => {
         handleDestroy();
         const player = initializePlayer(`${HTTP}/live/${roomId}.flv`);
@@ -57,6 +59,34 @@ const VideoShow = ({ roomId }) => {
             setCurrentStream('desktop');
         }
     };
+
+    useEffect(() => {
+        showDesktopStream();
+
+        const data = {
+            userId: userId,
+            roomId: roomId,
+            nickname: localStorage.getItem('nickname'),
+        };
+
+        const handleUserEnter = async () => {
+            await userEnter(data);
+        };
+
+        handleUserEnter();
+
+        const handleUserExit = async () => {
+            await userExit(data);
+        };
+
+        window.addEventListener('beforeunload', handleUserExit);
+
+        return () => {
+            handleUserExit();
+            window.removeEventListener('beforeunload', handleUserExit);
+        };
+    }, [roomId]);
+
 
     return (
         <div className="mainContainer">
