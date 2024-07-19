@@ -34,6 +34,12 @@ export async function stop(data){
     return post(url, data);
 }
 
+export async function start(data){
+    let url = `${LIVEVIDEOPREFIX}/start-stream`;
+
+    return post(url, data);
+}
+
 export  async function userEnter(data) {
     let url  = `${LIVEVIDEOPREFIX}/user-enter`;
     
@@ -58,3 +64,14 @@ export async function fetchRoomInfo (roomId){
     return getJson(url);
 }
 
+export async function postAddHistory(body){
+    let url = `${RECOMMENDPREFIX}/history/add`;
+    
+    return post(url, body);
+}
+
+export async function postAddRoomHot(body){
+    let url = `${RECOMMENDPREFIX}/roominfo/addRoomHotindex`;
+
+    return post(url, body);
+}
