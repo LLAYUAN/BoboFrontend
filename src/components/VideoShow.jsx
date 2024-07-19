@@ -56,7 +56,7 @@ const VideoShow = ({ roomId }) => {
             setFlvPlayer(null);
         }
     };
-    
+
     return (
         <div className="mainContainer">
             <video
