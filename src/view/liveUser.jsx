@@ -4,8 +4,13 @@ import ChatBox from "../components/ChatBox";
 import { useParams, useNavigate, useBeforeUnload } from "react-router-dom";
 import UserBox from "../components/UserBox";
 import VideoShow from "../components/VideoShow";
+<<<<<<< HEAD
 import { useState, useEffect } from "react";
 import { fetchRoomInfo, userEnter, userExit, postAddHistory, postAddRoomHot } from "../service/livevideo";
+=======
+import React,{ useState, useEffect } from "react";
+import { fetchRoomInfo } from "../service/livevideo";
+>>>>>>> origin/master
 
 export default function LiveUser() {
     const [title, setTitle] = useState('');

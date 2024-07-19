@@ -41,13 +41,17 @@ const dropitems = [
     },
 ];
 
-const onSearch = (value, _e, info) => console.log(info?.source, value);
-
 const Nav = () => {
     const { isModalVisible, showModal, handleOk, handleCancel } = useLiveEditModal();
     const navigate = useNavigate();
     const [current, setCurrent] = useState('home');
     const [logoutModalVisible, setLogoutModalVisible] = useState(false); // State for logout confirmation modal
+
+    const onSearch = (value) =>{
+        console.log(value);
+        navigate('/search?query=' + value);
+    }
+
 
     const onClick = (e) => {
         console.log('click ', e);
