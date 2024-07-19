@@ -4,7 +4,7 @@ import { UserAddOutlined } from '@ant-design/icons';
 import {follow,unfollow, userCheckIsFan} from '../service/user';
 import { useNavigate } from 'react-router-dom';
 
-export default function UserBox({ownerUserID,ownerNickName,ownerSelfIntro,ownerAvatarUrl}) {
+export default function UserBox({ownerUserID,ownerNickName,ownerSelfIntro,ownerAvatarUrl,userFollow,userUnfollow}) {
     const [isFollowed, setIsFollowed] = useState(false); // State to track if user is followed
     const [modalVisible, setModalVisible] = useState(false); // State to control modal visibility
     const [isAuth, setIsAuth] = useState(false);
@@ -62,6 +62,7 @@ export default function UserBox({ownerUserID,ownerNickName,ownerSelfIntro,ownerA
                 placement: 'topRight'
             });
         }
+        userFollow();
     };
 
     // Function to handle unfollow confirmation
@@ -76,6 +77,7 @@ export default function UserBox({ownerUserID,ownerNickName,ownerSelfIntro,ownerA
                 placement: 'topRight'
             });
         }
+        userUnfollow();
     };
 
     // Function to show modal for unfollow confirmation
