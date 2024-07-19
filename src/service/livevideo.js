@@ -72,7 +72,7 @@ export async function postAddHistory(body){
 }
 
 export async function postAddRoomHot(body){
-    let url = `${RECOMMENDPREFIX}/roominfo/addRoomHotindex`;
+    let url = `${RECOMMENDPREFIX}/roomInfo/addRoomHotIndex`;
     console.log("postAddRoomHot", body);
     return post(url, body);
 }
