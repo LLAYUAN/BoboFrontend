@@ -1,29 +1,40 @@
 import { Avatar, Button, Divider, Flex, Tag } from "antd";
 import { GiftOutlined, HeartOutlined, LikeOutlined } from "@ant-design/icons";
 import ChatBox from "../components/ChatBox";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate, useBeforeUnload } from "react-router-dom";
 import UserBox from "../components/UserBox";
 import VideoShow from "../components/VideoShow";
 import { useState, useEffect } from "react";
-import { fetchRoomInfo } from "../service/livevideo";
+import { fetchRoomInfo, userEnter, userExit, postAddHistory, postAddRoomHot } from "../service/livevideo";
 
 export default function LiveUser() {
     const [title, setTitle] = useState('');
     const [tags, setTags] = useState([]);
-    const [roomInfo, setRoomInfo] = useState({}); // [roomID, userID, userName, userDescription, avatarUrl, roomName, tags]
+    const [roomInfo, setRoomInfo] = useState({});
+    const [entered, setEntered] = useState(false); // 状态用于管理用户是否已经进入页面
+    const [likeCount, setLikeCount] = useState(0);
+    const [shareCount, setShareCount] = useState(0);
+    const [consumptionCount, setConsumptionCount] = useState(0);
+    const [messageCount, setMessageCount] = useState(0);
+    const [followStatus, setFollowStatus] = useState(false);
+    const [startTime, setStartTime] = useState('');
+
     const trueTags = ['学习', '娱乐', '其他'];
 
     const { roomID } = useParams();
+    const navigate = useNavigate();
     console.log(roomID);
 
+
+    //自动获取房间信息
     useEffect(() => {
         fetchRoomInfo(roomID).then(response => {
             console.log(response);
-
             setRoomInfo(response);
         });
     }, [roomID]);
 
+    //根据房间信息获取Tags
     useEffect(() => {
         if (roomInfo.roomName) {
             setTitle(roomInfo.roomName);
@@ -37,6 +48,215 @@ export default function LiveUser() {
             setTags(newTags);
         }
     }, [roomInfo]);
+
+    //进入退出房间的处理
+    //这里需要加上升哥的处理逻辑，进入发一次，退出发一次
+    const userId = localStorage.getItem('userID');
+
+    const data = {
+        userId: userId,
+        roomId: roomID,
+    };
+
+  
+    useEffect(() => {
+        console.log('user enter');
+        userEnter(data);
+        setStartTime(Date.now());
+        setEntered(true);
+
+        homeViewCountChange();
+
+        const handleUserExit = () => {
+            userExit(data);
+            console.log('user exit');
+            setEntered(false);
+
+            singleAddHistory();
+            homeSumViewTimeChange();
+        };
+
+        const handleBeforeUnload = (event) => {
+            handleUserExit();
+            const message = 'Are you sure you want to leave?';
+            event.returnValue = message;
+            return message;
+        };
+
+        window.addEventListener('beforeunload', handleBeforeUnload);
+        window.addEventListener('unload', handleUserExit);
+
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+            window.removeEventListener('unload', handleUserExit);
+            handleUserExit(); // Ensure userExit is called on component unmount
+        };
+    }, [roomID]); // 仅在roomID变化时执行effect
+
+    useBeforeUnload((event) => {
+        const handleUserExit = () => {
+            userExit(data);
+            console.log('user exit');
+        };
+        handleUserExit();
+        const message = 'Are you sure you want to leave?';
+        event.returnValue = message;
+        return message;
+    });
+
+    function singleAddHistory(){
+        //给个人用户历史浏览记录改一下
+        let body = {
+            roomId: roomID,
+            likeCount: likeCount,
+            shareCount: shareCount,
+            consumptionCount: consumptionCount,
+            messageCount: messageCount,
+            followStatus: followStatus,
+            startTime: startTime,
+            watchDuration: Date.now() - startTime,
+        }
+        postAddHistory(body);
+    }
+
+    //点击按钮房间热度的数据改变
+    function homeViewCountChange() {
+        let body = {
+            roomId: roomID,
+            viewCount: 1,
+            likeCount: 0,
+            shareCount: 0,
+            consumptionCount: 0,
+            messageCount: 0,
+            newFollowerCount: 0,
+            sumViewTime: 0
+        }
+        postAddHistory(body);
+    }
+
+    function homeMessageCountChange() {
+        let body = {
+            roomId: roomID,
+            viewCount: 0,
+            likeCount: 0,
+            shareCount: 0,
+            consumptionCount: 0,
+            messageCount: 1,
+            newFollowerCount: 0,
+            sumViewTime: 0
+        }
+        postAddHistory(body);
+    }
+
+    function homeLikeCountChange() {
+        let body = {
+            roomId: roomID,
+            viewCount: 0,
+            likeCount: 1,
+            shareCount: 0,
+            consumptionCount: 0,
+            messageCount: 0,
+            newFollowerCount: 0,
+            sumViewTime: 0
+        }
+        postAddHistory(body);
+    }
+
+    function homeShareCountChange() {
+        let body = {
+            roomId: roomID,
+            viewCount: 0,
+            likeCount: 0,
+            shareCount: 1,
+            consumptionCount: 0,
+            messageCount: 0,
+            newFollowerCount: 0,
+            sumViewTime: 0
+        }
+        postAddHistory(body);
+    }
+
+    function homeConsumptionCountChange() {
+        let body = {
+            roomId: roomID,
+            viewCount: 0,
+            likeCount: 0,
+            shareCount: 0,
+            consumptionCount: 1,
+            messageCount: 0,
+            newFollowerCount: 0,
+            sumViewTime: 0
+        }
+        postAddHistory(body);
+    }
+
+    function homeNewFollowerCountChange() {
+        let body;
+        if(followStatus){
+            body = {
+                roomId: roomID,
+                viewCount: 0,
+                likeCount: 0,
+                shareCount: 0,
+                consumptionCount: 0,
+                messageCount: 0,
+                newFollowerCount: -1,
+                sumViewTime: 0
+            }
+        }else {
+            body = {
+                roomId: roomID,
+                viewCount: 0,
+                likeCount: 0,
+                shareCount: 0,
+                consumptionCount: 0,
+                messageCount: 0,
+                newFollowerCount: 1,
+                sumViewTime: 0
+            }
+        }
+        postAddHistory(body);
+    }
+
+    function homeSumViewTimeChange() {
+        let body = {
+            roomId: roomID,
+            viewCount: -1,
+            likeCount: 0,
+            shareCount: 0,
+            consumptionCount: 0,
+            messageCount: 0,
+            newFollowerCount: 0,
+            sumViewTime: Date.now() - startTime
+        }
+        postAddHistory(body);
+    }
+
+    //按钮的处理函数
+    function pushMessageButton(){
+        homeMessageCountChange();
+        setMessageCount(messageCount + 1);
+    }
+
+    function pushLikeButton(){
+        homeLikeCountChange();
+        setLikeCount(likeCount + 1);
+    }
+
+    function pushShareButton(){
+        homeShareCountChange();
+        setShareCount(shareCount + 1);
+    }
+
+    function pushConsumptionButton(){
+        homeConsumptionCountChange();
+        setConsumptionCount(consumptionCount + 1);
+    }
+
+    function pushFollowButton(){
+        homeNewFollowerCountChange();
+        setFollowStatus(!followStatus);
+    }
 
     return (
         <div style={{ display: 'flex' }}>
@@ -57,9 +277,9 @@ export default function LiveUser() {
                     />
                 </div>
                 <div style={{ display: 'flex', padding: '50px 50px' }}>
-                    <Button icon={<GiftOutlined />} style={{ marginLeft: '80%' }} size="large"></Button>
-                    <Button icon={<LikeOutlined />} style={{ marginLeft: '2%' }} size="large"></Button>
-                    <Button icon={<HeartOutlined />} style={{ marginLeft: '2%' }} size="large"></Button>
+                    <Button icon={<GiftOutlined />} style={{ marginLeft: '80%' }} size="large" onclick={pushConsumptionButton}></Button>
+                    <Button icon={<LikeOutlined />} style={{ marginLeft: '2%' }} size="large" onclick={pushLikeButton}></Button>
+                    <Button icon={<HeartOutlined />} style={{ marginLeft: '2%' }} size="large" onclick={pushShareButton}></Button>
                 </div>
             </div>
             <div style={{ width: '30%', padding: '0 10px' }}>

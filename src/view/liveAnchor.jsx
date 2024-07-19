@@ -6,6 +6,7 @@ import {useParams} from "react-router-dom";
 import VideoLive from "../components/VideoLive"
 import {useEffect, useState} from "react";
 import {fetchRoomInfo} from "../service/livevideo"
+import LiveStreaming from "../components/LiveStreaming"
 
 export default function LiveAnchor() {
     const onChange = (key) => {
@@ -70,7 +71,11 @@ export default function LiveAnchor() {
                 </div>
                 <Divider style={{ margin: '15px 0' }}/>
                 <div style={{width: '90%', marginLeft: '5%'}}>
-                    <VideoLive
+                    {/*<VideoLive*/}
+                    {/*    roomId = {roomID}*/}
+                    {/*    style={{height:'80%'}}*/}
+                    {/*/>*/}
+                    <LiveStreaming
                         roomId = {roomID}
                         style={{height:'80%'}}
                     />
