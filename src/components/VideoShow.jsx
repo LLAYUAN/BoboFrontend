@@ -66,6 +66,7 @@ const VideoShow = ({ roomId }) => {
         const data = {
             userId: userId,
             roomId: roomId,
+            nickname: localStorage.getItem('nickname'),
         };
 
         const handleUserEnter = async () => {
