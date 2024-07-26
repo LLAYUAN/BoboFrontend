@@ -20,8 +20,8 @@ export default function Home() {
         const initVideoData = async () => {
             let res = await recommend();
             console.log(res);
-            setVideoData(res);
-            setHotVideoData(await rank(-1));
+            setVideoData(res.recommendRoomList);
+            setHotVideoData(res.popularityRoomList);
         }
         initVideoData();
     }, []);
