@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import VideoCard from "../components/VideoCard";
-import { Row, Col, Divider, Pagination, Carousel } from 'antd';
+import { Row, Col, Divider, Pagination, Carousel, Space } from 'antd';
 import { rank, recommend } from '../service/recommend';
 
 export default function Home() {
@@ -31,19 +31,16 @@ export default function Home() {
             <div style={{ padding: '0 30px' }}>
                 <Carousel autoplay>
                     {hotVideoData.map((video) => (
-                        <div key={video.id} style={{
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            height: '320px' // 设置一个合适的高度
-                        }}>
-                            <a href={`/liveUser/${video.id}`}>
-                                <img
-                                    style={{ width: '640px', height: '320px', objectFit: 'cover' }}
-                                    alt={video.roomName}
-                                    src={video.coverUrl}
-                                />
-                            </a>
+                        <div key={video.id}>
+                            <Space align='center' style={{ display: 'flex', justifyContent: 'center' }}>
+                                <a href={`/liveUser/${video.id}`}>
+                                    <img
+                                        style={{ width: '300px', height: '240px', objectFit: 'cover' }}
+                                        alt={video.roomName}
+                                        src={video.coverUrl}
+                                    />
+                                </a>
+                            </Space>
                         </div>
                     ))}
                 </Carousel>
@@ -56,14 +53,6 @@ export default function Home() {
                     </Col>
                 ))}
             </Row>
-            <div style={{ display: 'flex', justifyContent: 'center', marginTop: '16px' }}>
-                <Pagination
-                    current={currentPage}
-                    pageSize={pageSize}
-                    total={videoData.length}
-                    onChange={onChangePage}
-                />
-            </div>
         </div>
     );
 }
