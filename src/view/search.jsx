@@ -23,7 +23,7 @@ export default function Search() {
 
     useEffect(() => {
         initVideoData();
-    }, []);
+    }, [value]);
     
     return (
         <div style={{padding:'0 30px'}}>
