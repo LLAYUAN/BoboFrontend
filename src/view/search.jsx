@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import VideoCard from "../components/VideoCard";
 import Autoplay from "../components/Autoplay";
 import {Row, Col, Divider} from 'antd';
@@ -12,13 +12,18 @@ export default function Search() {
     const value = query.get('query');
     console.log(value);
 
-    const[videoData, setVideoData] = useState({});
+    const[videoData, setVideoData] = useState([]);
 
     const initVideoData = async () => {
+        console.log('initVideoData');
         let res = await search(value);
         console.log(res);
         setVideoData(res);
     }
+
+    useEffect(() => {
+        initVideoData();
+    }, []);
     
     return (
         <div style={{padding:'0 30px'}}>

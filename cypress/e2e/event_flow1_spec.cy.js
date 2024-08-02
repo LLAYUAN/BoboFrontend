@@ -41,7 +41,7 @@ describe('用户常用功能事件流1', function() {
         cy.get('.ant-card-body').first().click();
 
         cy.url().should('include', '/liveUser');
-        cy.contains('joined');
+        cy.contains('加入直播间');
 
         //发送消息
         cy.get('input.ant-input.css-dev-only-do-not-override-kh8544.ant-input-outlined.ant-input-compact-item.ant-input-compact-first-item').type('Hello World!');

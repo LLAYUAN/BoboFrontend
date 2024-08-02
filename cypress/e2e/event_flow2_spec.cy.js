@@ -15,12 +15,11 @@ describe('用户常用功能事件流2', function() {
         cy.get('input[id="title"]').type('Test Title');
         //选择分类
         cy.get('.ant-select').click();
-        if(!cy.contains('.ant-select-item-option-content', '学习')){
+
             cy.contains('.ant-select-item-option-content', '学习').click({ force: true });
             cy.contains('.ant-select-item-option-content', '娱乐').click({ force: true });
             cy.contains('.ant-select-item-option-content', '其他').click({ force: true });
 
-        }
 
         //上传图片
         cy.fixture('example.png', { encoding: null }).as('demo');
