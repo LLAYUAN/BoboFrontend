@@ -11,12 +11,14 @@ export default function VideoCard({ video }) {
         <Card
             hoverable
             style={{
-                width: 300,
+                width: "270px",
             }}
             cover={
                 <img
                     alt="example"
                     src={video.coverUrl}
+                    width={'270px'}
+                    height={'240px'}
                 />
             }
             onClick={handleClick}

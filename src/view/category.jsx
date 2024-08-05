@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { rank } from '../service/recommend';
+import { getCount, rank } from '../service/recommend';
 import VideoCard from "../components/VideoCard";
 import Autoplay from "../components/Autoplay";
 import { Row, Col, Divider, Pagination } from 'antd';
@@ -11,19 +11,21 @@ export default function Category() {
     const [selectedKey, setSelectedKey] = useState('-1');
     const [videoData, SetVideoData] = useState([]);
 
-
+    const [count, SetCount] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
-    const pageSize = 8;
-    const currentData = videoData.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+    const pageSize = 10;
+    // const currentData = videoData.slice((currentPage - 1) * pageSize, currentPage * pageSize);
 
-    const onChangePage = (page) => {
+    const onChangePage = async (page) => {
         setCurrentPage(page);
+        SetVideoData(await rank(selectedKey, page, pageSize));
     };
 
 
     useEffect(() => {
         const initVideoData = async () => {
-            SetVideoData(await rank(selectedKey));
+            SetVideoData(await rank(selectedKey, currentPage, pageSize));
+            SetCount(await getCount());
         }
         initVideoData();
     }, [selectedKey]);
@@ -38,7 +40,7 @@ export default function Category() {
             {/* 右侧可以滑动的部分 */}
             <div style={{ marginLeft: '220px', padding: '10px 10px', width: 'calc(100% - 220px)' }}>
                 <Row justify="start" gutter={[16, 16]}>
-                    {currentData.map((video, index) => (
+                    {videoData.map((video, index) => (
                         <Col key={index}>
                             <VideoCard video={video} />
                         </Col>
@@ -48,7 +50,7 @@ export default function Category() {
                     <Pagination
                         current={currentPage}
                         pageSize={pageSize}
-                        total={videoData.length}
+                        total={count}
                         onChange={onChangePage}
                     />
                 </div>
