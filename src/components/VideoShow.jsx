@@ -64,7 +64,7 @@ const VideoShow = ({ roomId }) => {
         showDesktopStream();
 
         const data = {
-            userId: userId,
+            userId: localStorage.getItem('userID'),
             roomId: roomId,
             nickname: localStorage.getItem('nickname'),
         };
@@ -81,14 +81,12 @@ const VideoShow = ({ roomId }) => {
 
         window.addEventListener('beforeunload', handleUserExit);
 
-    const showDesktopStream = () => {
-        handleDestroy();
-        const player = initializePlayer(`${HTTP}/live/${roomId}.flv`);
-        if (player) {
-            player.play();
-            setCurrentStream('desktop');
-        }
-    };
+        return () => {
+            handleUserExit();
+            window.removeEventListener('beforeunload', handleUserExit);
+        };
+    }, [roomId]);
+
 
 
     return (
