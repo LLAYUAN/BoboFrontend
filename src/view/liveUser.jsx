@@ -58,10 +58,12 @@ export default function LiveUser() {
     //进入退出房间的处理
     //这里需要加上升哥的处理逻辑，进入发一次，退出发一次
     const userId = localStorage.getItem('userID');
+    const nickname = localStorage.getItem('nickname');
 
     const data = {
         userId: userId,
         roomId: roomID,
+        nickname: nickname,
     };
 
   

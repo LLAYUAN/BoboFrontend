@@ -81,11 +81,14 @@ const VideoShow = ({ roomId }) => {
 
         window.addEventListener('beforeunload', handleUserExit);
 
-        return () => {
-            handleUserExit();
-            window.removeEventListener('beforeunload', handleUserExit);
-        };
-    }, [roomId]);
+    const showDesktopStream = () => {
+        handleDestroy();
+        const player = initializePlayer(`${HTTP}/live/${roomId}.flv`);
+        if (player) {
+            player.play();
+            setCurrentStream('desktop');
+        }
+    };
 
 
     return (
