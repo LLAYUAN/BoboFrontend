@@ -2,12 +2,12 @@ import React, { useState, useRef, useEffect } from 'react';
 import { stop, start } from "../service/livevideo";
 
 const LiveStreaming = ({ roomId }) => {
-    const serverUrl = `ws://${process.env.REACT_APP_hostIP}:8089/?roomId=${roomId}`;
+    const serverUrl = `wss://${process.env.REACT_APP_hostIP}:8089/?roomId=${roomId}`;
     const localVideoRef = useRef(null);
     const [currentStream, setCurrentStream] = useState(null);
     const [signalingSocket, setSignalingSocket] = useState(null);
     const [mediaRecorder, setMediaRecorder] = useState(null);
-    const HTTP = `http://10.180.138.227:8000`;
+    const HTTP = `https://123.60.73.77:8000`;
 
     const startFFmpeg = (stream) => {
         const socket = new WebSocket(serverUrl);
