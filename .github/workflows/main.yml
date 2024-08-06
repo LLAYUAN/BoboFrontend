@@ -30,7 +30,7 @@ jobs:
           npm install
           npm run build
       - name: deploy
-        uses: appleboy/scp-action@v0.0.1
+        uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.REMOTE_HOST }} # ip或者域名
           username: ${{ secrets.REMOTE_USER }} # root
