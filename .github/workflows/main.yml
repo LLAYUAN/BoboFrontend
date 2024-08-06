@@ -36,6 +36,6 @@ jobs:
           username: ${{ secrets.REMOTE_USER }} # root
           password: ${{ secrets.REMOTE_PASSWORD}}
           port: 22
-          source: build/static/
+          source: build/static
           target: "/opt/livestream/frontend" 
       
