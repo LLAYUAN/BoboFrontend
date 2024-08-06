@@ -35,7 +35,7 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.REMOTE_SSH_PRIVATE_KEY }}
           ARGS: "-avz --delete"
           SOURCE: "build/"
-          REMOTE_HOST: ${{ secrets.REMOTE_HOST }} //ip或者域名
-          REMOTE_USER: ${{ secrets.REMOTE_USER }}// root
-          TARGET: /opt/livestream/frontend  //部署的服务器文件夹地址
+          REMOTE_HOST: ${{ secrets.REMOTE_HOST }} # ip或者域名
+          REMOTE_USER: ${{ secrets.REMOTE_USER }} # root
+          TARGET: '/opt/livestream/frontend'  # 部署的服务器文件夹地址
       
