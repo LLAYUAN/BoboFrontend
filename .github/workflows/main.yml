@@ -16,10 +16,14 @@ jobs:
         uses: actions/setup-node@v4.0.3
         with: 
           node-version: "20.X"
+      - name: switch npm registry
+        run: npm config set registry=https://registry.npmmirror.com
       - name: npm install and build
+        env: 
+          CI: false
         run: |
           npm install
-          npm run build --silent
+          npm run build
       - name: deploy
         uses: easingthemes/ssh-deploy@v5.1.0
         env:
