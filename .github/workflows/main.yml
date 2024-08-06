@@ -4,8 +4,8 @@ on: # 定义触发事件，push 推送到 main 分支或 pull request
   push:
     branches:
       - main
-  pull_request:
-    branches: [main]
+  # pull_request:
+   # branches: [main]
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest # 定义运行的环境
