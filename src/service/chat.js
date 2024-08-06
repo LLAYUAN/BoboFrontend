@@ -2,7 +2,7 @@ import { Stomp } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 import { getJson } from './common';  // 假设 common.js 文件在同一目录
 
-const BASEURL = `http://${process.env.REACT_APP_hostIP}:9999/message`;
+const BASEURL = `https://${process.env.REACT_APP_hostIP}:9999/message`;
 
 class ChatService {
     constructor(roomID, onMessageReceived, onError) {
