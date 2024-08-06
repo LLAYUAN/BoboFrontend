@@ -19,7 +19,7 @@ jobs:
       - name: npm install and build
         run: |
           npm install
-          npm run build
+          npm run build --silent
       - name: deploy
         uses: easingthemes/ssh-deploy@v5.1.0
         env:
