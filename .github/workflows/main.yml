@@ -1,0 +1,27 @@
+name: CI # workflow 的名称
+
+on: # 定义触发事件，push 推送到 main 分支或 pull request
+  push:
+    branches:
+      - main
+  pull_request:
+    branches: [main]
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest # 定义运行的环境
+    steps: # 定义步骤
+      - name: checkout
+        uses: actions/checkout@v4.1.7
+      - name: install nodejs
+        uses: actions/setup-node@v4.0.3
+        with: 
+          node-version: "14.X"
+      - name: npm install and build
+        run: |
+          npm install
+          npm run build
+      - name: deploy
+        uses: easingthemes/ssh-deploy@v5.1.0
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.ACCESS_TOKEN }}
+          
