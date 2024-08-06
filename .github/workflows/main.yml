@@ -36,6 +36,7 @@ jobs:
           username: ${{ secrets.REMOTE_USER }} # root
           password: ${{ secrets.REMOTE_PASSWORD}}
           port: 22
-          source: build/static
+          source: "build/"
           target: "/opt/livestream/frontend" 
+          strip_components: 1 #删掉第一层目录，即build文件夹 层
       
