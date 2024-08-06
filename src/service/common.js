@@ -85,8 +85,8 @@ export async function post(url, data) {
     return res.json();
 }
 
-// 定义基础URL，如果没有配置REACT_APP_BASE_URL，则使用默认值'http://localhost:8080'
-export const BASEURL = 'http://localhost:9999';
+// 定义基础URL，如果没有配置REACT_APP_BASE_URL，则使用默认值'http://${process.env.REACT_APP_hostIP}:8080'
+export const BASEURL = `http://${process.env.REACT_APP_hostIP}:9999`;
 // 拼接API的前缀，即基础URL+'/api'
 export const PREFIX = `${BASEURL}`;
 export const USERPREFIX = `${BASEURL}/user`;
