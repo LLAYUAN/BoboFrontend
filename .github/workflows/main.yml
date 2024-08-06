@@ -15,7 +15,7 @@ jobs:
       - name: install nodejs
         uses: actions/setup-node@v4.0.3
         with: 
-          node-version: "14.X"
+          node-version: "20.X"
       - name: npm install and build
         run: |
           npm install
