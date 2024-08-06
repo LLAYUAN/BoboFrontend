@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { stop, start } from "../service/livevideo";
 
 const LiveStreaming = ({ roomId }) => {
-    const serverUrl = `ws://localhost:8089/?roomId=${roomId}`;
+    const serverUrl = `ws://${process.env.REACT_APP_hostIP}:8089/?roomId=${roomId}`;
     const localVideoRef = useRef(null);
     const [currentStream, setCurrentStream] = useState(null);
     const [signalingSocket, setSignalingSocket] = useState(null);
