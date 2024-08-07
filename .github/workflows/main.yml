@@ -23,13 +23,16 @@ jobs:
         uses: actions/setup-node@v4.0.3
         with: 
           node-version: "20.X"
+      - name: Print .env.deploy file contents for debugging
+        run: cat .env.deploy
       - name: npm install
         env: 
           CI: false
         run: npm install
-      - name: Print environment variables
+      - name: Print environment variables for debugging
         run: |
-            echo "REACT_APP_hostIP=$REACT_APP_hostIP"
+          echo "REACT_APP_NODE_ENV=$REACT_APP_NODE_ENV"
+          echo "REACT_APP_hostIP=$REACT_APP_hostIP"
       - name: npm build
         env: 
           CI: false
