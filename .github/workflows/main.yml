@@ -28,7 +28,7 @@ jobs:
           CI: false
         run: |
           npm install
-          npm run build
+          cross-env REACT_APP_NODE_ENV=deploy npm run build #设置环境为deploy
       - name: deploy
         uses: appleboy/scp-action@v0.1.7
         with:
