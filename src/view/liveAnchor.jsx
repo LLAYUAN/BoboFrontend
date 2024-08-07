@@ -16,7 +16,7 @@ export default function LiveAnchor() {
     const [title, setTitle] = useState('');
     const [deliveredTags, setDeliveredTags] = useState([]);
     const [tags, setTags] = useState([]);
-    // const [isStreaming, setIsStreaming] = useState(JSON.parse(localStorage.getItem('isStreaming')));
+    const [isStreaming, setIsStreaming] = useState(JSON.parse(localStorage.getItem('isStreaming')));
     const trueTags = ['学习', '娱乐', '其他'];
 
     const { roomID } = useParams();
@@ -24,27 +24,27 @@ export default function LiveAnchor() {
 
     useEffect(() => {
         console.log("fetchRoomInfo start");
-        fetchRoomInfo(roomID).then(response => {
-            console.log(response);
-
-            const roomInfo = response;
-            console.log(roomInfo);
-            setTitle(roomInfo.roomName);
-
-            const newTags = [];
-            if (roomInfo.tags) {
-                if (roomInfo.tags[0]) {
-                    newTags.push(trueTags[0]);
-                }
-                if (roomInfo.tags[1]) newTags.push(trueTags[1]);
-                if (roomInfo.tags[2]) newTags.push(trueTags[2]);
-            }
-            setTags(newTags);
-            setDeliveredTags(roomInfo.tags);
-            console.log(newTags);
-            console.log(deliveredTags);
-        });
-        // console.log("isStreaming",isStreaming);
+        // fetchRoomInfo(roomID).then(response => {
+        //     console.log(response);
+        //
+        //     const roomInfo = response;
+        //     console.log(roomInfo);
+        //     setTitle(roomInfo.roomName);
+        //
+        //     const newTags = [];
+        //     if (roomInfo.tags) {
+        //         if (roomInfo.tags[0]) {
+        //             newTags.push(trueTags[0]);
+        //         }
+        //         if (roomInfo.tags[1]) newTags.push(trueTags[1]);
+        //         if (roomInfo.tags[2]) newTags.push(trueTags[2]);
+        //     }
+        //     setTags(newTags);
+        //     setDeliveredTags(roomInfo.tags);
+        //     console.log(newTags);
+        //     console.log(deliveredTags);
+        // });
+        console.log("isStreaming",isStreaming);
     }, []);
 
 
@@ -87,7 +87,7 @@ export default function LiveAnchor() {
                     <LiveStreaming
                         roomId = {roomID}
                         tags = {deliveredTags}
-                        // status = {isStreaming}
+                        status = {isStreaming}
                         status = {true}
                         style={{height:'80%'}}
                     />
