@@ -16,13 +16,14 @@ export default function LiveAnchor() {
     const [title, setTitle] = useState('');
     const [deliveredTags, setDeliveredTags] = useState([]);
     const [tags, setTags] = useState([]);
-    const [isStreaming, setIsStreaming] = useState(JSON.parse(localStorage.getItem('isStreaming')));
+    // const [isStreaming, setIsStreaming] = useState(JSON.parse(localStorage.getItem('isStreaming')));
     const trueTags = ['学习', '娱乐', '其他'];
 
     const { roomID } = useParams();
     console.log(roomID);
 
     useEffect(() => {
+        console.log("fetchRoomInfo start");
         fetchRoomInfo(roomID).then(response => {
             console.log(response);
 
@@ -43,7 +44,7 @@ export default function LiveAnchor() {
             console.log(newTags);
             console.log(deliveredTags);
         });
-        console.log("isStreaming",isStreaming);
+        // console.log("isStreaming",isStreaming);
     }, []);
 
 
@@ -82,12 +83,14 @@ export default function LiveAnchor() {
                     {/*    roomId = {roomID}*/}
                     {/*    style={{height:'80%'}}*/}
                     {/*/>*/}
-                    {/*<LiveStreaming*/}
-                    {/*    roomId = {roomID}*/}
-                    {/*    tags = {deliveredTags}*/}
-                    {/*    status = {isStreaming}*/}
-                    {/*    style={{height:'80%'}}*/}
-                    {/*/>*/}
+                    
+                    <LiveStreaming
+                        roomId = {roomID}
+                        tags = {deliveredTags}
+                        // status = {isStreaming}
+                        status = {true}
+                        style={{height:'80%'}}
+                    />
                 </div>
                 
                 <div style={{display: 'flex', padding: '10px 10px'}}>
