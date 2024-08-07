@@ -10,15 +10,17 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest # 定义运行的环境
     steps: # 定义步骤
+      - name: Clear npm cache
+        run: npm cache clean --force
       - name: checkout
         uses: actions/checkout@v4.1.7
-      - name: Cache node modules
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
+      # - name: Cache node modules
+      #  uses: actions/cache@v3
+      #  with:
+      #    path: ~/.npm
+      #    key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+      #    restore-keys: |
+      #      ${{ runner.os }}-node-
       - name: install nodejs
         uses: actions/setup-node@v4.0.3
         with: 
