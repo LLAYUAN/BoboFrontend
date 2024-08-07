@@ -24,26 +24,26 @@ export default function LiveAnchor() {
 
     useEffect(() => {
         console.log("fetchRoomInfo start");
-        // fetchRoomInfo(roomID).then(response => {
-        //     console.log(response);
-        //
-        //     const roomInfo = response;
-        //     console.log(roomInfo);
-        //     setTitle(roomInfo.roomName);
-        //
-        //     const newTags = [];
-        //     if (roomInfo.tags) {
-        //         if (roomInfo.tags[0]) {
-        //             newTags.push(trueTags[0]);
-        //         }
-        //         if (roomInfo.tags[1]) newTags.push(trueTags[1]);
-        //         if (roomInfo.tags[2]) newTags.push(trueTags[2]);
-        //     }
-        //     setTags(newTags);
-        //     setDeliveredTags(roomInfo.tags);
-        //     console.log(newTags);
-        //     console.log(deliveredTags);
-        // });
+        fetchRoomInfo(roomID).then(response => {
+            console.log(response);
+
+            const roomInfo = response;
+            console.log(roomInfo);
+            setTitle(roomInfo.roomName);
+
+            const newTags = [];
+            if (roomInfo.tags) {
+                if (roomInfo.tags[0]) {
+                    newTags.push(trueTags[0]);
+                }
+                if (roomInfo.tags[1]) newTags.push(trueTags[1]);
+                if (roomInfo.tags[2]) newTags.push(trueTags[2]);
+            }
+            setTags(newTags);
+            setDeliveredTags(roomInfo.tags);
+            console.log(newTags);
+            console.log(deliveredTags);
+        });
         console.log("isStreaming",isStreaming);
     }, []);
 
