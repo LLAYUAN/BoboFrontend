@@ -28,14 +28,14 @@ export default function Home() {
 
     return (
         <div style={{ padding: '0 30px' }}>
-            <div style={{ padding: '0 30px' }}>
+            <div style={{ padding: '0 30px',backgroundColor: '#f0f0f0' } }>
                 <Carousel autoplay>
                     {hotVideoData.map((video) => (
                         <div key={video.id}>
-                            <Space align='center' style={{ display: 'flex', justifyContent: 'center' }}>
+                            <Space align='center' style={{ display: 'flex', justifyContent: 'center'}}>
                                 <a href={`/liveUser/${video.id}`}>
                                     <img
-                                        style={{ width: '300px', height: '240px', objectFit: 'cover' }}
+                                        style={{ width: '480px', height: '270px', objectFit: 'cover' }}
                                         alt={video.roomName}
                                         src={video.coverUrl}
                                     />
@@ -45,7 +45,14 @@ export default function Home() {
                     ))}
                 </Carousel>
             </div>
-            <Divider orientation="center" style={{ paddingBottom: '20px' }}> Recommend for you </Divider>
+            <Divider
+                orientation="center"
+                style={{ paddingBottom: '20px', color: 'black', borderColor: 'black' }}
+                dashed={false}
+            >
+                Recommend for you
+            </Divider>
+
             <Row justify="center" gutter={[16, 16]}>
                 {currentData.map((video, index) => (
                     <Col key={index}>

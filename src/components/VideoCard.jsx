@@ -11,14 +11,14 @@ export default function VideoCard({ video }) {
         <Card
             hoverable
             style={{
-                width: "270px",
+                width: "384px",
             }}
             cover={
                 <img
                     alt="example"
                     src={video.coverUrl}
-                    width={'270px'}
-                    height={'240px'}
+                    width={'384px'}
+                    height={'216px'}
                 />
             }
             onClick={handleClick}
@@ -28,7 +28,7 @@ export default function VideoCard({ video }) {
                 title={video.roomName}
                 description={video.userName}
             />
-            <div key="hotIndex" style={{ padding: "15px 45px" }}>热度: {video.hotIndex}</div>
+            <div key="hotIndex" style={{ padding: "15px 20px" }}>热度: {video.hotIndex}</div>
         </Card>
     )
 }
