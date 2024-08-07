@@ -43,7 +43,7 @@ export default function LoginPage({setIsLogin}) {
     return (
         <Flex style={backgroundStyle} justify='center' align='center'>
             <Flex justify='space-evenly' align='center' vertical className="loginFormbg">
-                <h2>博播TV</h2>
+                    <h2>BOBOTV</h2>
                 <LoginForm handleLogin={handleLogin}/>
             </Flex>
         </Flex>

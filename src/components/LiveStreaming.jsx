@@ -7,10 +7,12 @@ const LiveStreaming = ({ roomId,tags,status }) => {
     const [currentStream, setCurrentStream] = useState(null);
     const [signalingSocket, setSignalingSocket] = useState(null);
     const [mediaRecorder, setMediaRecorder] = useState(null);
+    const HTTP = `https://123.60.73.77:8000`;
     const [isStreaming, setIsStreaming] = useState(status === true);
     console.log("inner isStreaming",isStreaming);
 
-    const HTTP = `http://10.180.138.227:8000`;const startFFmpeg = (stream) => {const socket = new WebSocket(serverUrl);
+    const startFFmpeg = (stream) => {
+        const socket = new WebSocket(serverUrl);
         setSignalingSocket(socket);
 
         const recorder = new MediaRecorder(stream);

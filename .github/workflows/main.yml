@@ -1,0 +1,65 @@
+name: CI # workflow 的名称
+# 井号才是注释
+on: # 定义触发事件，push 推送到 main 分支或 pull request
+  push:
+    branches:
+      - main
+  # pull_request:
+   # branches: [main]
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest # 定义运行的环境
+    steps: # 定义步骤
+      - name: checkout
+        uses: actions/checkout@v4.1.7
+        
+      - name: Cache node modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+            
+      - name: install nodejs
+        uses: actions/setup-node@v4.0.3
+        with: 
+          node-version: "20.X"
+          
+      - name: Install dotenv CLI
+        run: npm install -g dotenv-cli
+        
+      - name: Print .env.deploy file contents for debugging
+        run: cat .env.deploy
+        
+      - name: npm install
+        env: 
+          CI: false
+        run: npm install
+        
+      - name: Print environment variables for debugging
+        run: |
+          echo "REACT_APP_NODE_ENV=$REACT_APP_NODE_ENV"
+          echo "REACT_APP_hostIP=$REACT_APP_hostIP"
+          
+     # - name: npm build
+     #   env: 
+     #     CI: false
+     #   run: npx cross-env REACT_APP_NODE_ENV=deploy npm run build
+
+      - name: npm build
+        env:
+          CI: false
+        run: dotenv -e .env.deploy -- npx cross-env REACT_APP_NODE_ENV=deploy npm run build # dotenv-cli 工具允许你在命令行中指定 .env 文件并将其中的变量导入到当前 shell 环境中
+        
+      - name: deploy
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.REMOTE_HOST }} # ip或者域名
+          username: ${{ secrets.REMOTE_USER }} # root
+          password: ${{ secrets.REMOTE_PASSWORD}}
+          port: 22
+          source: "build/"
+          target: "/opt/livestream/frontend" 
+          strip_components: 1 #删掉第一层目录，即build文件夹 层
+      
