@@ -14,7 +14,9 @@ export default function LiveAnchor() {
     };
 
     const [title, setTitle] = useState('');
+    const [deliveredTags, setDeliveredTags] = useState([]);
     const [tags, setTags] = useState([]);
+    const [isStreaming, setIsStreaming] = useState(JSON.parse(localStorage.getItem('isStreaming')));
     const trueTags = ['学习', '娱乐', '其他'];
 
     const { roomID } = useParams();
@@ -30,13 +32,18 @@ export default function LiveAnchor() {
 
             const newTags = [];
             if (roomInfo.tags) {
-                if (roomInfo.tags[0]) newTags.push(trueTags[0]);
+                if (roomInfo.tags[0]) {
+                    newTags.push(trueTags[0]);
+                }
                 if (roomInfo.tags[1]) newTags.push(trueTags[1]);
                 if (roomInfo.tags[2]) newTags.push(trueTags[2]);
             }
             setTags(newTags);
+            setDeliveredTags(roomInfo.tags);
             console.log(newTags);
+            console.log(deliveredTags);
         });
+        console.log("isStreaming",isStreaming);
     }, []);
 
 
@@ -77,6 +84,8 @@ export default function LiveAnchor() {
                     {/*/>*/}
                     <LiveStreaming
                         roomId = {roomID}
+                        tags = {deliveredTags}
+                        status = {isStreaming}
                         style={{height:'80%'}}
                     />
                 </div>

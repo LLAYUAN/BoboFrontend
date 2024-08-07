@@ -1,16 +1,16 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { stop, start } from "../service/livevideo";
 
-const LiveStreaming = ({ roomId }) => {
+const LiveStreaming = ({ roomId,tags,status }) => {
     const serverUrl = `ws://localhost:8089/?roomId=${roomId}`;
     const localVideoRef = useRef(null);
     const [currentStream, setCurrentStream] = useState(null);
     const [signalingSocket, setSignalingSocket] = useState(null);
     const [mediaRecorder, setMediaRecorder] = useState(null);
-    const HTTP = `http://10.180.138.227:8000`;
+    const [isStreaming, setIsStreaming] = useState(status === true);
+    console.log("inner isStreaming",isStreaming);
 
-    const startFFmpeg = (stream) => {
-        const socket = new WebSocket(serverUrl);
+    const HTTP = `http://10.180.138.227:8000`;const startFFmpeg = (stream) => {const socket = new WebSocket(serverUrl);
         setSignalingSocket(socket);
 
         const recorder = new MediaRecorder(stream);
@@ -62,7 +62,13 @@ const LiveStreaming = ({ roomId }) => {
 
         displayStream(stream); // 显示新流
         startFFmpeg(stream); // 启动 FFmpeg
-        start({ roomId }); // 开始直播
+
+        if(isStreaming === false) {
+            localStorage.setItem('isStreaming', true);
+            console.log("set isStreaming to true");
+        }
+        start({ roomId,tags,isStreaming}); // 开始直播
+        setIsStreaming(true);
         localStorage.setItem('currentUrl', `${HTTP}/live/${roomId}.flv`);
     };
 
@@ -76,18 +82,28 @@ const LiveStreaming = ({ roomId }) => {
 
         displayStream(stream); // 显示新流
         startFFmpeg(stream); // 启动 FFmpeg
-        start({ roomId }); // 开始直播
+        if(isStreaming === false) {
+            localStorage.setItem('isStreaming', true);
+            console.log("set isStreaming to true");
+        }
+        start({ roomId,tags,isStreaming }); // 开始直播
+        setIsStreaming(true);
         localStorage.setItem('currentUrl', `${HTTP}/live/${roomId}.flv`);
     };
 
     const handleStopStream = () => {
-        stop({ roomId }).then(result => {
+        if(isStreaming === true) {
+            localStorage.setItem('isStreaming', false);
+            console.log("set isStreaming to false");
+        }
+        stop({ roomId,isStreaming }).then(result => {
             if (result.status === 200) {
                 stopCurrentStream(); // 停止流
             } else {
                 alert(`Failed to stop stream: ${result.message}`);
             }
         });
+        setIsStreaming(false);
     };
 
     return (
@@ -97,7 +113,12 @@ const LiveStreaming = ({ roomId }) => {
             <div className="streamControls">
                 <button onClick={handleStartCameraStream}>开始摄像头直播</button>
                 <button onClick={handleStartDesktopStream}>开始桌面直播</button>
-                <button onClick={handleStopStream}>结束直播</button>
+                <button
+                    onClick={handleStopStream}
+                    disabled={!isStreaming}
+                >
+                    结束直播
+                </button>
             </div>
         </div>
     );

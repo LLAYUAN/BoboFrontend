@@ -101,9 +101,11 @@ const LiveEditModal = ({ isVisible, onOk, onCancel }) => {
                     description: 'Room creation failed.',
                 });
             } else {
+                localStorage.setItem('isStreaming',true);
                 onCancel();
                 let roomID = res.data;
                 navigate(`/liveAnchor/${roomID}`);
+                window.location.reload();
             }
         } catch (error) {
             console.error('Error:', error);
