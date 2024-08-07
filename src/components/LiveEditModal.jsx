@@ -96,6 +96,7 @@ const LiveEditModal = ({ isVisible, onOk, onCancel }) => {
             console.log("imageURL:", newImageUrl);
             let res = await createRoom(roomData); // 调用 createRoom 函数发送数据到后端
             if (res.code !== 200) {
+
                 notification.error({
                     message: 'Error',
                     description: 'Room creation failed.',
