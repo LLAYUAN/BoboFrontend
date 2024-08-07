@@ -57,7 +57,7 @@ export default function LiveAnchor() {
         {
             key: '2',
             label: '用户列表',
-            children: <UserList roomId = {roomID}/>
+            // children: <UserList roomId = {roomID}/>
         }
     ];
 
