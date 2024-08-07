@@ -82,12 +82,12 @@ export default function LiveAnchor() {
                     {/*    roomId = {roomID}*/}
                     {/*    style={{height:'80%'}}*/}
                     {/*/>*/}
-                    <LiveStreaming
-                        roomId = {roomID}
-                        tags = {deliveredTags}
-                        status = {isStreaming}
-                        style={{height:'80%'}}
-                    />
+                    {/*<LiveStreaming*/}
+                    {/*    roomId = {roomID}*/}
+                    {/*    tags = {deliveredTags}*/}
+                    {/*    status = {isStreaming}*/}
+                    {/*    style={{height:'80%'}}*/}
+                    {/*/>*/}
                 </div>
                 
                 <div style={{display: 'flex', padding: '10px 10px'}}>
