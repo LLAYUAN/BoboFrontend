@@ -23,14 +23,14 @@ jobs:
         uses: actions/setup-node@v4.0.3
         with: 
           node-version: "20.X"
-      - name: Install cross-env
-        run: npm install cross-env
-      - name: npm install and build
+      - name: npm install
         env: 
           CI: false
-        run: |
-          npm install
-          cross-env REACT_APP_NODE_ENV=deploy npm run build #设置环境为deploy
+        run: npm install
+      - name: npm build
+        env: 
+          CI: false
+        run: npx cross-env REACT_APP_NODE_ENV=deploy npm run build
       - name: deploy
         uses: appleboy/scp-action@v0.1.7
         with:
