@@ -12,6 +12,7 @@ jobs:
     steps: # 定义步骤
       - name: checkout
         uses: actions/checkout@v4.1.7
+        
       - name: Cache node modules
         uses: actions/cache@v3
         with:
@@ -19,24 +20,38 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
+            
       - name: install nodejs
         uses: actions/setup-node@v4.0.3
         with: 
           node-version: "20.X"
+          
+      - name: Install dotenv CLI
+        run: npm install -g dotenv-cli
+        
       - name: Print .env.deploy file contents for debugging
         run: cat .env.deploy
+        
       - name: npm install
         env: 
           CI: false
         run: npm install
+        
       - name: Print environment variables for debugging
         run: |
           echo "REACT_APP_NODE_ENV=$REACT_APP_NODE_ENV"
           echo "REACT_APP_hostIP=$REACT_APP_hostIP"
+          
+     # - name: npm build
+     #   env: 
+     #     CI: false
+     #   run: npx cross-env REACT_APP_NODE_ENV=deploy npm run build
+
       - name: npm build
-        env: 
+        env:
           CI: false
-        run: npx cross-env REACT_APP_NODE_ENV=deploy npm run build
+        run: dotenv -e .env.deploy -- npx cross-env REACT_APP_NODE_ENV=deploy npm run build
+        
       - name: deploy
         uses: appleboy/scp-action@v0.1.7
         with:
