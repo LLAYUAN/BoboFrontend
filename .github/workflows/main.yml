@@ -50,7 +50,7 @@ jobs:
       - name: npm build
         env:
           CI: false
-        run: dotenv -e .env.deploy -- npx cross-env REACT_APP_NODE_ENV=deploy npm run build
+        run: dotenv -e .env.deploy -- npx cross-env REACT_APP_NODE_ENV=deploy npm run build # dotenv-cli 工具允许你在命令行中指定 .env 文件并将其中的变量导入到当前 shell 环境中
         
       - name: deploy
         uses: appleboy/scp-action@v0.1.7
