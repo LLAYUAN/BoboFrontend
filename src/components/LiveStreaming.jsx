@@ -7,7 +7,7 @@ const LiveStreaming = ({ roomId,tags,status }) => {
     const [currentStream, setCurrentStream] = useState(null);
     const [signalingSocket, setSignalingSocket] = useState(null);
     const [mediaRecorder, setMediaRecorder] = useState(null);
-    const HTTP = `https://123.60.73.77:8000`;
+    const HTTP = `https://123.60.73.77:8443`;
     const [isStreaming, setIsStreaming] = useState(status === true);
     console.log("inner isStreaming",isStreaming);
 
