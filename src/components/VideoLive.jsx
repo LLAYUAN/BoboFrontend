@@ -4,7 +4,7 @@ import {LIVEVIDEOPREFIX} from "../service/common"
 import {fetchCameraDevices, startCamera, startDesktop, record, stop} from "../service/livevideo"
 
 const RTMP = `rtmp://123.60.73.77:1935`;
-const HTTP = `https://123.60.73.77:8000`;
+const HTTP = `https://123.60.73.77:8443`;
 const PATH = `C:/Users`;
 
 const LiveDemo = ({ roomId }) => {
