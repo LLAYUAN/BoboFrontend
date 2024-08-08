@@ -107,7 +107,7 @@ const LiveEditModal = ({ isVisible, onOk, onCancel }) => {
                 let roomID = res.data;
                 // navigate(`/liveAnchor/${roomID}`);
                 navigate(`/zhubo/${roomID}`);
-                window.location.reload();
+//                 window.location.reload();
             }
         } catch (error) {
             console.error('Error:', error);
