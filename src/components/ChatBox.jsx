@@ -4,6 +4,7 @@ import { Input, Button, List, Divider, FloatButton,Space } from 'antd';
 import ChatService from '../service/chat';
 import moment from 'moment';
 import {VerticalAlignBottomOutlined} from "@ant-design/icons";
+import {postAddRoomHot} from "../service/livevideo";
 
 const ChatBox = ({ roomID }) => {
     const [messages, setMessages] = useState([]);
@@ -55,10 +56,25 @@ const ChatBox = ({ roomID }) => {
         console.error(err);
     };
 
+    function messageCountChange() {
+        let body = {
+            roomId: roomID,
+            viewCount: 0,
+            likeCount: 0,
+            shareCount: 0,
+            consumptionCount: 0,
+            messageCount: 1,
+            newFollowerCount: 0,
+            sumViewTime: 0
+        }
+        postAddRoomHot(body);
+    }
+
     const sendMessage = () => {
         if (chatService && inputValue) {
             chatService.sendMessage(username, inputValue);
             setInputValue('');
+            messageCountChange();
         }
     };
 
