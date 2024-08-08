@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import flvJs from 'flv.js';
 import {userEnter, userExit} from "../service/livevideo";
 
-const HTTP = `https://123.60.73.77:8000`;
+const HTTP = `https://123.60.73.77:8443`;
 
 const VideoShow = ({ roomId }) => {
     const videoRef = useRef(null);
