@@ -11,7 +11,7 @@ export default function Popular() {
 
     const [count, SetCount] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
-    const pageSize = 18;
+    const pageSize = 12;
 
     const onChangePage = async (page) => {
         setCurrentPage(page);
@@ -20,7 +20,12 @@ export default function Popular() {
 
     useEffect(() => {
         const initVideoData = async () => {
-            SetVideoData(await rank('-1', currentPage, pageSize));
+            let offset = (currentPage - 1) * pageSize;
+            let video=await rank('-1', currentPage, pageSize);
+            for (let i = 0; i < video.length; i++) {
+                video[i].rank=offset+i+1;
+            }
+            SetVideoData(video);
             SetCount(await getCount());
         }
         initVideoData();
@@ -28,7 +33,7 @@ export default function Popular() {
 
     return (
         <div style={{ marginLeft: '70px', padding: '10px 20px', width: 'calc(100% - 220px)' }}>
-            <Row justify="start" gutter={[16, 16]}>
+            <Row justify="space-evenly" gutter={[16, 16]}>
                 {videoData.map((video, index) => (
                     <Col key={index}>
                         <PopularCard video={video} />

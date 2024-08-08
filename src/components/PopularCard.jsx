@@ -19,10 +19,10 @@ const PopularCard = ({ video }) => {
                         <img
                             alt="example"
                             src={video.coverUrl}
-                            style={{ width: '100%', height: '100%', borderRadius: '8px 0 0 8px' }}
+                            style={{ width: '200px', height: '120px', borderRadius: '8px 0 0 8px' }}
                         />
                         <div style={{ position: 'absolute', bottom: 8, left: 0, background: 'rgba(0, 0, 0, 0.5)', borderRadius: '4px', padding: '2px 8px' }}>
-                            <Title level={5} style={{ margin: 0, color: '#fff' }}>{video.hotIndex}</Title>
+                            <Title level={5} style={{ margin: 0, color: '#fff' }}>{video.rank}</Title>
                         </div>
                     </div>
                 </Col>
@@ -45,6 +45,11 @@ const PopularCard = ({ video }) => {
                             {/*<Col style={{ paddingLeft: '8px' }}>*/}
                             {/*    <Text>3万</Text>*/}
                             {/*</Col>*/}
+                        </Row>
+                        <Row style={{ paddingTop: '8px' }}>
+                            <Col>
+                                <Text style={{ color: '#ff4d4f' }}>热度: {video.hotIndex}</Text>
+                            </Col>
                         </Row>
                     </div>
                 </Col>
