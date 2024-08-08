@@ -12,13 +12,21 @@ const LiveStreaming = ({ roomId,tags,status }) => {
     console.log("inner isStreaming",isStreaming);
 
     const startFFmpeg = (stream) => {
+        //debug
+        console.log(stream);
+
         const socket = new WebSocket(serverUrl);
         setSignalingSocket(socket);
+
+        //debug
+        console.log("signalingSocket",socket);
 
         const recorder = new MediaRecorder(stream);
 
         recorder.ondataavailable = (event) => {
             if (event.data.size > 0) {
+                console.log("send data");
+
                 socket.send(event.data);
             }
         };
