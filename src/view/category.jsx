@@ -13,7 +13,7 @@ export default function Category() {
 
     const [count, SetCount] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
-    const pageSize = 10;
+    const pageSize = 9;
     // const currentData = videoData.slice((currentPage - 1) * pageSize, currentPage * pageSize);
 
     const onChangePage = async (page) => {
