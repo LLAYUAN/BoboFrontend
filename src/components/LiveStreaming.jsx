@@ -2,12 +2,12 @@ import React, { useState, useRef, useEffect } from 'react';
 import { stop, start } from "../service/livevideo";
 
 const LiveStreaming = ({ roomId,tags,status }) => {
-    const serverUrl = `ws://localhost:8089/?roomId=${roomId}`;
+    const serverUrl = `wss://123.60.73.77:8089/?roomId=${roomId}`;
     const localVideoRef = useRef(null);
     const [currentStream, setCurrentStream] = useState(null);
     const [signalingSocket, setSignalingSocket] = useState(null);
     const [mediaRecorder, setMediaRecorder] = useState(null);
-    const HTTP = `https://123.60.73.77:8000`;
+    const HTTP = `https://123.60.73.77:8443`;
     const [isStreaming, setIsStreaming] = useState(status === true);
     console.log("inner isStreaming",isStreaming);
 
