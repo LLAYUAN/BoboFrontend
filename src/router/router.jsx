@@ -12,6 +12,7 @@ import VisitProfile from "../view/visitProfile";
 import Nav from "../components/nav";
 import Register from "../view/register";
 import ModifyPassword from "../view/modifyPassword";
+import ZhuBO from "../view/zhubo"
 
 function Layout() {
     const location = useLocation();
