@@ -26,7 +26,8 @@ function Layout() {
                     <Route path="/category" element={<Category />} />
                     <Route path="/video/:videoID" element={<Video />} />
                     <Route path="/liveUser/:roomID" element={<LiveUser />} />
-                    <Route path="/liveAnchor/:roomID" element={<LiveUser />} />
+                    {/*<Route path="/liveAnchor/:roomID" element={<LiveAnchor />} />*/}
+                    <Route path="/zhubo/:roomID" element={<LiveAnchor />} />
                     <Route path="/profile" element={<Profile />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/search" element={<Search />} />
