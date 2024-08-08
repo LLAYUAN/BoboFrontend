@@ -106,7 +106,7 @@ const LiveEditModal = ({ isVisible, onOk, onCancel }) => {
                 onCancel();
                 let roomID = res.data;
                 navigate(`/liveAnchor/${roomID}`);
-                window.location.reload();
+                // window.location.reload();
             }
         } catch (error) {
             console.error('Error:', error);
