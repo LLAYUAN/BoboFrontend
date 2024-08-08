@@ -28,7 +28,7 @@ export default function Search() {
     return (
         <div style={{padding:'0 30px'}}>
             <Divider orientation="center" style={{paddingBottom:'20px'}}> 搜索结果 </Divider>
-            <Row justify="space-between" gutter={[16, 16]}>
+            <Row justify="space-evenly" gutter={[16, 16]}>
                 {videoData.map((video, index) => (
                     <Col >
                         <VideoCard video={video} />

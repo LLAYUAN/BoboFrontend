@@ -31,7 +31,7 @@ export default function Popular() {
             <Row justify="start" gutter={[16, 16]}>
                 {videoData.map((video, index) => (
                     <Col key={index}>
-                        <VideoCard video={video} />
+                        <PopularCard video={video} />
                     </Col>
                 ))}
             </Row>

@@ -7,7 +7,7 @@ import { rank, recommend } from '../service/recommend';
 export default function Home() {
     const [videoData, setVideoData] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const pageSize = 5;
+    const pageSize = 6;
     const currentData = videoData.slice((currentPage - 1) * pageSize, currentPage * pageSize);
 
     const onChangePage = (page) => {
@@ -32,7 +32,7 @@ export default function Home() {
                 <Carousel autoplay>
                     {hotVideoData.map((video) => (
                         <div key={video.id}>
-                            <Space align='center' style={{ display: 'flex', justifyContent: 'center'}}>
+                            <Space align='start' style={{ display: 'flex', justifyContent: 'center'}}>
                                 <a href={`/liveUser/${video.id}`}>
                                     <img
                                         style={{ width: '480px', height: '270px', objectFit: 'cover' }}
