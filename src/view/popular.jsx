@@ -15,7 +15,12 @@ export default function Popular() {
 
     const onChangePage = async (page) => {
         setCurrentPage(page);
-        SetVideoData(await rank('-1', page, pageSize));
+        let offset = (page - 1) * pageSize;
+        let video=await rank('-1', page, pageSize);
+        for (let i = 0; i < video.length; i++) {
+            video[i].rank=offset+i+1;
+        }
+        SetVideoData(video);
     };
 
     useEffect(() => {
