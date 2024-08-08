@@ -66,7 +66,7 @@ export default function LiveUser() {
         nickname: nickname,
     };
 
-  
+
     useEffect(() => {
         console.log('user enter');
         userEnter(data);

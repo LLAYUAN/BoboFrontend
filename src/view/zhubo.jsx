@@ -8,7 +8,7 @@ import React,{useEffect, useState} from "react";
 import {fetchRoomInfo} from "../service/livevideo"
 import LiveStreaming from "../components/LiveStreaming"
 
-export default function LiveAnchor() {
+export default function ZhuBo() {
     const onChange = (key) => {
         console.log(key);
     };

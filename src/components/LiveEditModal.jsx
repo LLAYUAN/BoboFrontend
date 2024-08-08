@@ -105,8 +105,9 @@ const LiveEditModal = ({ isVisible, onOk, onCancel }) => {
                 localStorage.setItem('isStreaming',true);
                 onCancel();
                 let roomID = res.data;
-                navigate(`/liveAnchor/${roomID}`);
-                // window.location.reload();
+                // navigate(`/liveAnchor/${roomID}`);
+                navigate(`/zhubo/${roomID}`);
+//                 window.location.reload();
             }
         } catch (error) {
             console.error('Error:', error);
