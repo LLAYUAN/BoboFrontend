@@ -138,9 +138,9 @@
 // export default LiveStreaming;
 import React, { useState, useRef, useEffect } from 'react';
 import { stop, start } from "../service/livevideo";
-import { FFmpeg } from '@ffmpeg/ffmpeg';
+import { createFFmpeg } from '@ffmpeg/ffmpeg';
 
-const ffmpeg = new FFmpeg({ log: true });
+const ffmpeg = createFFmpeg({ log: true });
 
 const LiveStreaming = ({ roomId, tags, status }) => {
     const serverUrl = `wss://123.60.73.77:8089/?roomId=${roomId}`;
@@ -285,9 +285,14 @@ const LiveStreaming = ({ roomId, tags, status }) => {
 
         // 使用 ffmpeg.js 进行转换
         await ffmpeg.load();
-        ffmpeg.FS('writeFile', 'recording.webm', new Uint8Array(await fetch(webmUrl).then(res => res.arrayBuffer())));
+        const response = await fetch(webmUrl);
+        const arrayBuffer = await response.arrayBuffer();
+        await ffmpeg.load();
+        ffmpeg.writeFile('recording.webm', new Uint8Array(arrayBuffer));
+
+        // 运行 FFmpeg 转换命令
         await ffmpeg.run('-i', 'recording.webm', 'output.mp4');
-        const data = ffmpeg.FS('readFile', 'output.mp4');
+        const data = ffmpeg.readFile('output.mp4');
 
         // 生成 mp4 文件的 Blob 并创建下载链接
         const mp4Blob = new Blob([data.buffer], { type: 'video/mp4' });
