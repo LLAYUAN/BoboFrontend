@@ -49,7 +49,7 @@ const UserList = ({ roomId }) => {
                     <List.Item.Meta
                         avatar={<Avatar>{item.userId.charAt(0)}</Avatar>}
                         title={item.nickname}
-                        description={`Room: ${item.roomId}, Entered at: ${item.enterTime}`}
+                        // description={`Room: ${item.roomId}, Entered at: ${item.enterTime}`}
                     />
                 </List.Item>
             )}
