@@ -9,7 +9,6 @@ const LiveStreaming = ({ roomId,tags,status }) => {
     const [mediaRecorder, setMediaRecorder] = useState(null);
     const HTTP = `https://123.60.73.77:8443`;
     const [isStreaming, setIsStreaming] = useState(status === true);
-    console.log("inner isStreaming",isStreaming);
 
     const startFFmpeg = (stream) => {
         //debug
@@ -106,7 +105,9 @@ const LiveStreaming = ({ roomId,tags,status }) => {
             localStorage.setItem('isStreaming', false);
             console.log("set isStreaming to false");
         }
-        stop({ roomId,isStreaming }).then(result => {
+        const rId = String(roomId);
+        console.log(roomId,rId);
+        stop({ rId,isStreaming }).then(result => {
             if (result.status === 200) {
                 stopCurrentStream(); // 停止流
             } else {
