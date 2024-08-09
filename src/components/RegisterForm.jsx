@@ -94,7 +94,7 @@ export default function RegisterForm({handleLogin}) {
                     <Button type="default" htmlType="Login" className="login-form-button">
                         注 册
                     </Button>
-                    Or <a href="" onClick={() => navigate('/login')}>log in now!</a>
+                    Or <a href="" onClick={() => navigate('/login')}>立即登录!</a>
                 </Form.Item>
             </Form>
         </ConfigProvider>

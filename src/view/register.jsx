@@ -49,7 +49,7 @@ export default function Register({setIsLogin}) {
     return (
         <Flex style={backgroundStyle} justify='center' align='center'>
             <Flex justify='space-evenly' align='center' className="loginFormbg" vertical>
-                <h2>直播平台</h2>
+                <h2>BoBo直播</h2>
                 <RigisterForm handleLogin={handleRegister}/>
             </Flex>
         </Flex>

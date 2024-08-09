@@ -50,7 +50,7 @@ export default function Home() {
                 style={{ paddingBottom: '20px', color: 'black', borderColor: 'black' }}
                 dashed={false}
             >
-                Recommend for you
+                为你推荐
             </Divider>
 
             <Row justify="center" gutter={[16, 16]}>

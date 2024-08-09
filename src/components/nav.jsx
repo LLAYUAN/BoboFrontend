@@ -13,15 +13,15 @@ const { Search } = Input;
 
 const items = [
     {
-        label: 'Home',
+        label: '推荐',
         key: 'home',
     },
     {
-        label: 'Popular',
+        label: '热门',
         key: 'popular',
     },
     {
-        label: 'Category',
+        label: '分类',
         key: 'category',
     },
 ];

@@ -73,11 +73,11 @@ export default function LoginForm({handleLogin}) {
                 </Form.Item>
                 <Form.Item >
                     <Form.Item name="remember" valuePropName="checked" noStyle>
-                        <Checkbox>Remember me</Checkbox>
+                        <Checkbox>记住我</Checkbox>
                     </Form.Item>
 
                     <a className="login-form-forgot" href="">
-                        Forgot password
+                        忘记密码
                     </a>
                 </Form.Item>
 
@@ -85,7 +85,7 @@ export default function LoginForm({handleLogin}) {
                     <Button type="default" htmlType="Login" className="login-form-button">
                         登 入
                     </Button>
-                    Or <a href="" onClick={() => navigate('/register')} >register now!</a>
+                    Or <a href="" onClick={() => navigate('/register')} >立即注册!</a>
                 </Form.Item>
             </Form>
         </ConfigProvider>

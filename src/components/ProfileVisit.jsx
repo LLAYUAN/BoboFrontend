@@ -117,13 +117,13 @@ export default function ProfileVisit({userID,user}) {
             >
                 <Form.Item
                     name={['user', 'nickname']}
-                    label="Name"
+                    label="昵称"
                 >
                     <Input defaultValue={user.nickname} readOnly/>
                 </Form.Item>
                 <Form.Item
                     name={['user', 'email']}
-                    label="Email"
+                    label="邮箱"
                     rules={[
                         {
                             type: 'email',
@@ -134,11 +134,11 @@ export default function ProfileVisit({userID,user}) {
                 </Form.Item>
                 <Form.Item
                     name={['user', 'birthday']}
-                    label="Birthday"
+                    label="生日"
                 >
                     <Input defaultValue={user.birthday} readOnly/>
                 </Form.Item>
-                <Form.Item name={['user', 'introduction']} label="Introduction">
+                <Form.Item name={['user', 'introduction']} label="简介">
                     <Input.TextArea defaultValue={user.introduction} readOnly/>
                 </Form.Item>
             </Form>

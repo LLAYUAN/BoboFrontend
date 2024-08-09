@@ -70,8 +70,8 @@ export default function Profile() {
                 <Card style={{ width: '30%', boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)' }}>
                     <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center' }}>
                         <PlaySquareOutlined style={{ fontSize: '50px', paddingTop: '50px' }} />
-                        <h2>Create Live</h2>
-                        <Button type="primary" size="large" style={{ marginTop: '50px' }} onClick={showModal}>Start Now</Button>
+                        <h2>创建直播</h2>
+                        <Button type="primary" size="large" style={{ marginTop: '50px' }} onClick={showModal}>现在开始</Button>
                     </div>
                 </Card>
             </div>

@@ -57,7 +57,7 @@ const FollowingList = ({ following, onUnfollow }) => {
                     <h2 style={{ paddingLeft: '4px' }}>关注</h2>
                 </div>
                 <Button icon={<EyeOutlined />} type="link" onClick={showModal}>
-                    View All
+                    查看全部
                 </Button>
             </div>
             <List

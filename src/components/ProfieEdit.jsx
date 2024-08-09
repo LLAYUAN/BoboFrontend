@@ -154,7 +154,7 @@ export default function ProfileEdit({ user }) {
             >
                 <Form.Item
                     name={['user', 'name']}
-                    label="Name"
+                    label="昵称"
                     rules={[
                         {
                             required: true,
@@ -166,7 +166,7 @@ export default function ProfileEdit({ user }) {
                 </Form.Item>
                 <Form.Item
                     name={['user', 'email']}
-                    label="Email"
+                    label="邮箱"
                     rules={[
                         {
                             required: true,
@@ -179,11 +179,11 @@ export default function ProfileEdit({ user }) {
                 </Form.Item>
                 <Form.Item
                     name={['user', 'birthday']}
-                    label="Birthday"
+                    label="生日"
                 >
                     <DatePicker style={{ width: '100%' }} />
                 </Form.Item>
-                <Form.Item name={['user', 'introduction']} label="Introduction">
+                <Form.Item name={['user', 'introduction']} label="简介">
                     <Input.TextArea />
                 </Form.Item>
                 <Form.Item
@@ -193,7 +193,7 @@ export default function ProfileEdit({ user }) {
                     }}
                 >
                     <Button type="primary" htmlType="submit">
-                        Save
+                        保存
                     </Button>
                 </Form.Item>
             </Form>
