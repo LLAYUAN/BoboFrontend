@@ -105,9 +105,9 @@ const LiveStreaming = ({ roomId,tags,status }) => {
             localStorage.setItem('isStreaming', false);
             console.log("set isStreaming to false");
         }
-        const rId = String(roomId);
-        console.log(roomId,rId);
-        stop({ rId,isStreaming }).then(result => {
+        const roomIdString = String(roomId);
+        console.log(roomId, roomIdString);
+        stop({ roomId : roomIdString,isStreaming }).then(result => {
             if (result.status === 200) {
                 stopCurrentStream(); // 停止流
             } else {
