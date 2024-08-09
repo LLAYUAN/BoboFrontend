@@ -3,15 +3,21 @@ import { useState, useEffect } from 'react';
 import VideoCard from "../components/VideoCard";
 import { Row, Col, Divider, Pagination, Carousel, Space } from 'antd';
 import { rank, recommend } from '../service/recommend';
+import { useNavigate } from 'react-router-dom';
 
 export default function Home() {
     const [videoData, setVideoData] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const pageSize = 6;
     const currentData = videoData.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+    const navigate = useNavigate();
 
     const onChangePage = (page) => {
         setCurrentPage(page);
+    };
+
+    const handleNavigate = (id) => {
+        navigate(`/liveUser/${id}`);
     };
 
     const [hotVideoData, setHotVideoData] = useState([]);
@@ -33,13 +39,14 @@ export default function Home() {
                     {hotVideoData.map((video) => (
                         <div key={video.id}>
                             <Space align='start' style={{ display: 'flex', justifyContent: 'center'}}>
-                                <a href={`/liveUser/${video.id}`}>
+                                {/*<a href={`/liveUser/${video.id}`}>*/}
                                     <img
                                         style={{ width: '480px', height: '270px', objectFit: 'cover' }}
                                         alt={video.roomName}
                                         src={video.coverUrl}
+                                        onClick={() => handleNavigate(video.id)}
                                     />
-                                </a>
+                                {/*</a>*/}
                             </Space>
                         </div>
                     ))}
