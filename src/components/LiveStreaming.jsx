@@ -138,7 +138,7 @@
 // export default LiveStreaming;
 import React, { useState, useRef, useEffect } from 'react';
 import { stop, start } from "../service/livevideo";
-import { FFmpeg, fetchFile } from '@ffmpeg/ffmpeg';
+import { FFmpeg } from '@ffmpeg/ffmpeg';
 
 const ffmpeg = new FFmpeg({ log: true });
 
@@ -285,7 +285,7 @@ const LiveStreaming = ({ roomId, tags, status }) => {
 
         // 使用 ffmpeg.js 进行转换
         await ffmpeg.load();
-        ffmpeg.FS('writeFile', 'recording.webm', await fetchFile(webmUrl));
+        ffmpeg.FS('writeFile', 'recording.webm', new Uint8Array(await fetch(webmUrl).then(res => res.arrayBuffer())));
         await ffmpeg.run('-i', 'recording.webm', 'output.mp4');
         const data = ffmpeg.FS('readFile', 'output.mp4');
 
