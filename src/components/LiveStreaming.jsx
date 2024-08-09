@@ -19,9 +19,7 @@ const LiveStreaming = ({ roomId, tags, status }) => {
         const recorder = new MediaRecorder(stream);
         recorder.ondataavailable = (event) => {
             if (event.data.size > 0) {
-                if (isRecording) {
-                    setRecordingChunks(prev => [...prev, event.data]);
-                }
+                setRecordingChunks(prev => [...prev, event.data]);
                 socket.send(event.data);
             }
         };
@@ -128,6 +126,7 @@ const LiveStreaming = ({ roomId, tags, status }) => {
 
         // 创建 Blob 对象
         const blob = new Blob(recordingChunks, { type: 'video/webm' });
+        console.log(recordingChunks);
         const webmUrl = URL.createObjectURL(blob);
 
         // 创建下载链接
