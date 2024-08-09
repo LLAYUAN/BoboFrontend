@@ -253,16 +253,16 @@ const LiveStreaming = ({ roomId, tags, status }) => {
     const handleStartRecording = () => {
         setRecordingChunks([]);
         setIsRecording(true);
-        if (mediaRecorder) {
-            mediaRecorder.start(1000); // 每秒记录一次数据
-        }
+        // if (mediaRecorder) {
+        //     mediaRecorder.start(1000); // 每秒记录一次数据
+        // }
     };
 
     const handleStopRecording = () => {
         setIsRecording(false);
-        if (mediaRecorder) {
-            mediaRecorder.stop();
-        }
+        // if (mediaRecorder) {
+        //     mediaRecorder.stop();
+        // }
 
         // 创建 Blob 对象
         const blob = new Blob(recordingChunks, { type: 'video/webm' });
