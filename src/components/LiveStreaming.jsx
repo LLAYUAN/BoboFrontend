@@ -138,9 +138,9 @@
 // export default LiveStreaming;
 import React, { useState, useRef, useEffect } from 'react';
 import { stop, start } from "../service/livevideo";
-import { createFFmpeg, fetchFile } from '@ffmpeg/ffmpeg';
+import { FFmpeg, fetchFile } from '@ffmpeg/ffmpeg';
 
-const ffmpeg = createFFmpeg({ log: true });
+const ffmpeg = new FFmpeg({ log: true });
 
 const LiveStreaming = ({ roomId, tags, status }) => {
     const serverUrl = `wss://123.60.73.77:8089/?roomId=${roomId}`;
