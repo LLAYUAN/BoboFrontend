@@ -5,6 +5,7 @@
   "homepage": "./",
   "dependencies": {
     "@ant-design/icons": "^5.3.7",
+    "@ffmpeg/core": "^0.12.6",
     "@ffmpeg/ffmpeg": "^0.12.10",
     "@shadcn/ui": "^0.0.4",
     "@stomp/stompjs": "^7.0.0",
