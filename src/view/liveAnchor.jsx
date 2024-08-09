@@ -3,7 +3,6 @@ import {EditOutlined, GiftOutlined, HeartOutlined, LikeOutlined, UserAddOutlined
 import ChatBox from "../components/ChatBox";
 import UserList from "../components/UserList";
 import {useParams} from "react-router-dom";
-import VideoLive from "../components/VideoLive"
 import React,{useEffect, useState} from "react";
 import {fetchRoomInfo} from "../service/livevideo"
 import LiveStreaming from "../components/LiveStreaming"
