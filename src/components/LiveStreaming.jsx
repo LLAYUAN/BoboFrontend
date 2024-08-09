@@ -138,9 +138,6 @@
 // export default LiveStreaming;
 import React, { useState, useRef, useEffect } from 'react';
 import { stop, start } from "../service/livevideo";
-import { createFFmpeg } from '@ffmpeg/ffmpeg';
-
-const ffmpeg = createFFmpeg({ log: true });
 
 const LiveStreaming = ({ roomId, tags, status }) => {
     const serverUrl = `wss://123.60.73.77:8089/?roomId=${roomId}`;
@@ -153,21 +150,11 @@ const LiveStreaming = ({ roomId, tags, status }) => {
     const HTTP = `https://123.60.73.77:8443`;
     const [isStreaming, setIsStreaming] = useState(status === true);
 
-    useEffect(() => {
-        const loadFFmpeg = async () => {
-            if (!ffmpeg.isLoaded()) {
-                await ffmpeg.load();
-            }
-        };
-        loadFFmpeg();
-    }, []);
-
     const startFFmpeg = (stream) => {
         const socket = new WebSocket(serverUrl);
         setSignalingSocket(socket);
 
         const recorder = new MediaRecorder(stream);
-
         recorder.ondataavailable = (event) => {
             if (event.data.size > 0) {
                 if (isRecording) {
@@ -176,7 +163,6 @@ const LiveStreaming = ({ roomId, tags, status }) => {
                 socket.send(event.data);
             }
         };
-
         recorder.start(1000); // 每秒发送一次数据
         setMediaRecorder(recorder);
     };
@@ -197,7 +183,6 @@ const LiveStreaming = ({ roomId, tags, status }) => {
             mediaRecorder.stop();
             setMediaRecorder(null);
         }
-        // 清理流 URL
         localStorage.removeItem('currentUrl');
     };
 
@@ -269,11 +254,11 @@ const LiveStreaming = ({ roomId, tags, status }) => {
         setRecordingChunks([]);
         setIsRecording(true);
         if (mediaRecorder) {
-            mediaRecorder.start(1000);
+            mediaRecorder.start(1000); // 每秒记录一次数据
         }
     };
 
-    const handleStopRecording = async () => {
+    const handleStopRecording = () => {
         setIsRecording(false);
         if (mediaRecorder) {
             mediaRecorder.stop();
@@ -283,27 +268,14 @@ const LiveStreaming = ({ roomId, tags, status }) => {
         const blob = new Blob(recordingChunks, { type: 'video/webm' });
         const webmUrl = URL.createObjectURL(blob);
 
-        // 使用 ffmpeg.js 进行转换
-        await ffmpeg.load();
-        const response = await fetch(webmUrl);
-        const arrayBuffer = await response.arrayBuffer();
-        await ffmpeg.load();
-        ffmpeg.writeFile('recording.webm', new Uint8Array(arrayBuffer));
-
-        // 运行 FFmpeg 转换命令
-        await ffmpeg.run('-i', 'recording.webm', 'output.mp4');
-        const data = ffmpeg.readFile('output.mp4');
-
-        // 生成 mp4 文件的 Blob 并创建下载链接
-        const mp4Blob = new Blob([data.buffer], { type: 'video/mp4' });
-        const mp4Url = URL.createObjectURL(mp4Blob);
+        // 创建下载链接
         const a = document.createElement('a');
         a.style.display = 'none';
-        a.href = mp4Url;
-        a.download = `recording_${roomId}.mp4`;
+        a.href = webmUrl;
+        a.download = `recording_${roomId}.webm`; // 先保存为 WebM 格式
         document.body.appendChild(a);
         a.click();
-        window.URL.revokeObjectURL(mp4Url);
+        window.URL.revokeObjectURL(webmUrl);
     };
 
     return (
