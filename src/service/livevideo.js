@@ -5,23 +5,6 @@ export async function getUserId() {
     return getJson(url);
 }
 
-export async function fetchCameraDevices(){
-    let url = `${LIVEVIDEOPREFIX}/camera-devices`;
-    return getJson(url);
-}
-
-export async function startCamera(data){
-    let url = `${LIVEVIDEOPREFIX}/camera-live`;
-    
-    return post(url, data);
-}
-
-export async function startDesktop(data){
-    let url = `${LIVEVIDEOPREFIX}/desktop-live`;
-    
-    return post(url, data);
-}
-
 export async function record(data){
     let url = `${LIVEVIDEOPREFIX}/record`;
 
